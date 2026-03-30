@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Send email via Resend
-    await resend.emails.send({
+    await resend!.emails.send({
       from: "Omar Kamel Website <onboarding@resend.dev>",
       to: CONTACT_EMAIL,
       replyTo: trimmedEmail,
