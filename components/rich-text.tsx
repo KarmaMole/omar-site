@@ -1,3 +1,4 @@
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
 import {
   type JSXConvertersFunction,
   RichText as PayloadRichText,
@@ -8,7 +9,8 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
 });
 
 interface RichTextProps {
-  data: unknown;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: SerializedEditorState | any;
   className?: string;
 }
 
@@ -18,7 +20,7 @@ export function RichText({ data, className }: RichTextProps) {
   return (
     <div className={className ?? "prose prose-lg max-w-none text-gray-700 leading-relaxed"}>
       <PayloadRichText
-        data={data}
+        data={data as SerializedEditorState}
         converters={converters}
       />
     </div>

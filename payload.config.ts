@@ -3,6 +3,7 @@ import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import { seoPlugin } from "@payloadcms/plugin-seo";
+import sharp from "sharp";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -56,6 +57,7 @@ export default buildConfig({
         (doc as { excerpt?: string }).excerpt ?? "",
     }),
   ],
+  sharp,
   admin: {
     importMap: {
       baseDir: path.resolve(dirname),

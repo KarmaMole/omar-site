@@ -60,7 +60,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         )}
         <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed space-y-6">
           {post.excerpt && <p className="text-xl text-gray-600 leading-relaxed">{post.excerpt}</p>}
-          {post.body && <RichText data={post.body} />}
+          {post.body ? <RichText data={post.body} /> : null}
         </div>
       </div>
     </article>

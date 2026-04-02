@@ -69,7 +69,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
             {tags.map((tag) => (<TagBadge key={tag} label={tag} />))}
           </div>
         )}
-        {project.description && <RichText data={project.description} className="mb-10" />}
+        {project.description ? <RichText data={project.description} className="mb-10" /> : null}
         {project.links && project.links.length > 0 && (
           <div className="flex flex-wrap gap-3">
             {project.links.map((link) => (

@@ -59,7 +59,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
             {tags.map((tag) => (<TagBadge key={tag} label={tag} />))}
           </div>
         )}
-        {work.description && <RichText data={work.description} className="mb-10" />}
+        {work.description ? <RichText data={work.description} className="mb-10" /> : null}
         {work.media && work.media.length > 0 && (
           <div className="space-y-6 mb-10">
             {work.media.map((embed, i) => (<MediaEmbedComponent key={i} embed={embed} />))}
