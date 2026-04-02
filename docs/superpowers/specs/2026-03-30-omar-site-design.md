@@ -96,71 +96,71 @@ omar-site/
 
 ### `work` — Client & Creative Work
 
-| Field        | Type                   | Notes                                                                                  |
-| ------------ | ---------------------- | -------------------------------------------------------------------------------------- |
-| title        | string (required)      |                                                                                        |
-| slug         | slug (from title)      |                                                                                        |
-| client       | string (optional)      | For client work                                                                        |
-| description  | portable text          |                                                                                        |
-| coverImage   | image (with alt)       |                                                                                        |
-| categories   | array of strings       | Values: "AI & Production", "Video Production", "AI Films", "Music", "Comics & Writing" |
-| tags         | array of strings       | Freeform — e.g., "Generative Image", "Brand Campaign"                                  |
-| media        | array of objects       | Each: { type: "youtube" | "vimeo" | "soundcloud" | "spotify", url: string }            |
-| externalLink | URL (optional)         |                                                                                        |
-| featured     | boolean                |                                                                                        |
-| sortOrder    | number                 |                                                                                        |
-| date         | date                   |                                                                                        |
+| Field        | Type              | Notes                                                                                  |
+| ------------ | ----------------- | -------------------------------------------------------------------------------------- |
+| title        | string (required) |                                                                                        |
+| slug         | slug (from title) |                                                                                        |
+| client       | string (optional) | For client work                                                                        |
+| description  | portable text     |                                                                                        |
+| coverImage   | image (with alt)  |                                                                                        |
+| categories   | array of strings  | Values: "AI & Production", "Video Production", "AI Films", "Music", "Comics & Writing" |
+| tags         | array of strings  | Freeform — e.g., "Generative Image", "Brand Campaign"                                  |
+| media        | array of objects  | Each: { type: "youtube"                                                                |
+| externalLink | URL (optional)    |                                                                                        |
+| featured     | boolean           |                                                                                        |
+| sortOrder    | number            |                                                                                        |
+| date         | date              |                                                                                        |
 
 ### `project` — Personal Projects & Ventures
 
-| Field       | Type              | Notes                              |
-| ----------- | ----------------- | ---------------------------------- |
-| title       | string (required) |                                    |
-| slug        | slug              |                                    |
-| description | portable text     |                                    |
-| coverImage  | image (with alt)  |                                    |
-| logo        | image (optional)  |                                    |
+| Field       | Type              | Notes                                  |
+| ----------- | ----------------- | -------------------------------------- |
+| title       | string (required) |                                        |
+| slug        | slug              |                                        |
+| description | portable text     |                                        |
+| coverImage  | image (with alt)  |                                        |
+| logo        | image (optional)  |                                        |
 | status      | string            | Values: "active", "archived", "paused" |
 | links       | array of objects  | Each: { label: string, url: string }   |
-| tags        | array of strings  |                                    |
-| featured    | boolean           |                                    |
-| sortOrder   | number            |                                    |
+| tags        | array of strings  |                                        |
+| featured    | boolean           |                                        |
+| sortOrder   | number            |                                        |
 
 ### `blogPost` — Blog Posts
 
-| Field      | Type              | Notes                                          |
-| ---------- | ----------------- | ---------------------------------------------- |
-| title      | string (required) |                                                |
-| slug       | slug              |                                                |
-| coverImage | image (with alt)  |                                                |
+| Field      | Type              | Notes                                           |
+| ---------- | ----------------- | ----------------------------------------------- |
+| title      | string (required) |                                                 |
+| slug       | slug              |                                                 |
+| coverImage | image (with alt)  |                                                 |
 | body       | portable text     | Rich text with inline images, code blocks, etc. |
-| excerpt    | text              | For cards and SEO description                  |
-| date       | datetime          |                                                |
-| tags       | array of strings  |                                                |
-| seo        | object            | { metaTitle, metaDescription, ogImage }        |
+| excerpt    | text              | For cards and SEO description                   |
+| date       | datetime          |                                                 |
+| tags       | array of strings  |                                                 |
+| seo        | object            | { metaTitle, metaDescription, ogImage }         |
 
 ### `siteSettings` — Singleton
 
-| Field             | Type             | Notes                                  |
-| ----------------- | ---------------- | -------------------------------------- |
-| heroHeadline      | string           |                                        |
-| heroTagline       | string           |                                        |
-| heroBackground    | image or file    | Supports image or video                |
-| aboutBio          | portable text    |                                        |
-| aboutPhoto        | image            |                                        |
-| profilePhoto      | image            | Used in nav, footer, OG fallback       |
-| socialLinks       | array of objects | Each: { platform: string, url: string }|
-| googleAnalyticsId | string           |                                        |
+| Field             | Type             | Notes                                   |
+| ----------------- | ---------------- | --------------------------------------- |
+| heroHeadline      | string           |                                         |
+| heroTagline       | string           |                                         |
+| heroBackground    | image or file    | Supports image or video                 |
+| aboutBio          | portable text    |                                         |
+| aboutPhoto        | image            |                                         |
+| profilePhoto      | image            | Used in nav, footer, OG fallback        |
+| socialLinks       | array of objects | Each: { platform: string, url: string } |
+| googleAnalyticsId | string           |                                         |
 
 ### `mediaItem` — Reusable Media Library
 
-| Field       | Type              | Notes                                          |
-| ----------- | ----------------- | ---------------------------------------------- |
-| title       | string (required) |                                                |
-| type        | string            | Values: "image", "video"                       |
-| image       | image (with alt)  | For image type                                 |
-| videoUrl    | URL               | For video type (YouTube, Vimeo)                |
-| description | text (optional)   |                                                |
+| Field       | Type              | Notes                           |
+| ----------- | ----------------- | ------------------------------- |
+| title       | string (required) |                                 |
+| type        | string            | Values: "image", "video"        |
+| image       | image (with alt)  | For image type                  |
+| videoUrl    | URL               | For video type (YouTube, Vimeo) |
+| description | text (optional)   |                                 |
 
 Used as a reference type by `work` and `project` schemas where reusable media is needed.
 
@@ -168,15 +168,15 @@ Used as a reference type by `work` and `project` schemas where reusable media is
 
 ### Palette
 
-| Token       | Value     | Usage                        |
-| ----------- | --------- | ---------------------------- |
-| `black`     | `#000000` | Backgrounds, primary text    |
-| `white`     | `#FFFFFF` | Backgrounds, inverse text    |
-| `brick`     | `#8B2500` | Accent — links, CTAs, highlights |
-| `gray-900`  | `#171717` | Dark surfaces                |
-| `gray-600`  | `#525252` | Secondary text               |
-| `gray-200`  | `#E5E5E5` | Borders, dividers            |
-| `gray-50`   | `#FAFAFA` | Light surface backgrounds    |
+| Token      | Value     | Usage                            |
+| ---------- | --------- | -------------------------------- |
+| `black`    | `#000000` | Backgrounds, primary text        |
+| `white`    | `#FFFFFF` | Backgrounds, inverse text        |
+| `brick`    | `#8B2500` | Accent — links, CTAs, highlights |
+| `gray-900` | `#171717` | Dark surfaces                    |
+| `gray-600` | `#525252` | Secondary text                   |
+| `gray-200` | `#E5E5E5` | Borders, dividers                |
+| `gray-50`  | `#FAFAFA` | Light surface backgrounds        |
 
 ### Typography
 

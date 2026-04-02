@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import SectionHeading from "@/components/section-heading";
 import FadeIn from "@/components/fade-in";
-import { dummySettings } from "@/lib/dummy-data";
+import { getSiteSettings } from "@/lib/payload/queries";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -10,8 +10,9 @@ export const metadata: Metadata = {
     "Get in touch with Omar Kamel — for production enquiries, collaborations, or anything in between.",
 };
 
-export default function ContactPage() {
-  const { socialLinks } = dummySettings;
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
+  const socialLinks = settings.socialLinks ?? [];
 
   return (
     <div className="pt-24 pb-16">

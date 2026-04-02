@@ -1,4 +1,4 @@
-import type { MediaEmbed } from "@/lib/dummy-data";
+import type { MediaEmbed } from "@/lib/payload/types";
 
 function getEmbedUrl(embed: MediaEmbed): string {
   const { type, url } = embed;

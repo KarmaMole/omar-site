@@ -15,6 +15,7 @@
 ## File Map
 
 ### Config & Setup
+
 - `package.json` — dependencies
 - `next.config.mjs` — Next.js config with Sanity image loader
 - `tailwind.config.ts` — custom palette, fonts, animations
@@ -24,10 +25,12 @@
 - `.gitignore` — standard Next.js gitignore
 
 ### Global Styles & Layout
+
 - `app/globals.css` — Tailwind directives, custom CSS, animation keyframes
 - `app/layout.tsx` — Root layout (fonts, GA snippet, metadata)
 
 ### Sanity Config & Schemas
+
 - `sanity.config.ts` — Sanity Studio configuration (project root)
 - `sanity/schema.ts` — Schema index
 - `sanity/schemas/work.ts` — Work schema
@@ -37,15 +40,18 @@
 - `sanity/schemas/mediaItem.ts` — Reusable media schema
 
 ### Sanity Client & Utilities
+
 - `lib/sanity/client.ts` — Sanity client instance
 - `lib/sanity/image.ts` — Image URL builder
 - `lib/sanity/queries.ts` — All GROQ queries
 - `lib/sanity/types.ts` — TypeScript types matching schemas
 
 ### Dummy Data
+
 - `lib/dummy-data.ts` — Placeholder content for all sections
 
 ### Shared Components
+
 - `components/nav.tsx` — Desktop navigation bar
 - `components/mobile-nav.tsx` — Mobile hamburger menu overlay
 - `components/footer.tsx` — Site footer with social links
@@ -63,6 +69,7 @@
 - `components/fade-in.tsx` — Scroll-triggered fade-in wrapper
 
 ### Site Layout & Pages
+
 - `app/(site)/layout.tsx` — Site layout (nav + footer)
 - `app/(site)/page.tsx` — Homepage
 - `app/(site)/work/page.tsx` — Work listing with filters
@@ -76,18 +83,22 @@
 - `app/(site)/services/page.tsx` — Services coming soon
 
 ### Sanity Studio Route
+
 - `app/studio/[[...tool]]/layout.tsx` — Studio layout (no site chrome)
 - `app/studio/[[...tool]]/page.tsx` — Studio page
 
 ### API Routes
+
 - `app/api/contact/route.ts` — Contact form email handler
 
 ### SEO
+
 - `app/sitemap.ts` — Auto-generated sitemap
 - `app/robots.ts` — robots.txt
 - `app/feed.xml/route.ts` — RSS feed
 
 ### Documentation
+
 - `README.md` — Setup, development, deployment instructions
 
 ---
@@ -95,11 +106,13 @@
 ### Task 1: Initialize Next.js Project with Tailwind
 
 **Files:**
+
 - Create: `package.json`, `next.config.mjs`, `tailwind.config.ts`, `app/globals.css`, `app/layout.tsx`, `.env.example`, `.env.local`, `.gitignore`
 
 - [ ] **Step 1: Create Next.js app with Tailwind**
 
 Run:
+
 ```bash
 npx create-next-app@14 . --typescript --tailwind --eslint --app --src-dir=false --import-alias="@/*" --use-npm
 ```
@@ -343,6 +356,7 @@ git commit -m "feat: initialize Next.js 14 project with Tailwind and design syst
 ### Task 2: Sanity Schemas & Configuration
 
 **Files:**
+
 - Create: `sanity.config.ts`, `sanity/schema.ts`, `sanity/schemas/work.ts`, `sanity/schemas/project.ts`, `sanity/schemas/blogPost.ts`, `sanity/schemas/siteSettings.ts`, `sanity/schemas/mediaItem.ts`
 
 - [ ] **Step 1: Create `sanity/schemas/work.ts`**
@@ -897,6 +911,7 @@ git commit -m "feat: add Sanity schemas and Studio configuration"
 ### Task 3: Sanity Client, Types, Queries & Dummy Data
 
 **Files:**
+
 - Create: `lib/sanity/client.ts`, `lib/sanity/image.ts`, `lib/sanity/types.ts`, `lib/sanity/queries.ts`, `lib/dummy-data.ts`, `lib/utils.ts`
 
 - [ ] **Step 1: Create `lib/sanity/client.ts`**
@@ -1324,6 +1339,7 @@ git commit -m "feat: add Sanity client, types, queries, and dummy data"
 ### Task 4: Shared Components — Nav, Footer, Section Heading, Tags, Fade-in
 
 **Files:**
+
 - Create: `components/nav.tsx`, `components/mobile-nav.tsx`, `components/footer.tsx`, `components/section-heading.tsx`, `components/tag-badge.tsx`, `components/fade-in.tsx`
 
 - [ ] **Step 1: Create `components/nav.tsx`**
@@ -1505,7 +1521,7 @@ export function Footer() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
-          &copy; {new Date().getFullYear()} Omar Kamel. All rights reserved.
+          © {new Date().getFullYear()} Omar Kamel. All rights reserved.
         </div>
       </div>
     </footer>
@@ -1617,6 +1633,7 @@ git commit -m "feat: add nav, footer, section heading, tag badge, and fade-in co
 ### Task 5: Card Components — Work, Project, Blog
 
 **Files:**
+
 - Create: `components/work-card.tsx`, `components/project-card.tsx`, `components/blog-card.tsx`
 
 - [ ] **Step 1: Create `components/work-card.tsx`**
@@ -1791,6 +1808,7 @@ git commit -m "feat: add work, project, and blog card components"
 ### Task 6: Hero, Category Filter, Media Embed, Portable Text, Coming Soon
 
 **Files:**
+
 - Create: `components/hero.tsx`, `components/category-filter.tsx`, `components/media-embed.tsx`, `components/portable-text.tsx`, `components/coming-soon.tsx`
 
 - [ ] **Step 1: Create `components/hero.tsx`**
@@ -2039,6 +2057,7 @@ git commit -m "feat: add hero, category filter, media embed, portable text, and 
 ### Task 7: Contact Form Component & API Route
 
 **Files:**
+
 - Create: `components/contact-form.tsx`, `app/api/contact/route.ts`, `lib/resend.ts`
 
 - [ ] **Step 1: Create `lib/resend.ts`**
@@ -2264,6 +2283,7 @@ git commit -m "feat: add contact form component and API route with Resend"
 ### Task 8: Site Layout & Homepage
 
 **Files:**
+
 - Create: `app/(site)/layout.tsx`, `app/(site)/page.tsx`
 
 - [ ] **Step 1: Create `app/(site)/layout.tsx`**
@@ -2443,6 +2463,7 @@ git commit -m "feat: add site layout and homepage with all sections"
 ### Task 9: Work Pages
 
 **Files:**
+
 - Create: `app/(site)/work/page.tsx`, `app/(site)/work/[slug]/page.tsx`
 
 - [ ] **Step 1: Create `app/(site)/work/page.tsx`**
@@ -2555,7 +2576,7 @@ export default function WorkDetailPage({
           href="/work"
           className="text-sm text-gray-500 hover:text-brick transition-colors mb-6 inline-block"
         >
-          &larr; Back to Work
+          ← Back to Work
         </Link>
 
         {work.client && (
@@ -2629,6 +2650,7 @@ git commit -m "feat: add work listing and detail pages"
 ### Task 10: Projects Pages
 
 **Files:**
+
 - Create: `app/(site)/projects/page.tsx`, `app/(site)/projects/[slug]/page.tsx`
 
 - [ ] **Step 1: Create `app/(site)/projects/page.tsx`**
@@ -2723,7 +2745,7 @@ export default function ProjectDetailPage({
           href="/projects"
           className="text-sm text-gray-500 hover:text-brick transition-colors mb-6 inline-block"
         >
-          &larr; Back to Projects
+          ← Back to Projects
         </Link>
 
         <div className="flex items-center gap-4 mb-4">
@@ -2797,6 +2819,7 @@ git commit -m "feat: add projects listing and detail pages"
 ### Task 11: Blog Pages
 
 **Files:**
+
 - Create: `app/(site)/blog/page.tsx`, `app/(site)/blog/[slug]/page.tsx`
 
 - [ ] **Step 1: Create `app/(site)/blog/page.tsx`**
@@ -2892,7 +2915,7 @@ export default function BlogPostPage({
           href="/blog"
           className="text-sm text-gray-500 hover:text-brick transition-colors mb-6 inline-block"
         >
-          &larr; Back to Blog
+          ← Back to Blog
         </Link>
 
         {post.date && (
@@ -2931,7 +2954,7 @@ export default function BlogPostPage({
             aliquip ex ea commodo consequat.
           </p>
           <blockquote>
-            &ldquo;The best way to predict the future is to create it.&rdquo;
+            “The best way to predict the future is to create it.”
           </blockquote>
           <p>
             Duis aute irure dolor in reprehenderit in voluptate velit esse
@@ -2958,6 +2981,7 @@ git commit -m "feat: add blog listing and post detail pages"
 ### Task 12: About, Contact, and Services Pages
 
 **Files:**
+
 - Create: `app/(site)/about/page.tsx`, `app/(site)/contact/page.tsx`, `app/(site)/services/page.tsx`
 
 - [ ] **Step 1: Create `app/(site)/about/page.tsx`**
@@ -2998,9 +3022,9 @@ export default function AboutPage() {
 
             <div className="prose-custom text-gray-700 leading-relaxed space-y-6">
               <p className="text-lg">
-                I&apos;m Omar Kamel — an AI Creative &amp; Production Lead at Optix
+                I&apos;m Omar Kamel — an AI Creative & Production Lead at Optix
                 (the AI-driven production division of Prodigious within Publicis
-                Groupe) in Dubai, and AI Team Lead for Content at Saatchi &amp;
+                Groupe) in Dubai, and AI Team Lead for Content at Saatchi &
                 Saatchi.
               </p>
               <p>
@@ -3162,6 +3186,7 @@ git commit -m "feat: add about, contact, and services pages"
 ### Task 13: Sanity Studio Route
 
 **Files:**
+
 - Create: `app/studio/[[...tool]]/layout.tsx`, `app/studio/[[...tool]]/page.tsx`
 
 - [ ] **Step 1: Create `app/studio/[[...tool]]/layout.tsx`**
@@ -3231,6 +3256,7 @@ git commit -m "feat: add embedded Sanity Studio route at /studio"
 ### Task 14: SEO — Sitemap, Robots, RSS Feed
 
 **Files:**
+
 - Create: `app/sitemap.ts`, `app/robots.ts`, `app/feed.xml/route.ts`
 
 - [ ] **Step 1: Create `app/robots.ts`**
@@ -3307,7 +3333,7 @@ export async function GET() {
   <channel>
     <title>Omar Kamel</title>
     <link>${baseUrl}</link>
-    <description>AI Creative &amp; Production Lead — thoughts on AI, production, and creative work</description>
+    <description>AI Creative & Production Lead — thoughts on AI, production, and creative work</description>
     <language>en</language>
     <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml"/>
     ${posts
@@ -3335,10 +3361,10 @@ export async function GET() {
 
 function escapeXml(str: string): string {
   return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
+    .replace(/&/g, "&")
+    .replace(/</g, "<")
+    .replace(/>/g, ">")
+    .replace(/"/g, """)
     .replace(/'/g, "&apos;");
 }
 ```
@@ -3355,7 +3381,9 @@ git commit -m "feat: add sitemap, robots.txt, and RSS feed"
 ### Task 15: README & Final Cleanup
 
 **Files:**
+
 - Modify: `README.md`
+
 - Review: all files for consistency
 
 - [ ] **Step 1: Write `README.md`**
@@ -3402,10 +3430,9 @@ cp .env.example .env.local
 ```
 
 4. Fill in your environment variables:
-
 - **Sanity:** Create a project at [sanity.io/manage](https://www.sanity.io/manage) and copy the project ID
-- **Resend:** Sign up at [resend.com](https://resend.com) and get an API key
 
+- **Resend:** Sign up at [resend.com](https://resend.com) and get an API key
 5. Run the dev server:
 
 ```bash
@@ -3449,29 +3476,49 @@ sanity/           — Sanity schema definitions
 All content is managed via Sanity Studio at `/studio`:
 
 - **Work** — Client projects and creative work (filterable by category)
+
 - **Projects** — Personal ventures and platforms
+
 - **Blog Posts** — Full blog with rich text, images, and SEO fields
+
 - **Site Settings** — Hero text, about bio, social links, analytics ID
-```
+  
+  ```
+  
+  ```
 
 - [ ] **Step 2: Verify the full site**
 
 Run: `npm run dev`
 
 Test all routes:
+
 - http://localhost:3000 — Homepage
+
 - http://localhost:3000/work — Work listing
+
 - http://localhost:3000/work/saudia-reimagined-horizons — Work detail
+
 - http://localhost:3000/projects — Projects listing
+
 - http://localhost:3000/projects/6dof-reviews — Project detail
+
 - http://localhost:3000/blog — Blog listing
+
 - http://localhost:3000/blog/state-of-ai-video-2025 — Blog post
+
 - http://localhost:3000/about — About page
+
 - http://localhost:3000/contact — Contact page
+
 - http://localhost:3000/services — Coming soon
+
 - http://localhost:3000/studio — Sanity Studio
+
 - http://localhost:3000/sitemap.xml — Sitemap
+
 - http://localhost:3000/robots.txt — Robots
+
 - http://localhost:3000/feed.xml — RSS feed
 
 - [ ] **Step 3: Run build to check for errors**
@@ -3500,6 +3547,7 @@ git push origin master
 - Task 15 must run last.
 
 **Parallel batches:**
+
 1. Sequential: Task 1 → Task 2 → Task 3
 2. Parallel: Task 4, Task 5, Task 6, Task 7
 3. Sequential: Task 8 → Task 9 → Task 10 → Task 11 → Task 12

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { dummySettings } from "@/lib/dummy-data";
+import { getSiteSettings } from "@/lib/payload/queries";
 
 const socialIcons: Record<string, string> = {
   LinkedIn:
@@ -21,9 +21,10 @@ const footerNavItems = [
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Footer() {
+export default async function Footer() {
   const currentYear = new Date().getFullYear();
-  const socialLinks = dummySettings.socialLinks ?? [];
+  const settings = await getSiteSettings();
+  const socialLinks = settings.socialLinks ?? [];
 
   return (
     <footer className="bg-black text-white">
