@@ -1,24 +1,19 @@
-import { dummyBlogPosts } from "@/lib/dummy-data";
+import { getAllBlogPosts } from "@/lib/payload/queries";
 
 const baseUrl = "https://omarkamel.com";
 
 function escapeXml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 }
 
 export async function GET() {
-  const items = dummyBlogPosts
+  const posts = await getAllBlogPosts();
+  const items = posts
     .map((post) => {
-      const link = `${baseUrl}/blog/${post.slug.current}`;
+      const link = `${baseUrl}/blog/${post.slug}`;
       const pubDate = post.date ? new Date(post.date).toUTCString() : "";
       const description = post.excerpt ? escapeXml(post.excerpt) : "";
       const title = escapeXml(post.title);
-
       return `
     <item>
       <title>${title}</title>
