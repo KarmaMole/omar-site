@@ -1,4 +1,48 @@
-import type { SiteSettings, Work, Project, BlogPost } from "./sanity/types";
+export interface MediaEmbed {
+  type: "youtube" | "vimeo" | "soundcloud" | "spotify";
+  url: string;
+}
+
+export interface Work {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  client?: string;
+  categories?: string[];
+  tags?: string[];
+  media?: MediaEmbed[];
+  externalLink?: string;
+  featured?: boolean;
+  sortOrder?: number;
+  date?: string;
+}
+
+export interface Project {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  status?: "active" | "archived" | "paused";
+  links?: { label: string; url: string }[];
+  tags?: string[];
+  featured?: boolean;
+  sortOrder?: number;
+}
+
+export interface BlogPost {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  excerpt?: string;
+  date?: string;
+  tags?: string[];
+  seo?: { metaTitle?: string; metaDescription?: string };
+}
+
+export interface SiteSettings {
+  heroHeadline?: string;
+  heroTagline?: string;
+  socialLinks?: { platform: string; url: string }[];
+}
 
 // ─── Site Settings ────────────────────────────────────────────────────────────
 

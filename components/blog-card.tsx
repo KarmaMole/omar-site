@@ -1,7 +1,7 @@
 import Link from "next/link";
 import TagBadge from "./tag-badge";
 import { formatDate } from "@/lib/utils";
-import { BlogPost } from "@/lib/sanity/types";
+import { BlogPost } from "@/lib/dummy-data";
 
 interface BlogCardProps {
   post: BlogPost;

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import TagBadge from "@/components/tag-badge";
 import { dummyProjects } from "@/lib/dummy-data";
-import type { Project } from "@/lib/sanity/types";
+import type { Project } from "@/lib/dummy-data";
 
 interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;

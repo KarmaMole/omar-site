@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TagBadge from "./tag-badge";
-import { Project } from "@/lib/sanity/types";
+import { Project } from "@/lib/dummy-data";
 
 interface ProjectCardProps {
   project: Project;

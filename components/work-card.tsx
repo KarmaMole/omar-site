@@ -1,6 +1,6 @@
 import Link from "next/link";
 import TagBadge from "./tag-badge";
-import { Work } from "@/lib/sanity/types";
+import { Work } from "@/lib/dummy-data";
 
 interface WorkCardProps {
   work: Work;

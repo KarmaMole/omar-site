@@ -1,4 +1,4 @@
-import type { MediaEmbed } from "@/lib/sanity/types";
+import type { MediaEmbed } from "@/lib/dummy-data";
 
 function getEmbedUrl(embed: MediaEmbed): string {
   const { type, url } = embed;
