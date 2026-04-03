@@ -66,6 +66,9 @@ export const Projects: CollectionConfig = {
       hasMany: true,
       label: "Image Gallery",
       admin: {
+        components: {
+          Field: "@/components/admin/gallery-upload",
+        },
         condition: (_data, siblingData) =>
           siblingData?.contentType === "photography" ||
           siblingData?.contentType === "graphic-design",
