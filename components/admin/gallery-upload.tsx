@@ -35,7 +35,7 @@ export default function GalleryUploadField(props: any) {
 
     Promise.all(
       ids.map((id) =>
-        fetch(`/api/media/${id}`)
+        fetch(`/api/media/${id}`, { credentials: 'include' })
           .then((r) => r.json())
           .catch(() => null)
       )
@@ -70,8 +70,15 @@ export default function GalleryUploadField(props: any) {
         try {
           const res = await fetch('/api/media', {
             method: 'POST',
+            credentials: 'include',
             body: formData,
           })
+          if (!res.ok) {
+            const text = await res.text()
+            console.error(`Upload failed for ${file.name}: ${res.status}`, text)
+            setError(`Upload failed for ${file.name} (${res.status})`)
+            continue
+          }
           const data = await res.json()
           if (data?.doc?.id) {
             newIds.push(data.doc.id)
