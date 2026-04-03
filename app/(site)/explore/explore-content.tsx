@@ -56,12 +56,12 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
 
           {/* Category filter tabs */}
           <FadeIn>
-            <div className="flex flex-wrap gap-2 mb-6">
+            <div className="flex gap-2 mb-6 overflow-x-auto pb-2 md:flex-wrap md:overflow-visible md:pb-0 scrollbar-hide">
               {categories.map((cat) => (
                 <button
                   key={cat.value}
                   onClick={() => setActiveFilter(cat.value)}
-                  className={`font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
+                  className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
                     activeFilter === cat.value && !initialTag
                       ? "border-cyan text-cyan bg-cyan/5"
                       : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"

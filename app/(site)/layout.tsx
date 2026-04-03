@@ -48,7 +48,7 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains.variable} ${sourceSerif.variable} bg-[#0a0a0a] text-[#f5f5f5]`}>
+    <html lang="en" data-theme="site" className={`${inter.variable} ${jetbrains.variable} ${sourceSerif.variable} bg-[#0a0a0a] text-[#f5f5f5]`}>
       <head>
         {process.env.NEXT_PUBLIC_GA_ID && (
           <>

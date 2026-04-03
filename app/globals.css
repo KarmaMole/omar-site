@@ -13,18 +13,18 @@
     --color-accent-glow: rgba(0, 217, 255, 0.15);
   }
 
-  html {
+  html[data-theme="site"] {
     background-color: var(--color-bg);
     color: var(--color-text);
     scroll-behavior: smooth;
   }
 
-  body {
+  html[data-theme="site"] body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  ::selection {
+  html[data-theme="site"] ::selection {
     background-color: rgba(0, 217, 255, 0.3);
     color: #ffffff;
   }
@@ -75,6 +75,13 @@
 }
 
 @layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
   .animate-delay-100 { animation-delay: 100ms; }
   .animate-delay-200 { animation-delay: 200ms; }
   .animate-delay-300 { animation-delay: 300ms; }

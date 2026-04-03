@@ -129,10 +129,10 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
 
           {/* Category filter pills */}
           <FadeIn>
-            <div className="flex flex-wrap gap-2 mb-10">
+            <div className="flex gap-2 mb-10 overflow-x-auto pb-2 md:flex-wrap md:overflow-visible md:pb-0 scrollbar-hide">
               <Link
                 href="/writing"
-                className={`font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
+                className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
                   !activeFilter
                     ? "border-cyan text-cyan bg-cyan/5"
                     : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"
@@ -144,7 +144,7 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
                 <Link
                   key={cat}
                   href={`/writing?category=${encodeURIComponent(cat)}`}
-                  className={`font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
+                  className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
                     activeFilter?.toLowerCase() === cat.toLowerCase()
                       ? "border-cyan text-cyan bg-cyan/5"
                       : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"

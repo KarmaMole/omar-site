@@ -105,7 +105,7 @@ export default async function HomePage() {
                 { number: "20+", label: "Years" },
                 { number: "50+", label: "Brands" },
                 { number: "200+", label: "Projects" },
-                { number: "AI-Native", label: "From Day 1" },
+                { number: "AI", label: "From Day 1" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
@@ -129,11 +129,11 @@ export default async function HomePage() {
               <span className="section-label">Selected Clients</span>
             </FadeIn>
             <FadeIn className="mt-8">
-              <div className="flex flex-wrap gap-x-10 gap-y-4">
-                {clients.map((client) => (
+              <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4">
+                {clients.slice(0, 12).map((client) => (
                   <span
                     key={client.id}
-                    className="font-mono text-sm tracking-widest uppercase text-light-300/50"
+                    className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/50"
                   >
                     {client.name}
                   </span>

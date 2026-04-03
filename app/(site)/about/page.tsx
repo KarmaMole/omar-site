@@ -9,7 +9,7 @@ import { getSiteSettings } from "@/lib/payload/queries";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Omar Kamel — AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix/Saatchi.",
+  description: "Omar Kamel — AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
 };
 
 // TODO: Move skills to SiteSettings CMS global (add a "skills" array field with category + items)
@@ -64,7 +64,7 @@ export default async function AboutPage() {
                   </div>
                 ) : (
                   <div className="prose prose-invert prose-sm prose-p:text-light-300 prose-p:leading-relaxed max-w-none">
-                    <p>I&apos;m Omar Kamel — AI Creative &amp; Production Lead at Optix/Saatchi &amp; Saatchi, where I help regional and global brands navigate the rapidly evolving intersection of artificial intelligence and creative production.</p>
+                    <p>I&apos;m Omar Kamel — AI Creative &amp; Production Lead at Optix, where I help regional and global brands navigate the rapidly evolving intersection of artificial intelligence and creative production.</p>
                   </div>
                 )}
               </div>
