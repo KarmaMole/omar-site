@@ -4,7 +4,7 @@ import { useField } from '@payloadcms/ui'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface MediaDoc {
-  id: string
+  id: number | string
   url?: string
   alt?: string
   filename?: string
@@ -14,9 +14,11 @@ interface MediaDoc {
   }
 }
 
+type FieldValue = (number | string | MediaDoc)[]
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function GalleryUploadField(props: any) {
-  const { value, setValue } = useField<string[]>({ path: props.path ?? props.field?.name ?? 'gallery' })
+  const { value, setValue } = useField<FieldValue>({ path: props.path ?? props.field?.name ?? 'gallery' })
   const [mediaDocs, setMediaDocs] = useState<MediaDoc[]>([])
   const [uploading, setUploading] = useState(false)
   const [uploadCount, setUploadCount] = useState({ done: 0, total: 0 })
@@ -31,7 +33,7 @@ export default function GalleryUploadField(props: any) {
       return
     }
 
-    const ids = value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : String(v)))
+    const ids = value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
 
     Promise.all(
       ids.map((id) =>
@@ -53,7 +55,7 @@ export default function GalleryUploadField(props: any) {
       setError(null)
       setUploadCount({ done: 0, total: fileArr.length })
 
-      const newIds: string[] = []
+      const newIds: (number | string)[] = []
       const newDocs: MediaDoc[] = []
 
       for (let i = 0; i < fileArr.length; i++) {
@@ -95,8 +97,8 @@ export default function GalleryUploadField(props: any) {
       }
 
       if (newIds.length > 0) {
-        const currentIds = Array.isArray(value)
-          ? value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
+        const currentIds: (number | string)[] = Array.isArray(value)
+          ? value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : v) as number | string)
           : []
         setValue([...currentIds, ...newIds])
         // Show thumbnails immediately without waiting for useField value to update
@@ -139,12 +141,12 @@ export default function GalleryUploadField(props: any) {
   )
 
   const removeImage = useCallback(
-    (idToRemove: string) => {
+    (idToRemove: number | string) => {
       const currentIds = Array.isArray(value)
-        ? value.map((v: unknown) => String(typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
+        ? value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
         : []
-      setValue(currentIds.filter((id) => id !== idToRemove))
-      setMediaDocs((prev) => prev.filter((doc) => doc.id !== idToRemove))
+      setValue(currentIds.filter((id) => String(id) !== String(idToRemove)))
+      setMediaDocs((prev) => prev.filter((doc) => String(doc.id) !== String(idToRemove)))
     },
     [value, setValue]
   )
