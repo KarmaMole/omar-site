@@ -68,11 +68,6 @@ export const Work: CollectionConfig = {
       relationTo: "media",
       hasMany: true,
       label: "Image Gallery",
-      admin: {
-        components: {
-          Field: "@/components/admin/gallery-upload",
-        },
-      },
     },
     {
       name: "media",
