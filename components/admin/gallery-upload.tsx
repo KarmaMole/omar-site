@@ -54,6 +54,7 @@ export default function GalleryUploadField(props: any) {
       setUploadCount({ done: 0, total: fileArr.length })
 
       const newIds: string[] = []
+      const newDocs: MediaDoc[] = []
 
       for (let i = 0; i < fileArr.length; i++) {
         const file = fileArr[i]
@@ -71,11 +72,12 @@ export default function GalleryUploadField(props: any) {
             method: 'POST',
             body: formData,
           })
-          const doc = await res.json()
-          if (doc?.doc?.id) {
-            newIds.push(doc.doc.id)
+          const data = await res.json()
+          if (data?.doc?.id) {
+            newIds.push(data.doc.id)
+            newDocs.push(data.doc)
           } else {
-            console.error(`Upload response missing doc.id for ${file.name}:`, doc)
+            console.error(`Upload response missing doc.id for ${file.name}:`, data)
           }
         } catch (err) {
           console.error(`Failed to upload ${file.name}:`, err)
@@ -90,6 +92,8 @@ export default function GalleryUploadField(props: any) {
           ? value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
           : []
         setValue([...currentIds, ...newIds])
+        // Show thumbnails immediately without waiting for useField value to update
+        setMediaDocs((prev) => [...prev, ...newDocs])
       }
 
       setUploading(false)
@@ -133,6 +137,7 @@ export default function GalleryUploadField(props: any) {
         ? value.map((v: unknown) => String(typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
         : []
       setValue(currentIds.filter((id) => id !== idToRemove))
+      setMediaDocs((prev) => prev.filter((doc) => doc.id !== idToRemove))
     },
     [value, setValue]
   )
