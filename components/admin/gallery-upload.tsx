@@ -65,7 +65,7 @@ export default function GalleryUploadField(props: any) {
           .replace(/[-_]/g, ' ')
           .replace(/\s+/g, ' ')
           .trim()
-        formData.append('alt', alt)
+        formData.append('_payload', JSON.stringify({ alt }))
 
         try {
           const res = await fetch('/api/media', {
