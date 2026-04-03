@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Source_Serif_4 } from "next/font/google";
 import FadeIn from "@/components/fade-in";
+import ScrollFilters from "@/components/scroll-filters";
 import PageTransition from "@/components/page-transition";
 import { formatDate } from "@/lib/utils";
 import { getAllBlogPosts } from "@/lib/payload/queries";
@@ -129,30 +130,32 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
 
           {/* Category filter pills */}
           <FadeIn>
-            <div className="flex gap-2 mb-10 overflow-x-auto pb-2 md:flex-wrap md:overflow-visible md:pb-0 scrollbar-hide">
-              <Link
-                href="/writing"
-                className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
-                  !activeFilter
-                    ? "border-cyan text-cyan bg-cyan/5"
-                    : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"
-                }`}
-              >
-                All
-              </Link>
-              {CATEGORIES.map((cat) => (
+            <div className="mb-10">
+              <ScrollFilters>
                 <Link
-                  key={cat}
-                  href={`/writing?category=${encodeURIComponent(cat)}`}
+                  href="/writing"
                   className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
-                    activeFilter?.toLowerCase() === cat.toLowerCase()
+                    !activeFilter
                       ? "border-cyan text-cyan bg-cyan/5"
                       : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"
                   }`}
                 >
-                  {cat}
+                  All
                 </Link>
-              ))}
+                {CATEGORIES.map((cat) => (
+                  <Link
+                    key={cat}
+                    href={`/writing?category=${encodeURIComponent(cat)}`}
+                    className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
+                      activeFilter?.toLowerCase() === cat.toLowerCase()
+                        ? "border-cyan text-cyan bg-cyan/5"
+                        : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"
+                    }`}
+                  >
+                    {cat}
+                  </Link>
+                ))}
+              </ScrollFilters>
             </div>
           </FadeIn>
 
