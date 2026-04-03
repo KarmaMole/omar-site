@@ -87,8 +87,8 @@ export default function Nav() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`text-4xl font-light tracking-tight transition-colors ${
-                  isActive ? "text-cyan" : "text-light-100 hover:text-cyan"
+                className={`text-4xl font-light tracking-tight transition-colors pl-4 -ml-4 border-l-2 ${
+                  isActive ? "text-cyan border-cyan bg-cyan/5" : "text-light-100 hover:text-cyan border-transparent"
                 }`}
                 style={{ animationDelay: `${i * 50}ms` }}
               >

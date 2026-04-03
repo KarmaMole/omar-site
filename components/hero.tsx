@@ -63,16 +63,16 @@ export default async function Hero() {
           <HeroAnimations animation="fade-up" delay={1000}>
             <div className="mt-8 flex items-center gap-6">
               <Link
+                href="/contact"
+                className="font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-4 py-2 hover:bg-cyan/90 transition-colors"
+              >
+                Start a Project
+              </Link>
+              <Link
                 href="/work"
                 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
               >
                 Explore Work &rarr;
-              </Link>
-              <Link
-                href="/contact"
-                className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 hover:text-white transition-colors"
-              >
-                Start a Project
               </Link>
             </div>
           </HeroAnimations>

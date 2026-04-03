@@ -26,6 +26,11 @@ export default function AnimatedText({
   const [flash, setFlash] = useState(false);
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReducedMotion) return;
+
     const timer = setInterval(() => {
       setIsVisible(false);
       setTimeout(() => {

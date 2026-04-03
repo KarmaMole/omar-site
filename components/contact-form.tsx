@@ -89,7 +89,7 @@ export function ContactForm() {
 
   if (status === "submitted") {
     return (
-      <div className="flex flex-col items-center text-center py-12">
+      <div role="status" aria-live="polite" className="flex flex-col items-center text-center py-12">
         <div className="w-12 h-[1px] bg-cyan mb-6" />
         <h3 className="text-2xl font-light text-light-100 mb-3">Message Sent</h3>
         <p className="text-light-300 mb-6">
@@ -134,12 +134,12 @@ export function ContactForm() {
         />
         <label
           htmlFor="name"
-          className="absolute left-0 top-1/2 -translate-y-1/2 text-sm text-light-300/50 transition-all duration-200 pointer-events-none peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-cyan peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-light-300/50"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-light-300/50 transition-all duration-200 pointer-events-none peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-cyan peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-light-300/50"
         >
           Name
         </label>
         {fieldErrors.name && (
-          <p className="text-red-500/70 text-xs mt-1.5">{fieldErrors.name}</p>
+          <p className="text-red-400 text-xs mt-1.5">{fieldErrors.name}</p>
         )}
       </div>
 
@@ -156,12 +156,12 @@ export function ContactForm() {
         />
         <label
           htmlFor="email"
-          className="absolute left-0 top-1/2 -translate-y-1/2 text-sm text-light-300/50 transition-all duration-200 pointer-events-none peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-cyan peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-light-300/50"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-light-300/50 transition-all duration-200 pointer-events-none peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-cyan peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-light-300/50"
         >
           Email
         </label>
         {fieldErrors.email && (
-          <p className="text-red-500/70 text-xs mt-1.5">{fieldErrors.email}</p>
+          <p className="text-red-400 text-xs mt-1.5">{fieldErrors.email}</p>
         )}
       </div>
 
@@ -183,7 +183,7 @@ export function ContactForm() {
           Message
         </label>
         {fieldErrors.message && (
-          <p className="text-red-500/70 text-xs mt-1.5">{fieldErrors.message}</p>
+          <p className="text-red-400 text-xs mt-1.5">{fieldErrors.message}</p>
         )}
       </div>
 
