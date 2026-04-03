@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AnimatedText from "./animated-text";
 import HeroAnimations from "./hero-animations";
+import HeroHeight from "./hero-height";
 import { getSiteSettings } from "@/lib/payload/queries";
 
 export default async function Hero() {
@@ -12,7 +13,8 @@ export default async function Hero() {
       : null;
 
   return (
-    <section className="relative h-[100svh] flex items-center overflow-hidden">
+    <section className="relative h-[100svh] flex items-center overflow-hidden" style={{ height: "var(--hero-h, 100svh)" }}>
+      <HeroHeight />
       {/* Background image or gradient fallback */}
       {bg?.url ? (
         <>
