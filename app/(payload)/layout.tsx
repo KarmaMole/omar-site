@@ -13,12 +13,12 @@ const serverFunction: import("payload").ServerFunctionClient = async function (
   args
 ) {
   "use server";
-  const { handleServerFunctions, payloadServerFunction } = await import(
-    "@payloadcms/next/utilities"
+  const { handleServerFunctions } = await import(
+    "@payloadcms/next/layouts"
   );
   return handleServerFunctions({
-    args,
-    configPromise: config,
+    ...args,
+    config,
     importMap,
   });
 };

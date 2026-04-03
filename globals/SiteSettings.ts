@@ -4,6 +4,7 @@ export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
   access: {
     read: () => true,
+    update: ({ req: { user } }) => !!user,
   },
   fields: [
     {
@@ -60,6 +61,10 @@ export const SiteSettings: GlobalConfig = {
           name: "url",
           type: "text",
           required: true,
+          validate: (value: string | null | undefined) => {
+            if (!value) return true;
+            try { new URL(value); return true; } catch { return 'Please enter a valid URL'; }
+          },
         },
       ],
     },

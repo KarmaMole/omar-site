@@ -4,6 +4,7 @@ import type {
   WorkDoc,
   ProjectDoc,
   BlogPostDoc,
+  ClientDoc,
   SiteSettingsDoc,
 } from "./types";
 
@@ -110,6 +111,19 @@ export async function getAllProjectSlugs(): Promise<string[]> {
     depth: 0,
   });
   return (result.docs as unknown as ProjectDoc[]).map((d) => d.slug);
+}
+
+// ─── Clients ───────────────────────────────────────────────────
+
+export async function getAllClients(): Promise<ClientDoc[]> {
+  const payload = await getPayloadClient();
+  const result = await payload.find({
+    collection: "clients",
+    sort: "sortOrder",
+    limit: 100,
+    depth: 1,
+  });
+  return result.docs as unknown as ClientDoc[];
 }
 
 // ─── Blog Posts ─────────────────────────────────────────────────

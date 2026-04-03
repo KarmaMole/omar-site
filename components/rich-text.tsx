@@ -18,7 +18,7 @@ export function RichText({ data, className }: RichTextProps) {
   if (!data) return null;
 
   return (
-    <div className={className ?? "prose prose-lg max-w-none text-gray-700 leading-relaxed"}>
+    <div className={className ?? "prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed"}>
       <PayloadRichText
         data={data as SerializedEditorState}
         converters={converters}

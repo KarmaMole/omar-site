@@ -36,14 +36,27 @@ export interface ProjectDoc {
   id: string;
   title: string;
   slug: string;
+  contentType?: "project" | "music" | "photography" | "graphic-design" | "creative-work" | null;
+  streamingUrl?: string | null;
+  audioFile?: MediaUpload | string | null;
   description?: unknown;
   coverImage: MediaUpload | string;
   logo?: MediaUpload | string | null;
   status?: "active" | "paused" | "archived" | null;
   links?: { label: string; url: string }[] | null;
   tags?: { tag: string }[] | null;
+  gallery?: { image: MediaUpload | string; caption?: string | null }[] | null;
+  media?: MediaEmbed[] | null;
   featured?: boolean | null;
   sortOrder?: number | null;
+}
+
+export interface ClientDoc {
+  id: string;
+  name: string;
+  logo: MediaUpload | string | null;
+  url: string | null;
+  sortOrder: number;
 }
 
 export interface BlogPostDoc {
@@ -54,6 +67,9 @@ export interface BlogPostDoc {
   body?: unknown;
   excerpt?: string | null;
   date?: string | null;
+  isExternal?: boolean | null;
+  publicationUrl?: string | null;
+  publicationName?: string | null;
   tags?: { tag: string }[] | null;
   meta?: {
     title?: string | null;

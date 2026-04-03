@@ -34,3 +34,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# payload local media uploads
+/media/
+
+# dev screenshots
+screenshot-*.png

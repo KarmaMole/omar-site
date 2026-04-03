@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-type Status = "idle" | "sending" | "success" | "error";
+type Status = "idle" | "sending" | "success" | "error" | "submitted";
 
 interface FormData {
   name: string;
   email: string;
   message: string;
+  website: string; // honeypot
 }
 
 export function ContactForm() {
@@ -15,6 +16,7 @@ export function ContactForm() {
     name: "",
     email: "",
     message: "",
+    website: "",
   });
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -45,15 +47,23 @@ export function ContactForm() {
         return;
       }
 
-      setStatus("success");
+      setStatus("submitted");
     } catch {
       setErrorMessage("Network error. Please check your connection and try again.");
       setStatus("error");
     }
   };
 
+  // Show brief success checkmark then transition to the full success state
+  useEffect(() => {
+    if (status === "submitted") {
+      const timer = setTimeout(() => setStatus("success"), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [status]);
+
   const handleReset = () => {
-    setFormData({ name: "", email: "", message: "" });
+    setFormData({ name: "", email: "", message: "", website: "" });
     setStatus("idle");
     setErrorMessage("");
   };
@@ -61,14 +71,14 @@ export function ContactForm() {
   if (status === "success") {
     return (
       <div className="flex flex-col items-center text-center py-12">
-        <div className="w-12 h-1 bg-brick mb-6" />
-        <h3 className="text-2xl font-semibold mb-3">Message Sent</h3>
-        <p className="text-gray-500 mb-6">
+        <div className="w-12 h-[1px] bg-cyan mb-6" />
+        <h3 className="text-2xl font-light text-light-100 mb-3">Message Sent</h3>
+        <p className="text-light-300 mb-6">
           Thanks for reaching out — I&apos;ll get back to you soon.
         </p>
         <button
           onClick={handleReset}
-          className="text-brick underline underline-offset-2 hover:opacity-75 transition-opacity"
+          className="font-mono text-xs uppercase tracking-widest text-cyan link-underline"
         >
           send another
         </button>
@@ -77,65 +87,103 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-lg">
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-          Name
-        </label>
+    <form onSubmit={handleSubmit} className="space-y-8 max-w-lg">
+      {/* Honeypot — hidden from real users, bots fill it in */}
+      <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={formData.website}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div className="relative">
         <input
           id="name"
           name="name"
           type="text"
           required
+          placeholder=" "
           value={formData.name}
           onChange={handleChange}
-          className="w-full border border-gray-200 rounded-sm px-3 py-2 text-sm outline-none focus:border-brick transition-colors"
-          placeholder="Your name"
+          className="peer w-full bg-dark-200 border-b border-light-300/20 border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors"
         />
+        <label
+          htmlFor="name"
+          className="absolute left-0 top-1/2 -translate-y-1/2 text-sm text-light-300/50 transition-all duration-200 pointer-events-none peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-cyan peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-light-300/50"
+        >
+          Name
+        </label>
       </div>
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-          Email
-        </label>
+      <div className="relative">
         <input
           id="email"
           name="email"
           type="email"
           required
+          placeholder=" "
           value={formData.email}
           onChange={handleChange}
-          className="w-full border border-gray-200 rounded-sm px-3 py-2 text-sm outline-none focus:border-brick transition-colors"
-          placeholder="you@example.com"
+          className="peer w-full bg-dark-200 border-b border-light-300/20 border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors"
         />
+        <label
+          htmlFor="email"
+          className="absolute left-0 top-1/2 -translate-y-1/2 text-sm text-light-300/50 transition-all duration-200 pointer-events-none peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:text-xs peer-focus:text-cyan peer-[:not(:placeholder-shown)]:top-2.5 peer-[:not(:placeholder-shown)]:translate-y-0 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-light-300/50"
+        >
+          Email
+        </label>
       </div>
 
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-          Message
-        </label>
+      <div className="relative">
         <textarea
           id="message"
           name="message"
           rows={6}
           required
+          placeholder=" "
           value={formData.message}
           onChange={handleChange}
-          className="w-full border border-gray-200 rounded-sm px-3 py-2 text-sm outline-none focus:border-brick transition-colors resize-none"
-          placeholder="What's on your mind?"
+          className="peer w-full bg-dark-200 border-b border-light-300/20 border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors resize-none"
         />
+        <label
+          htmlFor="message"
+          className="absolute left-0 top-4 text-sm text-light-300/50 transition-all duration-200 pointer-events-none peer-focus:top-1.5 peer-focus:text-xs peer-focus:text-cyan peer-[:not(:placeholder-shown)]:top-1.5 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-light-300/50"
+        >
+          Message
+        </label>
       </div>
 
       {status === "error" && errorMessage && (
-        <p className="text-red-600 text-sm">{errorMessage}</p>
+        <p className="text-red-500 text-sm">{errorMessage}</p>
       )}
 
       <button
         type="submit"
-        disabled={status === "sending"}
-        className="bg-brick text-white px-6 py-2.5 rounded-sm text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={status === "sending" || status === "submitted"}
+        className="bg-transparent border border-cyan text-cyan font-mono text-xs tracking-widest uppercase px-8 py-3 transition-all duration-200 hover:bg-cyan hover:text-black disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-cyan inline-flex items-center gap-2"
       >
-        {status === "sending" ? "Sending…" : "Send Message"}
+        {status === "sending" && (
+          <svg className="animate-spin h-4 w-4 text-cyan" viewBox="0 0 24 24" fill="none">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+        )}
+        {status === "submitted" && (
+          <svg className="h-4 w-4 text-cyan animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        )}
+        {status === "sending"
+          ? "Sending..."
+          : status === "submitted"
+            ? "Sent!"
+            : "Send Message"}
       </button>
     </form>
   );

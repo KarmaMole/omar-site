@@ -4,6 +4,9 @@ export const Media: CollectionConfig = {
   slug: "media",
   access: {
     read: () => true,
+    create: ({ req: { user } }) => !!user,
+    update: ({ req: { user } }) => !!user,
+    delete: ({ req: { user } }) => !!user,
   },
   upload: {
     mimeTypes: ["image/*", "video/*"],
@@ -11,20 +14,17 @@ export const Media: CollectionConfig = {
       {
         name: "thumbnail",
         width: 400,
-        height: 300,
-        position: "centre",
+        height: undefined,
       },
       {
         name: "card",
         width: 800,
-        height: 600,
-        position: "centre",
+        height: undefined,
       },
       {
         name: "hero",
         width: 1920,
-        height: 1080,
-        position: "centre",
+        height: undefined,
       },
     ],
   },

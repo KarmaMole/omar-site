@@ -1,23 +1,90 @@
-interface HeroProps {
-  headline: string;
-  tagline: string;
-}
+import Image from "next/image";
+import Link from "next/link";
+import AnimatedText from "./animated-text";
+import HeroAnimations from "./hero-animations";
+import { getSiteSettings } from "@/lib/payload/queries";
 
-export default function Hero({ headline, tagline }: HeroProps) {
+export default async function Hero() {
+  const settings = await getSiteSettings();
+  const bg =
+    typeof settings.heroBackground === "object" && settings.heroBackground
+      ? settings.heroBackground
+      : null;
+
   return (
-    <section className="h-screen flex items-center justify-center bg-black text-white overflow-hidden relative">
-      {/* Background gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black" />
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Background image or gradient fallback */}
+      {bg?.url ? (
+        <>
+          <Image
+            src={bg.url}
+            alt=""
+            fill
+            priority
+            className="object-cover"
+            style={{ filter: "saturate(0.85) contrast(1.1)" }}
+          />
+          {/* Strong overlay — content dominates, image is atmosphere */}
+          <div className="absolute inset-0 bg-black/65" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]/70" />
+        </>
+      ) : (
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#111] to-[#0a0a0a]" />
+      )}
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-6">
-        <h1 className="text-hero font-serif font-bold">{headline}</h1>
-        <p className="text-hero-sub text-gray-300 mt-4">{tagline}</p>
+      {/* Accent glow */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan/5 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/4" />
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Option B: Everything stacked vertically */}
+        <div className="max-w-3xl">
+          <HeroAnimations animation="fade-up" delay={300}>
+            <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-cyan mb-5">
+              AI Creative &amp; Production
+            </p>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[0.95] text-white" style={{ marginLeft: "-0.04em" }}>
+              Omar Kamel
+            </h1>
+          </HeroAnimations>
+
+          <HeroAnimations animation="fade-up" delay={600}>
+            <div className="mt-8">
+              <AnimatedText />
+            </div>
+          </HeroAnimations>
+
+          <HeroAnimations animation="fade-up" delay={800}>
+            <p className="text-light-300 text-sm leading-relaxed mt-5 max-w-lg">
+              20+ years crafting stories across film, music, brand, and
+              emerging media. Currently leading AI-driven creative production.
+            </p>
+          </HeroAnimations>
+
+          <HeroAnimations animation="fade-up" delay={1000}>
+            <div className="mt-8 flex items-center gap-6">
+              <Link
+                href="/work"
+                className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
+              >
+                Explore Work &rarr;
+              </Link>
+              <Link
+                href="/contact"
+                className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 hover:text-white transition-colors"
+              >
+                Start a Project
+              </Link>
+            </div>
+          </HeroAnimations>
+        </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1">
-        <div className="w-px h-10 bg-white animate-bounce" />
+      {/* Bottom scroll indicator */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
+        <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-light-300/50">
+          Scroll
+        </span>
+        <div className="w-px h-6 bg-gradient-to-b from-light-300/50 to-transparent" />
       </div>
     </section>
   );

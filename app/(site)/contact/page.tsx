@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
-import SectionHeading from "@/components/section-heading";
+import ObfuscatedEmail from "@/components/obfuscated-email";
 import FadeIn from "@/components/fade-in";
 import { getSiteSettings } from "@/lib/payload/queries";
 
@@ -17,61 +17,74 @@ export default async function ContactPage() {
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-          {/* Left: form */}
-          <FadeIn>
-            <SectionHeading title="Get in Touch" />
-            <ContactForm />
-          </FadeIn>
+        <FadeIn>
+          {/* Header */}
+          <div className="mb-16">
+            <span className="section-label">Contact</span>
+            <h1 className="text-5xl md:text-6xl font-light text-light-100 mt-3">
+              Start a Project
+            </h1>
+            <p className="text-light-300 mt-4">Tell me about your vision.</p>
+          </div>
+        </FadeIn>
 
-          {/* Right: connect info */}
-          <FadeIn>
-            <div className="pt-2 space-y-10">
-              {/* Email */}
-              <div>
-                <h3 className="text-xs uppercase tracking-widest text-gray-500 font-medium mb-3">
-                  Email
-                </h3>
-                <a
-                  href="mailto:omar@omarkamel.com"
-                  className="text-brick hover:underline text-base"
-                >
-                  omar@omarkamel.com
-                </a>
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-16">
+          {/* Left: form (60%) */}
+          <div className="md:col-span-3">
+            <FadeIn>
+              <ContactForm />
+            </FadeIn>
+          </div>
 
-              {/* Social links */}
-              {socialLinks && socialLinks.length > 0 && (
+          {/* Right: info (40%) */}
+          <div className="md:col-span-2">
+            <FadeIn>
+              <div className="space-y-10">
+                {/* Based in */}
                 <div>
-                  <h3 className="text-xs uppercase tracking-widest text-gray-500 font-medium mb-3">
-                    Connect
+                  <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
+                    Based In
                   </h3>
-                  <ul className="space-y-2">
-                    {socialLinks.map((link) => (
-                      <li key={link.platform}>
-                        <a
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-gray-700 hover:text-brick transition-colors"
-                        >
-                          {link.platform}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="text-light-100">Dubai, UAE</p>
                 </div>
-              )}
 
-              {/* Location */}
-              <div>
-                <h3 className="text-xs uppercase tracking-widest text-gray-500 font-medium mb-3">
-                  Based in
-                </h3>
-                <p className="text-sm text-gray-700">Dubai, UAE</p>
+                {/* Email */}
+                <div>
+                  <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
+                    Email
+                  </h3>
+                  <ObfuscatedEmail
+                    user="omar"
+                    domain="omarkamel.com"
+                    className="text-light-100 link-underline"
+                  />
+                </div>
+
+                {/* Social links */}
+                {socialLinks && socialLinks.length > 0 && (
+                  <div>
+                    <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
+                      Connect
+                    </h3>
+                    <ul className="space-y-2">
+                      {socialLinks.map((link) => (
+                        <li key={link.platform}>
+                          <a
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-light-300 link-underline transition-colors hover:text-light-100"
+                          >
+                            {link.platform}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
-            </div>
-          </FadeIn>
+            </FadeIn>
+          </div>
         </div>
       </div>
     </div>

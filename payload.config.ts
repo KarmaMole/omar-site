@@ -11,10 +11,21 @@ import { Media } from "./collections/Media";
 import { Work } from "./collections/Work";
 import { Projects } from "./collections/Projects";
 import { BlogPosts } from "./collections/BlogPosts";
+import { Clients } from "./collections/Clients";
 import { SiteSettings } from "./globals/SiteSettings";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
+
+if (!process.env.PAYLOAD_SECRET && process.env.NODE_ENV === "production") {
+  throw new Error("PAYLOAD_SECRET environment variable is required");
+}
+if (!process.env.DATABASE_URI && process.env.NODE_ENV === "production") {
+  throw new Error("DATABASE_URI environment variable is required");
+}
+if (!process.env.BLOB_READ_WRITE_TOKEN && process.env.NODE_ENV === "production") {
+  console.warn("BLOB_READ_WRITE_TOKEN not set — file uploads will be disabled");
+}
 
 export default buildConfig({
   editor: lexicalEditor(),
@@ -29,9 +40,10 @@ export default buildConfig({
     Work,
     Projects,
     BlogPosts,
+    Clients,
   ],
   globals: [SiteSettings],
-  secret: process.env.PAYLOAD_SECRET || "DEVELOPMENT-SECRET-CHANGE-ME",
+  secret: process.env.PAYLOAD_SECRET || "dev-secret-change-me",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },

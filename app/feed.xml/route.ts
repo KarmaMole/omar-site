@@ -14,13 +14,19 @@ export async function GET() {
       const pubDate = post.date ? new Date(post.date).toUTCString() : "";
       const description = post.excerpt ? escapeXml(post.excerpt) : "";
       const title = escapeXml(post.title);
+      const cover =
+        typeof post.coverImage === "object" && post.coverImage
+          ? post.coverImage
+          : null;
       return `
     <item>
       <title>${title}</title>
       <link>${link}</link>
       <guid isPermaLink="true">${link}</guid>
       <description>${description}</description>
+      <author>omar@omarkamel.com (Omar Kamel)</author>
       ${pubDate ? `<pubDate>${pubDate}</pubDate>` : ""}
+      ${cover?.url ? `<enclosure url="${escapeXml(cover.url)}" type="image/jpeg" length="0" />` : ""}
     </item>`;
     })
     .join("");

@@ -1,19 +1,25 @@
+import Link from "next/link";
+
 interface TagBadgeProps {
   label: string;
   variant?: "default" | "category";
+  href?: string;
 }
 
-export default function TagBadge({ label, variant = "default" }: TagBadgeProps) {
-  const variantClasses =
+export default function TagBadge({ label, variant = "default", href }: TagBadgeProps) {
+  const className = `inline-block font-mono text-[10px] tracking-widest uppercase px-2 py-0.5 rounded-[2px] border transition-colors duration-200 ${
     variant === "category"
-      ? "bg-brick/10 text-brick"
-      : "bg-gray-100 text-gray-600";
+      ? "border-cyan/30 text-cyan hover:border-cyan hover:text-cyan"
+      : "border-[#1a1a1a] text-light-300 hover:border-cyan hover:text-cyan"
+  }`;
 
-  return (
-    <span
-      className={`inline-block text-xs tracking-wide uppercase px-2.5 py-1 rounded ${variantClasses}`}
-    >
-      {label}
-    </span>
-  );
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {label}
+      </Link>
+    );
+  }
+
+  return <span className={className}>{label}</span>;
 }

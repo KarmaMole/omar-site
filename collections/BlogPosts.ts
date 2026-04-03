@@ -8,17 +8,22 @@ export const BlogPosts: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: ({ req: { user } }) => !!user,
+    update: ({ req: { user } }) => !!user,
+    delete: ({ req: { user } }) => !!user,
   },
   fields: [
     {
       name: "title",
       type: "text",
       required: true,
+      minLength: 3,
     },
     {
       name: "slug",
       type: "text",
       required: true,
+      minLength: 3,
       unique: true,
       admin: {
         position: "sidebar",
@@ -42,6 +47,28 @@ export const BlogPosts: CollectionConfig = {
       type: "date",
       admin: {
         position: "sidebar",
+      },
+    },
+    {
+      name: "isExternal",
+      type: "checkbox",
+      defaultValue: false,
+      label: "External Publication",
+    },
+    {
+      name: "publicationUrl",
+      type: "text",
+      label: "Publication URL",
+      admin: {
+        condition: (_data, siblingData) => siblingData?.isExternal === true,
+      },
+    },
+    {
+      name: "publicationName",
+      type: "text",
+      label: "Publication Name",
+      admin: {
+        condition: (_data, siblingData) => siblingData?.isExternal === true,
       },
     },
     {

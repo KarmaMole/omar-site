@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import TagBadge from "@/components/tag-badge";
+import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
 import { getProjectBySlug, getAllProjectSlugs } from "@/lib/payload/queries";
 
@@ -11,9 +12,9 @@ interface ProjectDetailPageProps {
 }
 
 const statusStyles: Record<string, string> = {
-  active: "bg-green-100 text-green-700",
-  paused: "bg-yellow-100 text-yellow-700",
-  archived: "bg-gray-100 text-gray-500",
+  active: "bg-cyan/10 text-cyan border border-cyan/30",
+  paused: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/30",
+  archived: "bg-dark-100 text-light-300 border border-[#1a1a1a]",
 };
 
 export async function generateMetadata({ params }: ProjectDetailPageProps): Promise<Metadata> {
@@ -45,20 +46,20 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt} fill className="object-cover" priority />
         </div>
       ) : (
-        <div className="aspect-[21/9] bg-gray-200 w-full flex items-center justify-center text-gray-400 text-lg font-medium">{project.title}</div>
+        <div className="aspect-[21/9] bg-dark-100 w-full flex items-center justify-center text-light-300 text-lg font-medium">{project.title}</div>
       )}
       <div className="max-w-3xl mx-auto px-6 py-12">
-        <Link href="/projects" className="text-sm text-gray-500 hover:text-brick transition-colors inline-block mb-8">&larr; Back to Projects</Link>
+        <Link href="/explore" className="text-sm text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Explore</Link>
         <div className="flex items-center gap-5 mb-6">
-          <div className="flex-shrink-0 w-16 h-16 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
+          <div className="flex-shrink-0 w-16 h-16 bg-dark-100 rounded-[2px] flex items-center justify-center overflow-hidden border border-[#1a1a1a]">
             {logo?.url ? (
               <Image src={logo.sizes?.thumbnail?.url ?? logo.url} alt={logo.alt} width={64} height={64} className="object-cover" />
             ) : (
-              <span className="text-gray-500 font-semibold text-2xl select-none">{project.title.charAt(0)}</span>
+              <span className="text-light-300 font-semibold text-2xl select-none">{project.title.charAt(0)}</span>
             )}
           </div>
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="font-serif text-4xl md:text-5xl font-bold">{project.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-light-100">{project.title}</h1>
             {project.status && (
               <span className={`inline-flex items-center px-2.5 py-1 rounded text-xs font-medium ${statusStyles[project.status] ?? ""}`}>{project.status}</span>
             )}
@@ -70,10 +71,17 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           </div>
         )}
         {project.description ? <RichText data={project.description} className="mb-10" /> : null}
+        {project.media && project.media.length > 0 && (
+          <div className="space-y-6 mb-10">
+            {project.media.map((embed, i) => (
+              <MediaEmbedComponent key={i} embed={embed} />
+            ))}
+          </div>
+        )}
         {project.links && project.links.length > 0 && (
           <div className="flex flex-wrap gap-3">
             {project.links.map((link) => (
-              <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-block border border-brick text-brick px-5 py-2 text-sm font-medium hover:bg-brick hover:text-white transition-colors rounded-sm">
+              <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer" className="inline-block border border-cyan text-cyan px-5 py-2 text-sm font-mono hover:bg-cyan hover:text-black transition-colors rounded-[2px]">
                 {link.label} &rarr;
               </a>
             ))}

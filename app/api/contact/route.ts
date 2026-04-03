@@ -49,7 +49,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
     }
 
-    const { name, email, message } = body as Record<string, unknown>;
+    const { name, email, message, website } = body as Record<string, unknown>;
+
+    // Honeypot check — if filled, it's a bot
+    if (website && typeof website === "string" && website.trim() !== "") {
+      // Return success to not tip off the bot
+      return NextResponse.json({ success: true });
+    }
 
     // Validate required fields
     if (

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import WorkCard from "@/components/work-card";
 import CategoryFilter from "@/components/category-filter";
-import SectionHeading from "@/components/section-heading";
 import FadeIn from "@/components/fade-in";
+import PageTransition from "@/components/page-transition";
 import { getAllWork } from "@/lib/payload/queries";
 
 export const metadata: Metadata = {
@@ -22,10 +22,15 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
     : allWork;
 
   return (
+    <PageTransition>
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-6">
         <FadeIn>
-          <SectionHeading title="Work" subtitle="AI production, video, music, and comics." />
+          <div className="mb-12">
+            <span className="section-label">Work</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h2>
+            <p className="text-light-300 text-lg mt-3">AI production, video, music, and comics.</p>
+          </div>
         </FadeIn>
         <CategoryFilter />
         {filtered.length > 0 ? (
@@ -33,9 +38,10 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
             {filtered.map((work) => (<FadeIn key={work.id}><WorkCard work={work} /></FadeIn>))}
           </div>
         ) : (
-          <p className="text-gray-500 text-sm">No work found in this category.</p>
+          <p className="text-light-300 text-sm">No work found in this category.</p>
         )}
       </div>
     </div>
+    </PageTransition>
   );
 }

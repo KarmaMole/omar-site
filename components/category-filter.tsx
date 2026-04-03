@@ -2,6 +2,8 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
+// TODO: Derive categories dynamically from Work collection entries in the CMS
+// instead of maintaining this hardcoded list
 const CATEGORIES = [
   "All",
   "AI & Production",
@@ -32,8 +34,8 @@ export default function CategoryFilter() {
           onClick={() => handleClick(category)}
           className={
             active === category
-              ? "px-4 py-2 rounded-full text-sm font-medium transition-colors bg-black text-white"
-              : "px-4 py-2 rounded-full text-sm font-medium transition-colors bg-gray-100 text-gray-600 hover:bg-gray-200"
+              ? "px-4 py-2 rounded-[2px] font-mono text-xs font-medium transition-colors border bg-cyan text-black border-cyan"
+              : "px-4 py-2 rounded-[2px] font-mono text-xs font-medium transition-colors bg-transparent border border-[#1a1a1a] text-light-300 hover:border-light-300 hover:text-light-100"
           }
         >
           {category}

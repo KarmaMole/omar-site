@@ -8,6 +8,9 @@ export const Work: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: ({ req: { user } }) => !!user,
+    update: ({ req: { user } }) => !!user,
+    delete: ({ req: { user } }) => !!user,
   },
   fields: [
     {
@@ -36,18 +39,16 @@ export const Work: CollectionConfig = {
       name: "coverImage",
       type: "upload",
       relationTo: "media",
-      required: true,
     },
     {
       name: "categories",
       type: "select",
       hasMany: true,
       options: [
-        { label: "AI & Production", value: "AI & Production" },
-        { label: "Video Production", value: "Video Production" },
-        { label: "AI Films", value: "AI Films" },
-        { label: "Music", value: "Music" },
-        { label: "Comics & Writing", value: "Comics & Writing" },
+        { label: "Commercial & Advertising", value: "Commercial & Advertising" },
+        { label: "Documentary & Awareness", value: "Documentary & Awareness" },
+        { label: "Corporate", value: "Corporate" },
+        { label: "Branding & Design", value: "Branding & Design" },
       ],
     },
     {
@@ -80,12 +81,20 @@ export const Work: CollectionConfig = {
           name: "url",
           type: "text",
           required: true,
+          validate: (value: string | null | undefined) => {
+            if (!value) return true;
+            try { new URL(value); return true; } catch { return 'Please enter a valid URL'; }
+          },
         },
       ],
     },
     {
       name: "externalLink",
       type: "text",
+      validate: (value: string | null | undefined) => {
+        if (!value) return true;
+        try { new URL(value); return true; } catch { return 'Please enter a valid URL'; }
+      },
       admin: {
         position: "sidebar",
       },
