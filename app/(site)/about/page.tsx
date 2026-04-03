@@ -64,7 +64,7 @@ export default async function AboutPage() {
                   </div>
                 ) : (
                   <div className="prose prose-invert prose-sm prose-p:text-light-300 prose-p:leading-relaxed max-w-none">
-                    <p>I&apos;m Omar Kamel — AI Creative &amp; Production Lead at Optix, where I help regional and global brands navigate the rapidly evolving intersection of artificial intelligence and creative production.</p>
+                    <p>I&apos;m Omar Kamel, AI Creative &amp; Production Lead at Optix, where I help regional and global brands harness AI across every stage of creative production.</p>
                   </div>
                 )}
               </div>
