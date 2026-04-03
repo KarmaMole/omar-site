@@ -65,8 +65,8 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
                     onClick={() => setActiveFilter(cat.value)}
                     className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
                       activeFilter === cat.value && !initialTag
-                        ? "border-cyan text-cyan bg-cyan/5"
-                        : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"
+                        ? "bg-cyan/10 border-cyan text-cyan"
+                        : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
                     }`}
                   >
                     {cat.label}

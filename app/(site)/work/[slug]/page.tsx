@@ -84,7 +84,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <div className="aspect-[21/9] bg-dark-100 w-full flex items-center justify-center text-light-300 text-lg font-medium">{work.title}</div>
       )}
       <div className="max-w-3xl mx-auto px-6 py-12">
-        <Link href="/work" className="text-sm text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
+        <Link href="/work" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
         {work.client && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-2">{work.client}</p>}
         <h1 className="text-4xl md:text-5xl font-bold text-light-100 mb-4">{work.title}</h1>
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}

@@ -65,7 +65,7 @@ export default async function HomePage() {
                   src={getCoverUrl(heroWork)!}
                   alt={getCoverAlt(heroWork)}
                   fill
-                  className="object-cover group-hover:scale-[1.05] transition-transform duration-700"
+                  className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
                   sizes="100vw"
                   priority
                 />
@@ -404,7 +404,7 @@ export default async function HomePage() {
                         src={coverUrl}
                         alt={getCoverAlt(work)}
                         fill
-                        className="object-cover group-hover:scale-[1.05] transition-transform duration-700"
+                        className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
                         sizes={isFullWidth ? "100vw" : "50vw"}
                       />
                     ) : (

@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         </div>
       )}
       <div className="max-w-3xl mx-auto px-6 py-12">
-        <Link href="/writing" className="text-sm text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Writing</Link>
+        <Link href="/writing" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Writing</Link>
         {post.date && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-4">{formatDate(post.date)}</p>}
         <h1 className={`${sourceSerif.className} text-4xl md:text-5xl font-bold text-light-100 mb-6`}>{post.title}</h1>
         {tags.length > 0 && (

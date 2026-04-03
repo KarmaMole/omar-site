@@ -63,7 +63,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
             alt={(cover as MediaUpload).alt}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover group-hover:scale-[1.05] transition-transform duration-700"
+            className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
           />
         </div>
       )}
@@ -143,8 +143,8 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
                   href="/writing"
                   className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
                     !activeFilter
-                      ? "border-cyan text-cyan bg-cyan/5"
-                      : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"
+                      ? "bg-cyan/10 border-cyan text-cyan"
+                      : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
                   }`}
                 >
                   All
@@ -155,8 +155,8 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
                     href={`/writing?category=${encodeURIComponent(cat)}`}
                     className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
                       activeFilter?.toLowerCase() === cat.toLowerCase()
-                        ? "border-cyan text-cyan bg-cyan/5"
-                        : "border-[#1a1a1a] text-light-300 hover:text-light-100 hover:border-[#333]"
+                        ? "bg-cyan/10 border-cyan text-cyan"
+                        : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
                     }`}
                   >
                     {cat}
@@ -188,7 +188,7 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
           )}
 
           {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
               {filtered.map((post) => (
                 <FadeIn key={post.id}>
                   <WritingCard post={post} />

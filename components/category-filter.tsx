@@ -31,11 +31,11 @@ export default function CategoryFilter() {
           <button
             key={category}
             onClick={() => handleClick(category)}
-            className={
+            className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
               active === category
-                ? "shrink-0 whitespace-nowrap px-4 py-2 rounded-[2px] font-mono text-xs font-medium transition-colors border bg-cyan text-black border-cyan"
-                : "shrink-0 whitespace-nowrap px-4 py-2 rounded-[2px] font-mono text-xs font-medium transition-colors bg-transparent border border-[#1a1a1a] text-light-300 hover:border-light-300 hover:text-light-100"
-            }
+                ? "bg-cyan/10 border-cyan text-cyan"
+                : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
+            }`}
           >
             {category}
           </button>
