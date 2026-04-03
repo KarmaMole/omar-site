@@ -63,6 +63,19 @@ export const Work: CollectionConfig = {
       ],
     },
     {
+      name: "gallery",
+      type: "array",
+      label: "Image Gallery",
+      fields: [
+        {
+          name: "image",
+          type: "upload",
+          relationTo: "media",
+          required: true,
+        },
+      ],
+    },
+    {
       name: "media",
       type: "array",
       fields: [

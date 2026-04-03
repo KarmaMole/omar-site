@@ -51,6 +51,19 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
         <div className="mb-8" />
         {work.description ? <RichText data={work.description} className="mb-10" /> : null}
+        {work.gallery && work.gallery.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            {work.gallery.map((item: { image: { url?: string; sizes?: { hero?: { url?: string } }; alt?: string; width?: number; height?: number } | number }, i: number) => {
+              const img = typeof item.image === "object" ? item.image : null;
+              if (!img?.url) return null;
+              return (
+                <div key={i} className="relative aspect-[16/10] overflow-hidden rounded-[2px]">
+                  <Image src={img.sizes?.hero?.url ?? img.url} alt={img.alt ?? ""} fill className="object-cover" />
+                </div>
+              );
+            })}
+          </div>
+        )}
         {work.media && work.media.length > 0 && (
           <div className="space-y-6 mb-10">
             {work.media.map((embed, i) => (<MediaEmbedComponent key={i} embed={embed} />))}
