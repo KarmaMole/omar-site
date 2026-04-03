@@ -1,6 +1,6 @@
 'use client'
 
-import { useField } from '@payloadcms/ui/forms/useField'
+import { useField } from '@payloadcms/ui'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface MediaDoc {
@@ -14,12 +14,14 @@ interface MediaDoc {
   }
 }
 
-export default function GalleryUploadField({ path }: { path: string }) {
-  const { value, setValue } = useField<string[]>({ path })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default function GalleryUploadField(props: any) {
+  const { value, setValue } = useField<string[]>({ path: props.path ?? props.field?.name ?? 'gallery' })
   const [mediaDocs, setMediaDocs] = useState<MediaDoc[]>([])
   const [uploading, setUploading] = useState(false)
   const [uploadCount, setUploadCount] = useState({ done: 0, total: 0 })
   const [dragOver, setDragOver] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Fetch media docs for current IDs
@@ -29,7 +31,7 @@ export default function GalleryUploadField({ path }: { path: string }) {
       return
     }
 
-    const ids = value.map((v) => (typeof v === 'object' ? (v as unknown as MediaDoc).id : v))
+    const ids = value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : String(v)))
 
     Promise.all(
       ids.map((id) =>
@@ -48,6 +50,7 @@ export default function GalleryUploadField({ path }: { path: string }) {
       if (fileArr.length === 0) return
 
       setUploading(true)
+      setError(null)
       setUploadCount({ done: 0, total: fileArr.length })
 
       const newIds: string[] = []
@@ -56,7 +59,6 @@ export default function GalleryUploadField({ path }: { path: string }) {
         const file = fileArr[i]
         const formData = new FormData()
         formData.append('file', file)
-        // Generate alt text from filename
         const alt = file.name
           .replace(/\.[^.]+$/, '')
           .replace(/[-_]/g, ' ')
@@ -72,9 +74,12 @@ export default function GalleryUploadField({ path }: { path: string }) {
           const doc = await res.json()
           if (doc?.doc?.id) {
             newIds.push(doc.doc.id)
+          } else {
+            console.error(`Upload response missing doc.id for ${file.name}:`, doc)
           }
         } catch (err) {
           console.error(`Failed to upload ${file.name}:`, err)
+          setError(`Failed to upload ${file.name}`)
         }
 
         setUploadCount({ done: i + 1, total: fileArr.length })
@@ -82,7 +87,7 @@ export default function GalleryUploadField({ path }: { path: string }) {
 
       if (newIds.length > 0) {
         const currentIds = Array.isArray(value)
-          ? value.map((v) => (typeof v === 'object' ? (v as unknown as MediaDoc).id : v))
+          ? value.map((v: unknown) => (typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
           : []
         setValue([...currentIds, ...newIds])
       }
@@ -125,7 +130,7 @@ export default function GalleryUploadField({ path }: { path: string }) {
   const removeImage = useCallback(
     (idToRemove: string) => {
       const currentIds = Array.isArray(value)
-        ? value.map((v) => (typeof v === 'object' ? (v as unknown as MediaDoc).id : v))
+        ? value.map((v: unknown) => String(typeof v === 'object' && v !== null ? (v as MediaDoc).id : v))
         : []
       setValue(currentIds.filter((id) => id !== idToRemove))
     },
@@ -204,6 +209,10 @@ export default function GalleryUploadField({ path }: { path: string }) {
         )}
       </div>
 
+      {error && (
+        <div style={{ color: '#ef4444', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{error}</div>
+      )}
+
       {/* Thumbnail grid */}
       {mediaDocs.length > 0 && (
         <div
@@ -224,6 +233,7 @@ export default function GalleryUploadField({ path }: { path: string }) {
                 border: '1px solid #333',
               }}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={doc.sizes?.thumbnail?.url ?? doc.url}
                 alt={doc.alt ?? ''}
@@ -231,7 +241,10 @@ export default function GalleryUploadField({ path }: { path: string }) {
               />
               <button
                 type="button"
-                onClick={() => removeImage(doc.id)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  removeImage(doc.id)
+                }}
                 style={{
                   position: 'absolute',
                   top: '4px',
