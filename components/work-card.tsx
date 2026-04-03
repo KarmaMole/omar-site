@@ -12,7 +12,7 @@ export default function WorkCard({ work }: WorkCardProps) {
   return (
     <Link
       href={`/work/${work.slug}`}
-      className="group block rounded-[2px] bg-[#141414] border border-[#1a1a1a] hover:border-cyan/50 hover:shadow-[0_0_20px_rgba(0,217,255,0.08)] transition-all duration-300"
+      className="group block rounded-[2px] bg-[#141414] border border-[#1a1a1a] hover:border-cyan/50 hover:shadow-[0_0_20px_rgba(0,217,255,0.15)] transition-all duration-300"
     >
       <div className="relative aspect-video overflow-hidden rounded-t-[2px]">
         {cover?.url ? (
@@ -22,7 +22,7 @@ export default function WorkCard({ work }: WorkCardProps) {
             fill
             loading="lazy"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+            className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-light-300 text-sm font-light px-4 text-center bg-[#111]">
@@ -30,8 +30,8 @@ export default function WorkCard({ work }: WorkCardProps) {
           </div>
         )}
         {/* Dark overlay + categories on hover */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-end p-4">
-          <div className="flex flex-wrap gap-1.5 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+        <div className="absolute inset-0 bg-black/30 md:bg-black/0 md:group-hover:bg-black/40 transition-all duration-300 flex items-end p-4">
+          <div className="flex flex-wrap gap-1.5 md:translate-y-4 opacity-100 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300">
             {work.categories && work.categories.length > 0 ? (
               work.categories.map((cat) => (
                 <span

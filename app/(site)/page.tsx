@@ -54,18 +54,18 @@ export default async function HomePage() {
 
       {/* ── Featured Work Showcase ────────────────────────────── */}
       {heroWork && (
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-24">
+        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
           <FadeIn>
-            <span className="section-label">Featured Work</span>
+            <span className="section-label-primary">Featured Work</span>
           </FadeIn>
           <FadeIn className="mt-8">
-            <Link href={`/work/${heroWork.slug}`} className="group block relative aspect-[21/9] overflow-hidden bg-dark-200">
+            <Link href={`/work/${heroWork.slug}`} className="group block relative aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-dark-200">
               {getCoverUrl(heroWork) ? (
                 <Image
                   src={getCoverUrl(heroWork)!}
                   alt={getCoverAlt(heroWork)}
                   fill
-                  className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                  className="object-cover group-hover:scale-[1.05] transition-transform duration-700"
                   sizes="100vw"
                   priority
                 />
@@ -79,7 +79,7 @@ export default async function HomePage() {
                     {heroWork.client}
                   </p>
                 )}
-                <h3 className="text-3xl md:text-5xl font-light tracking-tight text-white">
+                <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
                   {heroWork.title}
                 </h3>
                 {heroWork.categories && heroWork.categories.length > 0 && (
@@ -94,7 +94,7 @@ export default async function HomePage() {
       )}
 
       {/* ── Stats Interstitial ────────────────────────────────── */}
-      <section className="border-y border-dark-100 py-20">
+      <section className="border-y border-dark-100 py-16 md:py-20 bg-[#0d0d0d]/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
             <span className="section-label">By the Numbers</span>
@@ -123,7 +123,7 @@ export default async function HomePage() {
 
       {/* ── Clients ─────────────────────────────────────────── */}
       {clients.length > 0 && (
-        <section className="py-16">
+        <section className="py-12 md:py-16 border-t border-dark-100">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
               <span className="section-label">Selected Clients</span>
@@ -145,16 +145,16 @@ export default async function HomePage() {
       )}
 
       {/* ── Transmissions ─────────────────────────────────────── */}
-      <section className="border-t border-dark-100 py-24">
+      <section className="border-t border-dark-100 py-16 md:py-24 bg-[#0d0d0d]/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
-            <span className="section-label">Transmissions</span>
+            <span className="section-label-primary">Transmissions</span>
             <p className="text-light-300 text-sm mt-3 max-w-xl">
               Ongoing platforms and independent projects broadcasting on their own frequencies.
             </p>
           </FadeIn>
           <FadeIn className="mt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* 6DOF Reviews */}
               <a
                 href="https://6dofreviews.com"
@@ -382,7 +382,7 @@ export default async function HomePage() {
 
       {/* ── Recent Work Grid ──────────────────────────────────── */}
       {gridWork.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-24">
+        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
           <FadeIn>
             <span className="section-label">Recent Work</span>
           </FadeIn>
@@ -404,7 +404,7 @@ export default async function HomePage() {
                         src={coverUrl}
                         alt={getCoverAlt(work)}
                         fill
-                        className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                        className="object-cover group-hover:scale-[1.05] transition-transform duration-700"
                         sizes={isFullWidth ? "100vw" : "50vw"}
                       />
                     ) : (
@@ -439,7 +439,7 @@ export default async function HomePage() {
 
       {/* ── Latest from Blog ──────────────────────────────────── */}
       {recentPosts.length > 0 && (
-        <section className="border-t border-dark-100 py-24">
+        <section className="border-t border-dark-100 py-16 md:py-24 bg-[#0d0d0d]/30">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
               <span className="section-label">Latest Writing</span>
@@ -482,7 +482,7 @@ export default async function HomePage() {
       )}
 
       {/* ── CTA ───────────────────────────────────────────────── */}
-      <section className="border-t border-dark-100 py-32">
+      <section className="border-t border-dark-100 py-20 md:py-32">
         <FadeIn>
           <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center">
             <h2 className="text-4xl md:text-6xl font-light tracking-tight text-light-100">

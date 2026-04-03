@@ -11,6 +11,12 @@ interface FormData {
   website: string; // honeypot
 }
 
+interface FieldErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
 export function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -20,15 +26,35 @@ export function ContactForm() {
   });
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    // Clear field error when user starts typing
+    if (fieldErrors[name as keyof FieldErrors]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const validate = (): boolean => {
+    const errors: FieldErrors = {};
+    if (!formData.name.trim()) errors.name = "Name is required";
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Please enter a valid email";
+    }
+    if (!formData.message.trim()) errors.message = "Message is required";
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!validate()) return;
     setStatus("sending");
     setErrorMessage("");
 
@@ -58,6 +84,7 @@ export function ContactForm() {
     setFormData({ name: "", email: "", message: "", website: "" });
     setStatus("idle");
     setErrorMessage("");
+    setFieldErrors({});
   };
 
   if (status === "submitted") {
@@ -79,7 +106,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-lg">
+    <form onSubmit={handleSubmit} className="space-y-8 max-w-lg" noValidate>
       {/* Honeypot — hidden from real users, bots fill it in */}
       <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10" aria-hidden="true">
         <label htmlFor="website">Website</label>
@@ -103,7 +130,7 @@ export function ContactForm() {
           placeholder=" "
           value={formData.name}
           onChange={handleChange}
-          className="peer w-full bg-dark-200 border-b border-light-300/20 border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors"
+          className={`peer w-full bg-dark-200 border-b ${fieldErrors.name ? "border-red-500/50" : "border-light-300/20"} border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors`}
         />
         <label
           htmlFor="name"
@@ -111,6 +138,9 @@ export function ContactForm() {
         >
           Name
         </label>
+        {fieldErrors.name && (
+          <p className="text-red-500/70 text-xs mt-1.5">{fieldErrors.name}</p>
+        )}
       </div>
 
       <div className="relative">
@@ -122,7 +152,7 @@ export function ContactForm() {
           placeholder=" "
           value={formData.email}
           onChange={handleChange}
-          className="peer w-full bg-dark-200 border-b border-light-300/20 border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors"
+          className={`peer w-full bg-dark-200 border-b ${fieldErrors.email ? "border-red-500/50" : "border-light-300/20"} border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors`}
         />
         <label
           htmlFor="email"
@@ -130,6 +160,9 @@ export function ContactForm() {
         >
           Email
         </label>
+        {fieldErrors.email && (
+          <p className="text-red-500/70 text-xs mt-1.5">{fieldErrors.email}</p>
+        )}
       </div>
 
       <div className="relative">
@@ -141,7 +174,7 @@ export function ContactForm() {
           placeholder=" "
           value={formData.message}
           onChange={handleChange}
-          className="peer w-full bg-dark-200 border-b border-light-300/20 border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors resize-none"
+          className={`peer w-full bg-dark-200 border-b ${fieldErrors.message ? "border-red-500/50" : "border-light-300/20"} border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors resize-none`}
         />
         <label
           htmlFor="message"
@@ -149,6 +182,9 @@ export function ContactForm() {
         >
           Message
         </label>
+        {fieldErrors.message && (
+          <p className="text-red-500/70 text-xs mt-1.5">{fieldErrors.message}</p>
+        )}
       </div>
 
       {status === "error" && errorMessage && (

@@ -12,7 +12,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const tags = project.tags?.map((t) => t.tag) ?? [];
 
   return (
-    <div className="group block rounded-[2px] bg-[#141414] border border-[#1a1a1a] p-6 hover:border-cyan/50 hover:shadow-[0_0_20px_rgba(0,217,255,0.08)] transition-all duration-300">
+    <div className="group block rounded-[2px] bg-[#141414] border border-[#1a1a1a] p-6 hover:border-cyan/50 hover:shadow-[0_0_20px_rgba(0,217,255,0.15)] transition-all duration-300">
       <div className="flex gap-4">
         <div className="flex-shrink-0 w-12 h-12 bg-[#111] border border-[#1a1a1a] rounded-[2px] flex items-center justify-center overflow-hidden">
           {logo?.url ? (

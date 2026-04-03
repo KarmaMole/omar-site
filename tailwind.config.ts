@@ -26,6 +26,9 @@ const config: Config = {
           DEFAULT: '#00d9ff',
           dark: '#00b8d9',
           glow: 'rgba(0, 217, 255, 0.15)',
+          strong: 'var(--color-accent-strong)',
+          medium: 'var(--color-accent-medium)',
+          subtle: 'var(--color-accent-subtle)',
         },
         magenta: {
           DEFAULT: '#ff00ff',

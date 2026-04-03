@@ -63,7 +63,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
             alt={(cover as MediaUpload).alt}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
+            className="object-cover group-hover:scale-[1.05] transition-transform duration-700"
           />
         </div>
       )}
@@ -94,7 +94,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
           )}
         </h3>
         {post.excerpt && (
-          <p className={`${sourceSerif.className} text-sm text-light-300 line-clamp-2`}>{post.excerpt}</p>
+          <p className="text-sm text-light-300 line-clamp-2">{post.excerpt}</p>
         )}
       </div>
     </Link>

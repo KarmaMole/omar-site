@@ -33,12 +33,17 @@ export default function Nav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative font-mono text-[10px] tracking-[0.2em] uppercase transition-colors [writing-mode:vertical-lr] rotate-180 ${
-                  isActive ? "text-cyan" : "text-light-300 hover:text-light-100"
+                className={`relative font-mono text-[10px] tracking-[0.2em] uppercase transition-all duration-200 [writing-mode:vertical-lr] rotate-180 px-1.5 py-2 ${
+                  isActive
+                    ? "text-cyan bg-cyan/5"
+                    : "text-light-300 hover:text-light-100 hover:bg-white/5"
                 }`}
               >
                 {isActive && (
-                  <span className="absolute -left-[21px] top-1/2 -translate-y-1/2 w-[2px] h-4 bg-cyan" />
+                  <span
+                    className="absolute -left-[21px] top-1/2 -translate-y-1/2 w-[3px] h-4 bg-cyan"
+                    style={{ boxShadow: "0 0 8px rgba(0, 217, 255, 0.4)" }}
+                  />
                 )}
                 {item.label}
               </Link>
