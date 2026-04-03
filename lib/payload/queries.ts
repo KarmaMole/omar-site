@@ -50,7 +50,7 @@ export async function getWorkBySlug(slug: string): Promise<WorkDoc | null> {
     collection: "work",
     where: { slug: { equals: slug } },
     limit: 1,
-    depth: 1,
+    depth: 2,
   });
   return (result.docs[0] as unknown as WorkDoc) ?? null;
 }
@@ -98,7 +98,7 @@ export async function getProjectBySlug(
     collection: "projects",
     where: { slug: { equals: slug } },
     limit: 1,
-    depth: 1,
+    depth: 2,
   });
   return (result.docs[0] as unknown as ProjectDoc) ?? null;
 }
