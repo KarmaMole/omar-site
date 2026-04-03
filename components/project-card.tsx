@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import TagBadge from "./tag-badge";
 import type { ProjectDoc } from "@/lib/payload/types";
 
 interface ProjectCardProps {
@@ -8,58 +7,55 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
-  const logo =
-    typeof project.logo === "object" && project.logo ? project.logo : null;
+  const cover =
+    typeof project.coverImage === "object" && project.coverImage
+      ? project.coverImage
+      : null;
   const tags = project.tags?.map((t) => t.tag) ?? [];
 
   return (
-    <Link href={`/explore/${project.slug}`} className="group block rounded-[2px] bg-[#141414] border border-[#1a1a1a] p-6 hover:border-cyan/50 hover:shadow-[0_0_20px_rgba(0,217,255,0.15)] transition-all duration-300">
-      <div className="flex gap-4">
-        <div className="flex-shrink-0 w-12 h-12 bg-[#111] border border-[#1a1a1a] rounded-[2px] flex items-center justify-center overflow-hidden">
-          {logo?.url ? (
-            <Image
-              src={logo.sizes?.thumbnail?.url ?? logo.url}
-              alt={logo.alt}
-              width={48}
-              height={48}
-              loading="lazy"
-              className="object-cover"
-            />
-          ) : (
-            <span className="text-light-300 font-mono text-lg select-none">
-              {project.title.charAt(0)}
-            </span>
-          )}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="font-light text-lg text-light-100 group-hover:text-cyan transition-colors duration-200">
+    <Link
+      href={`/explore/${project.slug}`}
+      className="group block rounded-[2px] bg-[#141414] border border-[#1a1a1a] hover:border-cyan/50 hover:shadow-[0_0_20px_rgba(0,217,255,0.15)] transition-all duration-300"
+    >
+      <div className="relative aspect-video overflow-hidden rounded-t-[2px]">
+        {cover?.url ? (
+          <Image
+            src={cover.sizes?.card?.url ?? cover.url}
+            alt={cover.alt}
+            fill
+            loading="lazy"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center text-light-300 text-sm font-light px-4 text-center bg-[#111]">
             {project.title}
-          </h3>
-          {project.status && (
-            <span className="font-mono text-[10px] tracking-widest uppercase text-cyan">
-              {project.status}
-            </span>
-          )}
-          {tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-2">
+          </div>
+        )}
+        {/* Tags overlay on hover */}
+        {tags.length > 0 && (
+          <div className="absolute inset-0 bg-black/30 md:bg-black/0 md:group-hover:bg-black/40 transition-all duration-300 flex items-end p-4">
+            <div className="flex flex-wrap gap-1.5 md:translate-y-4 opacity-100 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300">
               {tags.map((tag) => (
-                <TagBadge key={tag} label={tag} href={`/explore?tag=${encodeURIComponent(tag)}`} />
-              ))}
-            </div>
-          )}
-          {project.links && project.links.length > 0 && (
-            <div className="flex flex-wrap gap-3 mt-3">
-              {project.links.map((link) => (
                 <span
-                  key={link.url}
-                  className="font-mono text-xs text-cyan hover:text-white transition-colors duration-200 underline underline-offset-2 decoration-cyan/30 hover:decoration-white/50"
+                  key={tag}
+                  className="font-mono text-[10px] tracking-widest uppercase text-cyan bg-black/50 px-2 py-0.5 border border-cyan/20"
                 >
-                  {link.label}
+                  {tag}
                 </span>
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
+      <div className="p-4 space-y-1">
+        {project.status && (
+          <p className="font-mono text-[10px] tracking-widest uppercase text-cyan">
+            {project.status}
+          </p>
+        )}
+        <h3 className="text-lg font-light text-light-100">{project.title}</h3>
       </div>
     </Link>
   );
