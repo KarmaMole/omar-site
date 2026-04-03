@@ -2,15 +2,12 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-// TODO: Derive categories dynamically from Work collection entries in the CMS
-// instead of maintaining this hardcoded list
 const CATEGORIES = [
   "All",
-  "AI & Production",
-  "Video Production",
-  "AI Films",
-  "Music",
-  "Comics & Writing",
+  "Commercial & Advertising",
+  "Documentary & Awareness",
+  "Corporate",
+  "Branding & Design",
 ];
 
 export default function CategoryFilter() {
