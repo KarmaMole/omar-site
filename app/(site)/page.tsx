@@ -59,7 +59,7 @@ export default async function HomePage() {
             <span className="section-label-primary">Featured Work</span>
           </FadeIn>
           <FadeIn className="mt-8">
-            <Link href={`/work/${heroWork.slug}`} className="group block relative aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-dark-200">
+            <Link href={`/work/${heroWork.slug}`} className="group block relative aspect-[21/9] overflow-hidden bg-dark-200">
               {getCoverUrl(heroWork) ? (
                 <Image
                   src={getCoverUrl(heroWork)!}
