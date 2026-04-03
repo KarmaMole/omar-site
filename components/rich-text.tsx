@@ -14,15 +14,40 @@ interface RichTextProps {
   className?: string;
 }
 
+function isValidLexicalData(data: unknown): data is SerializedEditorState {
+  if (!data || typeof data !== "object") return false;
+  const d = data as Record<string, unknown>;
+  if (!d.root || typeof d.root !== "object") return false;
+  const root = d.root as Record<string, unknown>;
+  return root.type === "root" && Array.isArray(root.children);
+}
+
 export function RichText({ data, className }: RichTextProps) {
   if (!data) return null;
 
-  return (
-    <div className={className ?? "prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed"}>
-      <PayloadRichText
-        data={data as SerializedEditorState}
-        converters={converters}
-      />
-    </div>
-  );
+  if (!isValidLexicalData(data)) {
+    // Fallback for malformed or non-Lexical data
+    if (typeof data === "string") {
+      return (
+        <div
+          className={className ?? "prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed"}
+          dangerouslySetInnerHTML={{ __html: data }}
+        />
+      );
+    }
+    return null;
+  }
+
+  try {
+    return (
+      <div className={className ?? "prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed"}>
+        <PayloadRichText
+          data={data}
+          converters={converters}
+        />
+      </div>
+    );
+  } catch {
+    return null;
+  }
 }

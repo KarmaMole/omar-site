@@ -100,6 +100,7 @@ function wpToLexical(html) {
       if (listItems.length > 0) {
         blocks.push({
           type: "list",
+          tag: "ul",
           listType: "bullet",
           children: listItems.map((li) => ({
             type: "listitem",
@@ -117,6 +118,7 @@ function wpToLexical(html) {
       if (listItems.length > 0) {
         blocks.push({
           type: "list",
+          tag: "ol",
           listType: "number",
           children: listItems.map((li) => ({
             type: "listitem",
