@@ -54,7 +54,7 @@ export default async function HomePage() {
 
       {/* ── Featured Work Showcase ────────────────────────────── */}
       {heroWork && (
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
+        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 md:py-28 border-t border-dark-100">
           <FadeIn>
             <span className="section-label-primary">Featured Work</span>
           </FadeIn>
@@ -133,7 +133,7 @@ export default async function HomePage() {
                 {clients.slice(0, 12).map((client) => (
                   <span
                     key={client.id}
-                    className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/50"
+                    className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/70"
                   >
                     {client.name}
                   </span>
@@ -160,7 +160,7 @@ export default async function HomePage() {
                 href="https://6dofreviews.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 p-8 lg:p-10 overflow-hidden"
+                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative">
@@ -173,14 +173,14 @@ export default async function HomePage() {
                   <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
                     6DOF Reviews
                   </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">
+                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
                     VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem. YouTube channel &amp; editorial site.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-5">
                     {["VR", "Reviews", "YouTube", "Quest"].map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/40 border border-dark-100 px-2 py-1"
+                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
                       >
                         {tag}
                       </span>
@@ -197,7 +197,7 @@ export default async function HomePage() {
                 href="https://humanimpact.news"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 p-8 lg:p-10 overflow-hidden"
+                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative">
@@ -210,14 +210,14 @@ export default async function HomePage() {
                   <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
                     Human Impact
                   </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">
+                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
                     AI-powered news aggregator that ranks global stories by actual human impact, cutting through noise to surface what matters.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-5">
                     {["AI", "News", "Aggregator", "Impact"].map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/40 border border-dark-100 px-2 py-1"
+                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
                       >
                         {tag}
                       </span>
@@ -233,7 +233,7 @@ export default async function HomePage() {
                 href="https://mentora.replit.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 p-8 lg:p-10 overflow-hidden"
+                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative">
@@ -246,14 +246,14 @@ export default async function HomePage() {
                   <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
                     Mentora
                   </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">
+                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
                     Conversational AI coaches that turn corporate course materials into interactive, voice-driven employee training.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-5">
                     {["AI", "Voice", "Corporate", "Training"].map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/40 border border-dark-100 px-2 py-1"
+                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
                       >
                         {tag}
                       </span>
@@ -270,7 +270,7 @@ export default async function HomePage() {
                 href="https://war-monitor.replit.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 p-8 lg:p-10 overflow-hidden"
+                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative">
@@ -283,14 +283,14 @@ export default async function HomePage() {
                   <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
                     Iran War Monitor
                   </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">
+                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
                     Real-time monitoring dashboard tracking military and geopolitical developments in the Iran region with live data visualization.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-5">
                     {["Geopolitics", "Real-time", "Dashboard", "OSINT"].map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/40 border border-dark-100 px-2 py-1"
+                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
                       >
                         {tag}
                       </span>
@@ -307,7 +307,7 @@ export default async function HomePage() {
                 href="https://optixhub.replit.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 p-8 lg:p-10 overflow-hidden"
+                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative">
@@ -320,14 +320,14 @@ export default async function HomePage() {
                   <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
                     Optix AI Hub
                   </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">
+                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
                     Centralized team platform for discovering, organizing, and managing AI tools and resources across collaborative workflows.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-5">
                     {["AI", "Tools", "Team", "Platform"].map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/40 border border-dark-100 px-2 py-1"
+                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
                       >
                         {tag}
                       </span>
@@ -344,7 +344,7 @@ export default async function HomePage() {
                 href="https://optixprojects.replit.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 p-8 lg:p-10 overflow-hidden"
+                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative">
@@ -357,14 +357,14 @@ export default async function HomePage() {
                   <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
                     Optix Projects
                   </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">
+                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
                     Project management and tracking platform for the Optix creative production pipeline.
                   </p>
                   <div className="flex flex-wrap gap-2 mt-5">
                     {["Projects", "Management", "Production", "Workflow"].map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/40 border border-dark-100 px-2 py-1"
+                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
                       >
                         {tag}
                       </span>
