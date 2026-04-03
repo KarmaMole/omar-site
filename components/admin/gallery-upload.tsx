@@ -1,6 +1,6 @@
 'use client'
 
-import { useField } from '@payloadcms/ui'
+import { useField } from '@payloadcms/ui/forms/useField'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface MediaDoc {
