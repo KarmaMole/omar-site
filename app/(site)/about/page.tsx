@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 
 // TODO: Move skills to SiteSettings CMS global (add a "skills" array field with category + items)
 const skills = [
-  { category: "AI Tools", items: ["Runway", "Midjourney", "ComfyUI", "Stable Diffusion", "ElevenLabs", "Suno"] },
-  { category: "Production", items: ["After Effects", "Premiere Pro", "DaVinci Resolve", "Cinema 4D", "Nuke"] },
-  { category: "Creative", items: ["Photoshop", "Illustrator", "Figma", "Clip Studio Paint", "Blender"] },
-  { category: "Development", items: ["Next.js", "React", "Python", "TypeScript", "Node.js"] },
+  { category: "AI", items: ["ChatGPT", "Claude", "MidJourney", "Gemini", "Kling", "Veo"] },
+  { category: "Production", items: ["DSLR Cameras", "DaVinci Resolve", "Premiere Pro", "After Effects", "Reaper", "Weavy"] },
+  { category: "Creative", items: ["Milanote", "Photoshop", "Illustrator", "InDesign", "Suno", "ElevenLabs"] },
+  { category: "Development", items: ["Replit", "Claude Code", "RunPod", "OpenClaw", "Ollama", "ComfyUI"] },
 ];
 
 export default async function AboutPage() {
