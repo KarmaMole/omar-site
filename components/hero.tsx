@@ -12,7 +12,7 @@ export default async function Hero() {
       : null;
 
   return (
-    <section className="relative min-h-dvh flex items-center overflow-hidden">
+    <section className="relative h-[100svh] flex items-center overflow-hidden">
       {/* Background image or gradient fallback */}
       {bg?.url ? (
         <>
