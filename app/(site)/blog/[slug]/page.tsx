@@ -50,6 +50,8 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = await getAllBlogSlugs();
   return slugs.map((slug) => ({ slug }));

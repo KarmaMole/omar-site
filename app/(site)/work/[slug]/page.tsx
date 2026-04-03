@@ -21,6 +21,8 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
   };
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = await getAllWorkSlugs();
   return slugs.map((slug) => ({ slug }));

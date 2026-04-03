@@ -25,6 +25,8 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
   return { title: project.title, description: `${project.title} — ${tags.join(", ")}` };
 }
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   const slugs = await getAllProjectSlugs();
   return slugs.map((slug) => ({ slug }));
