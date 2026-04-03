@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/json-ld";
 import TagBadge from "@/components/tag-badge";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
@@ -22,7 +23,31 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
   const project = await getProjectBySlug(slug);
   if (!project) return {};
   const tags = project.tags?.map((t) => t.tag) ?? [];
-  return { title: project.title, description: `${project.title} — ${tags.join(", ")}` };
+  const cover =
+    typeof project.coverImage === "object" && project.coverImage
+      ? project.coverImage
+      : null;
+  return {
+    title: project.title,
+    description: `${project.title} — ${tags.join(", ")}`,
+    openGraph: {
+      type: "article",
+      title: project.title,
+      description: `${project.title} — ${tags.join(", ")}`,
+      ...(cover?.url
+        ? {
+            images: [
+              {
+                url: cover.url,
+                width: cover.width ?? undefined,
+                height: cover.height ?? undefined,
+                alt: cover.alt ?? project.title,
+              },
+            ],
+          }
+        : {}),
+    },
+  };
 }
 
 export const dynamic = "force-dynamic";
@@ -41,7 +66,23 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   const logo = typeof project.logo === "object" && project.logo ? project.logo : null;
   const tags = project.tags?.map((t) => t.tag) ?? [];
 
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.title,
+    description: `${project.title} — ${tags.join(", ")}`,
+    ...(cover?.url ? { image: cover.url } : {}),
+    author: {
+      "@type": "Person",
+      name: "Omar Kamel",
+      url: "https://omarkamel.com",
+    },
+    url: `https://omarkamel.com/projects/${slug}`,
+  };
+
   return (
+    <>
+    <JsonLd data={projectJsonLd} />
     <div className="pt-24 pb-16">
       {cover?.url ? (
         <div className="relative aspect-[21/9] w-full">
@@ -103,5 +144,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
         )}
       </div>
     </div>
+    </>
   );
 }

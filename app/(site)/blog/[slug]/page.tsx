@@ -47,10 +47,16 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
           }
         : {}),
     },
+    twitter: {
+      card: "summary_large_image",
+      title: post.meta?.title ?? post.title,
+      description: post.meta?.description ?? post.excerpt ?? undefined,
+      ...(cover?.url ? { images: [cover.url] } : {}),
+    },
   };
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const slugs = await getAllBlogSlugs();

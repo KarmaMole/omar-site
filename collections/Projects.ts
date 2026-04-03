@@ -97,6 +97,7 @@ export const Projects: CollectionConfig = {
         { label: "Archived", value: "archived" },
       ],
       defaultValue: "active",
+      index: true,
       admin: {
         position: "sidebar",
       },
@@ -162,6 +163,7 @@ export const Projects: CollectionConfig = {
       name: "featured",
       type: "checkbox",
       defaultValue: false,
+      index: true,
       admin: {
         position: "sidebar",
       },

@@ -3,6 +3,7 @@ import {
   type JSXConvertersFunction,
   RichText as PayloadRichText,
 } from "@payloadcms/richtext-lexical/react";
+import sanitizeHtml from "sanitize-html";
 
 const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
   ...defaultConverters,
@@ -28,10 +29,20 @@ export function RichText({ data, className }: RichTextProps) {
   if (!isValidLexicalData(data)) {
     // Fallback for malformed or non-Lexical data
     if (typeof data === "string") {
+      const cleanHtml = sanitizeHtml(data, {
+        allowedTags: [
+          "p", "h1", "h2", "h3", "h4", "h5", "h6",
+          "a", "ul", "ol", "li", "strong", "em", "br", "blockquote", "img",
+        ],
+        allowedAttributes: {
+          a: ["href", "target", "rel"],
+          img: ["src", "alt", "width", "height"],
+        },
+      });
       return (
         <div
           className={className ?? "prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed"}
-          dangerouslySetInnerHTML={{ __html: data }}
+          dangerouslySetInnerHTML={{ __html: cleanHtml }}
         />
       );
     }

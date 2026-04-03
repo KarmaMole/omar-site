@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/json-ld";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
 import { getWorkBySlug, getAllWorkSlugs } from "@/lib/payload/queries";
@@ -15,13 +16,34 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
   const { slug } = await params;
   const work = await getWorkBySlug(slug);
   if (!work) return {};
+  const cover =
+    typeof work.coverImage === "object" && work.coverImage
+      ? work.coverImage
+      : null;
   return {
     title: work.client ? `${work.title} — ${work.client}` : work.title,
     description: `${work.title}${work.client ? ` for ${work.client}` : ""}. ${work.categories?.join(", ") ?? ""}`,
+    openGraph: {
+      type: "article",
+      title: work.client ? `${work.title} — ${work.client}` : work.title,
+      description: `${work.title}${work.client ? ` for ${work.client}` : ""}. ${work.categories?.join(", ") ?? ""}`,
+      ...(cover?.url
+        ? {
+            images: [
+              {
+                url: cover.url,
+                width: cover.width ?? undefined,
+                height: cover.height ?? undefined,
+                alt: cover.alt ?? work.title,
+              },
+            ],
+          }
+        : {}),
+    },
   };
 }
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export async function generateStaticParams() {
   const slugs = await getAllWorkSlugs();
@@ -35,7 +57,24 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 
   const cover = typeof work.coverImage === "object" ? work.coverImage : null;
 
+  const workJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: work.title,
+    description: `${work.title}${work.client ? ` for ${work.client}` : ""}`,
+    ...(cover?.url ? { image: cover.url } : {}),
+    ...(work.date ? { datePublished: work.date } : {}),
+    author: {
+      "@type": "Person",
+      name: "Omar Kamel",
+      url: "https://omarkamel.com",
+    },
+    url: `https://omarkamel.com/work/${slug}`,
+  };
+
   return (
+    <>
+    <JsonLd data={workJsonLd} />
     <div className="pt-24 pb-16">
       {cover?.url ? (
         <div className="relative aspect-[21/9] w-full">
@@ -75,5 +114,6 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         )}
       </div>
     </div>
+    </>
   );
 }

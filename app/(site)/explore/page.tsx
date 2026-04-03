@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import type { Metadata } from "next";
 import { getAllProjects } from "@/lib/payload/queries";
 import ExploreContent from "./explore-content";

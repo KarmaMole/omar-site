@@ -81,6 +81,7 @@ export default function Nav() {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setMobileOpen(false)}
                 className={`text-4xl font-light tracking-tight transition-colors ${
                   isActive ? "text-cyan" : "text-light-100 hover:text-cyan"
                 }`}
@@ -91,7 +92,7 @@ export default function Nav() {
             );
           })}
           <div className="mt-8 pt-8 border-t border-[#1a1a1a]">
-            <Link href="/contact" className="font-mono text-sm tracking-widest text-cyan uppercase">
+            <Link href="/contact" onClick={() => setMobileOpen(false)} className="font-mono text-sm tracking-widest text-cyan uppercase">
               Start a Project →
             </Link>
           </div>

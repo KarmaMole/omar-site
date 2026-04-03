@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import CustomCursor from "@/components/custom-cursor";
+import CookieConsent from "@/components/cookie-consent";
 import "../globals.css";
 
 const inter = Inter({
@@ -35,6 +36,14 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Omar Kamel",
+    images: [
+      {
+        url: "/images/og-default.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Omar Kamel — AI Creative & Production Lead",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -49,31 +58,16 @@ export default function SiteLayout({
 }) {
   return (
     <html lang="en" data-theme="site" className={`${inter.variable} ${jetbrains.variable} ${sourceSerif.variable} bg-[#0a0a0a] text-[#f5f5f5]`}>
-      <head>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-                `,
-              }}
-            />
-          </>
-        )}
-      </head>
+      <head />
       <body className={`${inter.className} bg-[#0a0a0a] text-[#f5f5f5]`}>
         <CustomCursor />
         <Nav />
+        {/* TODO: Add Suspense boundaries around page sections for streaming / partial rendering */}
         <main className="lg:pl-20 pt-14 lg:pt-0">{children}</main>
         <Footer />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <CookieConsent gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );

@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import type { Metadata } from "next";
 import WorkCard from "@/components/work-card";
 import CategoryFilter from "@/components/category-filter";
@@ -28,7 +30,7 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
         <FadeIn>
           <div className="mb-12">
             <span className="section-label">Work</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h2>
+            <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
             <p className="text-light-300 text-lg mt-3">AI production, video, music, and comics.</p>
           </div>
         </FadeIn>
@@ -38,7 +40,12 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
             {filtered.map((work) => (<FadeIn key={work.id}><WorkCard work={work} /></FadeIn>))}
           </div>
         ) : (
-          <p className="text-light-300 text-sm">No work found in this category.</p>
+          <div className="text-center py-12">
+            <p className="text-light-300 text-sm mb-4">No work found in this category.</p>
+            <a href="/work" className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline">
+              Clear filters
+            </a>
+          </div>
         )}
       </div>
     </div>

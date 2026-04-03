@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-type Status = "idle" | "sending" | "success" | "error" | "submitted";
+type Status = "idle" | "sending" | "error" | "submitted";
 
 interface FormData {
   name: string;
@@ -54,21 +54,13 @@ export function ContactForm() {
     }
   };
 
-  // Show brief success checkmark then transition to the full success state
-  useEffect(() => {
-    if (status === "submitted") {
-      const timer = setTimeout(() => setStatus("success"), 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [status]);
-
   const handleReset = () => {
     setFormData({ name: "", email: "", message: "", website: "" });
     setStatus("idle");
     setErrorMessage("");
   };
 
-  if (status === "success") {
+  if (status === "submitted") {
     return (
       <div className="flex flex-col items-center text-center py-12">
         <div className="w-12 h-[1px] bg-cyan mb-6" />
@@ -78,9 +70,9 @@ export function ContactForm() {
         </p>
         <button
           onClick={handleReset}
-          className="font-mono text-xs uppercase tracking-widest text-cyan link-underline"
+          className="border border-cyan text-cyan font-mono text-xs tracking-widest uppercase px-8 py-3 transition-all duration-200 hover:bg-cyan hover:text-black"
         >
-          send another
+          Send Another
         </button>
       </div>
     );
@@ -165,7 +157,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        disabled={status === "sending" || status === "submitted"}
+        disabled={status === "sending"}
         className="bg-transparent border border-cyan text-cyan font-mono text-xs tracking-widest uppercase px-8 py-3 transition-all duration-200 hover:bg-cyan hover:text-black disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-cyan inline-flex items-center gap-2"
       >
         {status === "sending" && (
@@ -174,16 +166,7 @@ export function ContactForm() {
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>
         )}
-        {status === "submitted" && (
-          <svg className="h-4 w-4 text-cyan animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        )}
-        {status === "sending"
-          ? "Sending..."
-          : status === "submitted"
-            ? "Sent!"
-            : "Send Message"}
+        {status === "sending" ? "Sending..." : "Send Message"}
       </button>
     </form>
   );

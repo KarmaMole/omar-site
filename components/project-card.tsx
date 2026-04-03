@@ -21,6 +21,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               alt={logo.alt}
               width={48}
               height={48}
+              loading="lazy"
               className="object-cover"
             />
           ) : (

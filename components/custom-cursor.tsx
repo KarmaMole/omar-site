@@ -56,13 +56,18 @@ export default function CustomCursor() {
 
     let interactives = addListeners();
 
-    // Re-observe on DOM changes
+    // Re-observe on DOM changes (debounced to prevent listener thrashing)
+    let mutationRaf: number | null = null;
     const observer = new MutationObserver(() => {
-      interactives.forEach((el) => {
-        el.removeEventListener("mouseenter", onMouseEnterInteractive);
-        el.removeEventListener("mouseleave", onMouseLeaveInteractive);
+      if (mutationRaf) return;
+      mutationRaf = requestAnimationFrame(() => {
+        interactives.forEach((el) => {
+          el.removeEventListener("mouseenter", onMouseEnterInteractive);
+          el.removeEventListener("mouseleave", onMouseLeaveInteractive);
+        });
+        interactives = addListeners();
+        mutationRaf = null;
       });
-      interactives = addListeners();
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -95,6 +100,7 @@ export default function CustomCursor() {
         el.removeEventListener("mouseleave", onMouseLeaveInteractive);
       });
       observer.disconnect();
+      if (mutationRaf) cancelAnimationFrame(mutationRaf);
       cancelAnimationFrame(raf);
     };
   }, [visible, hovering]);

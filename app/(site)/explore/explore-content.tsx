@@ -46,9 +46,9 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
           <FadeIn>
             <div className="mb-12">
               <span className="section-label">Explore</span>
-              <h2 className="text-4xl font-light text-light-100 mt-2">
+              <h1 className="text-4xl font-light text-light-100 mt-2">
                 Creative Explorations
-              </h2>
+              </h1>
               <p className="text-light-300 text-lg mt-3">
                 Personal projects, music, tools, and experiments.
               </p>
@@ -106,9 +106,17 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
           </div>
 
           {filtered.length === 0 && (
-            <p className="text-light-300 font-mono text-sm mt-8">
-              No items found{initialTag ? ` for "${initialTag}"` : " in this category"}.
-            </p>
+            <div className="text-center py-12">
+              <p className="text-light-300 font-mono text-sm mb-4">
+                No items found{initialTag ? ` for "${initialTag}"` : " in this category"}.
+              </p>
+              <button
+                onClick={() => setActiveFilter("all")}
+                className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline"
+              >
+                Reset
+              </button>
+            </div>
           )}
         </div>
       </div>

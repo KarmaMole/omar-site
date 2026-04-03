@@ -15,8 +15,8 @@ async function login() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: "editor@6dofreviews.com",
-      password: "Zadokite!13",
+      email: process.env.PAYLOAD_ADMIN_EMAIL,
+      password: process.env.PAYLOAD_ADMIN_PASSWORD,
     }),
   });
   const data = await res.json();

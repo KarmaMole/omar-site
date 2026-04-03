@@ -28,6 +28,7 @@ export const Work: CollectionConfig = {
       },
     },
     {
+      // TODO: Refactor to a relationship to the Clients collection for data integrity
       name: "client",
       type: "text",
     },
@@ -115,6 +116,7 @@ export const Work: CollectionConfig = {
       name: "featured",
       type: "checkbox",
       defaultValue: false,
+      index: true,
       admin: {
         position: "sidebar",
       },
@@ -129,6 +131,7 @@ export const Work: CollectionConfig = {
     {
       name: "date",
       type: "date",
+      index: true,
       admin: {
         position: "sidebar",
       },

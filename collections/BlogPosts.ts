@@ -45,6 +45,7 @@ export const BlogPosts: CollectionConfig = {
     {
       name: "date",
       type: "date",
+      index: true,
       admin: {
         position: "sidebar",
       },

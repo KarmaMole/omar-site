@@ -73,6 +73,10 @@ export default buildConfig({
         (doc as { excerpt?: string }).excerpt ?? "",
     }),
   ],
+  graphQL: {
+    maxComplexity: 1000,
+    disablePlaygroundInProduction: true,
+  },
   sharp,
   admin: {
     importMap: {

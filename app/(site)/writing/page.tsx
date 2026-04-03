@@ -1,3 +1,5 @@
+export const revalidate = 60;
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -81,8 +83,13 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
         <h3 className={`${sourceSerif.className} text-lg font-light text-light-100 group-hover:text-cyan transition-colors duration-200`}>
           {post.title}
           {isExternal && (
-            <span className="inline-block ml-2 text-light-300 text-sm">
-              &nearr;
+            <span className="inline-flex items-center gap-1 ml-2 text-cyan/70 group-hover:text-cyan transition-colors">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              <span className="font-mono text-[10px] tracking-widest uppercase">External</span>
             </span>
           )}
         </h3>
@@ -119,9 +126,9 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
           <FadeIn>
             <div className="mb-12">
               <span className="section-label">Writing</span>
-              <h2 className="text-4xl font-light text-light-100 mt-2">
+              <h1 className="text-4xl font-light text-light-100 mt-2">
                 Writing
-              </h2>
+              </h1>
               <p className="text-light-300 text-lg mt-3">
                 Thoughts, articles, and published work.
               </p>
@@ -189,9 +196,14 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
               ))}
             </div>
           ) : (
-            <p className="text-light-300 font-mono text-sm mt-8">
-              No posts found{activeFilter ? ` for "${activeFilter}"` : ""}.
-            </p>
+            <div className="text-center py-12">
+              <p className="text-light-300 font-mono text-sm mb-4">
+                No posts found{activeFilter ? ` for "${activeFilter}"` : ""}.
+              </p>
+              <Link href="/writing" className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline">
+                Clear filters
+              </Link>
+            </div>
           )}
         </div>
       </div>

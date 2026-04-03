@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Services",
   description:
     "AI production services from Omar Kamel — coming soon.",
+  robots: { index: false, follow: false },
 };
 
 export default function ServicesPage() {

@@ -4,11 +4,39 @@ import { resend } from "@/lib/resend";
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "omar@omarkamel.com";
 
 // In-memory rate limiting: IP → array of request timestamps
+// NOTE: This resets on each serverless cold start. For production,
+// use Redis, Vercel KV, or Upstash for persistent rate limiting.
 const rateLimitMap = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 3;
+const RATE_LIMIT_MAX_MAP_SIZE = 10_000; // Prevent unbounded memory growth
+let lastCleanup = Date.now();
+const CLEANUP_INTERVAL_MS = 5 * 60 * 1000; // Sweep every 5 minutes
+
+/** Remove stale entries older than the rate-limit window */
+function cleanupRateLimitMap() {
+  const now = Date.now();
+  if (now - lastCleanup < CLEANUP_INTERVAL_MS) return;
+  lastCleanup = now;
+  for (const [ip, timestamps] of rateLimitMap) {
+    const recent = timestamps.filter((ts) => now - ts < RATE_LIMIT_WINDOW_MS);
+    if (recent.length === 0) {
+      rateLimitMap.delete(ip);
+    } else {
+      rateLimitMap.set(ip, recent);
+    }
+  }
+}
 
 function isRateLimited(ip: string): boolean {
+  cleanupRateLimitMap();
+
+  // Hard cap: if the map is too large, evict the oldest entry
+  if (rateLimitMap.size >= RATE_LIMIT_MAX_MAP_SIZE) {
+    const firstKey = rateLimitMap.keys().next().value;
+    if (firstKey) rateLimitMap.delete(firstKey);
+  }
+
   const now = Date.now();
   const timestamps = rateLimitMap.get(ip) ?? [];
 
