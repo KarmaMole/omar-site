@@ -64,16 +64,15 @@ export const Work: CollectionConfig = {
     },
     {
       name: "gallery",
-      type: "array",
+      type: "relationship",
+      relationTo: "media",
+      hasMany: true,
       label: "Image Gallery",
-      fields: [
-        {
-          name: "image",
-          type: "upload",
-          relationTo: "media",
-          required: true,
+      admin: {
+        components: {
+          Field: "@/components/admin/gallery-upload",
         },
-      ],
+      },
     },
     {
       name: "media",

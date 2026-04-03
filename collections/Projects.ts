@@ -61,25 +61,18 @@ export const Projects: CollectionConfig = {
     },
     {
       name: "gallery",
-      type: "array",
-      label: "Gallery",
+      type: "relationship",
+      relationTo: "media",
+      hasMany: true,
+      label: "Image Gallery",
       admin: {
+        components: {
+          Field: "@/components/admin/gallery-upload",
+        },
         condition: (_data, siblingData) =>
           siblingData?.contentType === "photography" ||
           siblingData?.contentType === "graphic-design",
       },
-      fields: [
-        {
-          name: "image",
-          type: "upload",
-          relationTo: "media",
-          required: true,
-        },
-        {
-          name: "caption",
-          type: "text",
-        },
-      ],
     },
     {
       name: "description",

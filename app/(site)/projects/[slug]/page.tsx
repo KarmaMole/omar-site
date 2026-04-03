@@ -73,6 +73,18 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           </div>
         )}
         {project.description ? <RichText data={project.description} className="mb-10" /> : null}
+        {project.gallery && Array.isArray(project.gallery) && project.gallery.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            {project.gallery.map((img, i) => {
+              if (typeof img !== "object" || !img?.url) return null;
+              return (
+                <div key={img.id ?? i} className="relative aspect-[16/10] overflow-hidden rounded-[2px]">
+                  <Image src={img.sizes?.hero?.url ?? img.url} alt={img.alt ?? ""} fill className="object-cover" />
+                </div>
+              );
+            })}
+          </div>
+        )}
         {project.media && project.media.length > 0 && (
           <div className="space-y-6 mb-10">
             {project.media.map((embed, i) => (

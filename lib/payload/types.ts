@@ -25,6 +25,7 @@ export interface WorkDoc {
   coverImage: MediaUpload | string;
   categories?: string[] | null;
   tags?: { tag: string }[] | null;
+  gallery?: (MediaUpload | string)[] | null;
   media?: MediaEmbed[] | null;
   externalLink?: string | null;
   featured?: boolean | null;
@@ -45,7 +46,7 @@ export interface ProjectDoc {
   status?: "active" | "paused" | "archived" | null;
   links?: { label: string; url: string }[] | null;
   tags?: { tag: string }[] | null;
-  gallery?: { image: MediaUpload | string; caption?: string | null }[] | null;
+  gallery?: (MediaUpload | string)[] | null;
   media?: MediaEmbed[] | null;
   featured?: boolean | null;
   sortOrder?: number | null;
