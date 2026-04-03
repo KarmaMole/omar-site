@@ -1,6 +1,7 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import WorkCard from "@/components/work-card";
 import CategoryFilter from "@/components/category-filter";
 import FadeIn from "@/components/fade-in";
@@ -42,9 +43,9 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
         ) : (
           <div className="text-center py-12">
             <p className="text-light-300 text-sm mb-4">No work found in this category.</p>
-            <a href="/work" className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline">
+            <Link href="/work" className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline">
               Clear filters
-            </a>
+            </Link>
           </div>
         )}
       </div>
