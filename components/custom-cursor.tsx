@@ -58,16 +58,27 @@ export default function CustomCursor() {
 
     // Re-observe on DOM changes (debounced to prevent listener thrashing)
     let mutationRaf: number | null = null;
-    const observer = new MutationObserver(() => {
+    let mutationTimeout: ReturnType<typeof setTimeout> | null = null;
+    const observer = new MutationObserver((mutations) => {
+      // Skip mutations inside lightbox portal (aria-modal dialogs)
+      const isLightbox = mutations.every((m) =>
+        (m.target as Element).closest?.("[aria-modal]")
+      );
+      if (isLightbox) return;
+
       if (mutationRaf) return;
-      mutationRaf = requestAnimationFrame(() => {
-        interactives.forEach((el) => {
-          el.removeEventListener("mouseenter", onMouseEnterInteractive);
-          el.removeEventListener("mouseleave", onMouseLeaveInteractive);
+      // Debounce with a small delay to batch rapid DOM changes
+      if (mutationTimeout) clearTimeout(mutationTimeout);
+      mutationTimeout = setTimeout(() => {
+        mutationRaf = requestAnimationFrame(() => {
+          interactives.forEach((el) => {
+            el.removeEventListener("mouseenter", onMouseEnterInteractive);
+            el.removeEventListener("mouseleave", onMouseLeaveInteractive);
+          });
+          interactives = addListeners();
+          mutationRaf = null;
         });
-        interactives = addListeners();
-        mutationRaf = null;
-      });
+      }, 100);
     });
     observer.observe(document.body, { childList: true, subtree: true });
 
@@ -100,6 +111,7 @@ export default function CustomCursor() {
         el.removeEventListener("mouseleave", onMouseLeaveInteractive);
       });
       observer.disconnect();
+      if (mutationTimeout) clearTimeout(mutationTimeout);
       if (mutationRaf) cancelAnimationFrame(mutationRaf);
       cancelAnimationFrame(raf);
     };
