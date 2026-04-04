@@ -24,7 +24,11 @@ export default function GalleryGrid({ images, title }: GalleryGridProps) {
           <button
             key={img.id ?? i}
             onClick={() => setLightboxIndex(i)}
-            className="relative aspect-[16/10] overflow-hidden rounded-[2px] group cursor-pointer"
+            className={`relative overflow-hidden rounded-[2px] group cursor-pointer ${
+              img.width && img.height && img.height > img.width
+                ? "aspect-[3/4]"
+                : "aspect-[16/10]"
+            }`}
           >
             <Image
               src={img.sizes?.hero?.url ?? img.url}
