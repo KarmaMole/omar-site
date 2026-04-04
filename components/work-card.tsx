@@ -31,16 +31,11 @@ export default function WorkCard({ work }: WorkCardProps) {
         )}
         {/* Dark overlay + categories on hover */}
         <div className="absolute inset-0 bg-black/30 md:bg-black/0 md:group-hover:bg-black/40 transition-all duration-300 flex items-end p-4">
-          <div className="flex flex-wrap gap-1.5 md:translate-y-4 opacity-100 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300">
+          <div className="md:translate-y-4 opacity-100 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300">
             {work.categories && work.categories.length > 0 ? (
-              work.categories.map((cat) => (
-                <span
-                  key={cat}
-                  className="font-mono text-[10px] tracking-widest uppercase text-cyan bg-black/50 px-2 py-0.5 border border-cyan/20"
-                >
-                  {cat}
-                </span>
-              ))
+              <span className="font-mono text-[10px] tracking-widest uppercase text-cyan bg-black/50 px-2 py-0.5 border border-cyan/20 inline-block">
+                {work.categories.join(" · ")}
+              </span>
             ) : (
               <span className="text-white/70 text-sm font-light flex items-center gap-1">
                 View <span className="inline-block translate-x-0 group-hover:translate-x-1 transition-transform duration-300">&rarr;</span>
