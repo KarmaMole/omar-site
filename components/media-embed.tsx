@@ -1,10 +1,12 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import type { MediaEmbed } from "@/lib/payload/types";
 
-function getEmbedUrl(embed: MediaEmbed): string {
+function getEmbedUrl(embed: MediaEmbed): string | null {
   const { type, url } = embed;
 
   if (type === "youtube") {
-    // Handle both youtube.com/watch?v=ID and youtu.be/ID formats
     const match =
       url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?&]+)/);
     const id = match?.[1] ?? "";
@@ -13,8 +15,11 @@ function getEmbedUrl(embed: MediaEmbed): string {
 
   if (type === "vimeo") {
     const match = url.match(/vimeo\.com\/(\d+)/);
-    const id = match?.[1] ?? "";
-    return `https://player.vimeo.com/video/${id}`;
+    if (match) {
+      return `https://player.vimeo.com/video/${match[1]}`;
+    }
+    // Vanity URL — needs async resolution
+    return null;
   }
 
   if (type === "soundcloud") {
@@ -22,12 +27,9 @@ function getEmbedUrl(embed: MediaEmbed): string {
   }
 
   if (type === "spotify") {
-    // Convert open.spotify.com/track/ID → open.spotify.com/embed/track/ID
-    // Guard against already-embedded URLs
     const base = url.includes("/embed/")
       ? url
       : url.replace("open.spotify.com/", "open.spotify.com/embed/");
-    // Add dark theme if not already present
     const sep = base.includes("?") ? "&" : "?";
     return base.includes("theme=") ? base : `${base}${sep}theme=0`;
   }
@@ -40,7 +42,36 @@ interface MediaEmbedProps {
 }
 
 export default function MediaEmbedComponent({ embed }: MediaEmbedProps) {
-  const embedUrl = getEmbedUrl(embed);
+  const staticUrl = getEmbedUrl(embed);
+  const [embedUrl, setEmbedUrl] = useState(staticUrl);
+
+  useEffect(() => {
+    if (staticUrl || embed.type !== "vimeo") return;
+
+    // Resolve Vimeo vanity URL via oEmbed API
+    fetch(
+      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(embed.url)}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.video_id) {
+          setEmbedUrl(
+            `https://player.vimeo.com/video/${data.video_id}`
+          );
+        }
+      })
+      .catch(() => {
+        // Fallback: just use the original URL
+        setEmbedUrl(embed.url);
+      });
+  }, [staticUrl, embed.type, embed.url]);
+
+  if (!embedUrl) {
+    return (
+      <div className="aspect-video w-full bg-dark-100 animate-pulse" />
+    );
+  }
+
   const isSpotify = embed.type === "spotify";
   const isSoundcloud = embed.type === "soundcloud";
 
