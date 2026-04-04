@@ -5,6 +5,7 @@ import Image from "next/image";
 import JsonLd from "@/components/json-ld";
 import Hero from "@/components/hero";
 import FadeIn from "@/components/fade-in";
+import HeroCardVideo from "@/components/hero-card-video";
 import { formatDate } from "@/lib/utils";
 import {
   getSiteSettings,
@@ -61,36 +62,41 @@ export default async function HomePage() {
             <span className="section-label-primary">Featured Work</span>
           </FadeIn>
           <FadeIn className="mt-8">
-            <Link href={`/work/${heroWork.slug}`} className="group block relative aspect-[21/9] overflow-hidden bg-dark-200">
-              {getCoverUrl(heroWork) ? (
-                <Image
-                  src={getCoverUrl(heroWork)!}
-                  alt={getCoverAlt(heroWork)}
-                  fill
-                  className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                  sizes="100vw"
-                  priority
-                />
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
+            <div className="relative aspect-[21/9] overflow-hidden bg-dark-200">
+              <Link href={`/work/${heroWork.slug}`} className="group block absolute inset-0">
+                {getCoverUrl(heroWork) ? (
+                  <Image
+                    src={getCoverUrl(heroWork)!}
+                    alt={getCoverAlt(heroWork)}
+                    fill
+                    className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
+                    sizes="100vw"
+                    priority
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-8 lg:p-12">
+                  {heroWork.client && (
+                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-2">
+                      {heroWork.client}
+                    </p>
+                  )}
+                  <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
+                    {heroWork.title}
+                  </h3>
+                  {heroWork.categories && heroWork.categories.length > 0 && (
+                    <p className="font-mono text-xs tracking-[0.15em] uppercase text-light-300 mt-3">
+                      {heroWork.categories.join(" / ")}
+                    </p>
+                  )}
+                </div>
+              </Link>
+              {heroWork.media && heroWork.media.length > 0 && (heroWork.media[0].type === "youtube" || heroWork.media[0].type === "vimeo") && (
+                <HeroCardVideo embed={heroWork.media[0]} />
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-              <div className="absolute bottom-0 left-0 p-8 lg:p-12">
-                {heroWork.client && (
-                  <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-2">
-                    {heroWork.client}
-                  </p>
-                )}
-                <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
-                  {heroWork.title}
-                </h3>
-                {heroWork.categories && heroWork.categories.length > 0 && (
-                  <p className="font-mono text-xs tracking-[0.15em] uppercase text-light-300 mt-3">
-                    {heroWork.categories.join(" / ")}
-                  </p>
-                )}
-              </div>
-            </Link>
+            </div>
           </FadeIn>
         </section>
       )}
@@ -101,43 +107,85 @@ export default async function HomePage() {
           <FadeIn>
             <span className="section-label-primary">Featured Explorations</span>
           </FadeIn>
+          {/* Hero exploration (first item) */}
           <FadeIn className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {featuredProjects.map((project) => {
-                const cover = typeof project.coverImage === "object" && project.coverImage ? project.coverImage : null;
-                return (
-                  <Link
-                    key={project.id}
-                    href={`/explore/${project.slug}`}
-                    className="group block relative aspect-[4/3] overflow-hidden bg-dark-200"
-                  >
+            {(() => {
+              const heroProject = featuredProjects[0];
+              const cover = typeof heroProject.coverImage === "object" && heroProject.coverImage ? heroProject.coverImage : null;
+              const heroVideo = heroProject.media?.find((m) => m.type === "youtube" || m.type === "vimeo");
+              return (
+                <div className="relative aspect-[21/9] overflow-hidden bg-dark-200">
+                  <Link href={`/explore/${heroProject.slug}`} className="group block absolute inset-0">
                     {cover?.url ? (
                       <Image
                         src={(cover as MediaUpload).sizes?.hero?.url ?? cover.url}
-                        alt={(cover as MediaUpload).alt ?? project.title}
+                        alt={(cover as MediaUpload).alt ?? heroProject.title}
                         fill
                         className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes="100vw"
+                        priority
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-6 lg:p-8">
-                      {project.contentType && (
-                        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-cyan mb-1">
-                          {project.contentType === "project" ? "Project" : project.contentType === "music" ? "Music" : project.contentType === "photography" ? "Photography" : project.contentType === "graphic-design" ? "Graphic Design" : "Creative Work"}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-8 lg:p-12">
+                      {heroProject.contentType && (
+                        <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-2">
+                          {heroProject.contentType === "project" ? "Project" : heroProject.contentType === "music" ? "Music" : heroProject.contentType === "photography" ? "Photography" : heroProject.contentType === "graphic-design" ? "Graphic Design" : "Creative Work"}
                         </p>
                       )}
-                      <h3 className="text-xl md:text-2xl font-light tracking-tight text-white">
-                        {project.title}
+                      <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
+                        {heroProject.title}
                       </h3>
                     </div>
                   </Link>
-                );
-              })}
-            </div>
+                  {heroVideo && <HeroCardVideo embed={heroVideo} />}
+                </div>
+              );
+            })()}
           </FadeIn>
+
+          {/* Remaining featured explorations */}
+          {featuredProjects.length > 1 && (
+            <FadeIn className="mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {featuredProjects.slice(1).map((project) => {
+                  const cover = typeof project.coverImage === "object" && project.coverImage ? project.coverImage : null;
+                  return (
+                    <Link
+                      key={project.id}
+                      href={`/explore/${project.slug}`}
+                      className="group block relative aspect-[4/3] overflow-hidden bg-dark-200"
+                    >
+                      {cover?.url ? (
+                        <Image
+                          src={(cover as MediaUpload).sizes?.hero?.url ?? cover.url}
+                          alt={(cover as MediaUpload).alt ?? project.title}
+                          fill
+                          className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                      <div className="absolute bottom-0 left-0 p-6 lg:p-8">
+                        {project.contentType && (
+                          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-cyan mb-1">
+                            {project.contentType === "project" ? "Project" : project.contentType === "music" ? "Music" : project.contentType === "photography" ? "Photography" : project.contentType === "graphic-design" ? "Graphic Design" : "Creative Work"}
+                          </p>
+                        )}
+                        <h3 className="text-xl md:text-2xl font-light tracking-tight text-white">
+                          {project.title}
+                        </h3>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </FadeIn>
+          )}
           <FadeIn className="mt-10">
             <Link
               href="/explore"
