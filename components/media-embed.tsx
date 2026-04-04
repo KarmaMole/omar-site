@@ -24,8 +24,12 @@ function getEmbedUrl(embed: MediaEmbed): string {
   if (type === "spotify") {
     // Convert open.spotify.com/track/ID → open.spotify.com/embed/track/ID
     // Guard against already-embedded URLs
-    if (url.includes("/embed/")) return url;
-    return url.replace("open.spotify.com/", "open.spotify.com/embed/");
+    const base = url.includes("/embed/")
+      ? url
+      : url.replace("open.spotify.com/", "open.spotify.com/embed/");
+    // Add dark theme if not already present
+    const sep = base.includes("?") ? "&" : "?";
+    return base.includes("theme=") ? base : `${base}${sep}theme=0`;
   }
 
   return url;
@@ -39,14 +43,23 @@ interface MediaEmbedProps {
 
 export default function MediaEmbedComponent({ embed }: MediaEmbedProps) {
   const embedUrl = getEmbedUrl(embed);
-  const isAudio = AUDIO_TYPES.includes(embed.type);
+  const isSpotify = embed.type === "spotify";
+  const isSoundcloud = embed.type === "soundcloud";
 
   return (
-    <div className={isAudio ? "h-20 w-full" : "aspect-video w-full"}>
+    <div
+      className={
+        isSpotify
+          ? "w-full h-[352px] rounded-xl overflow-hidden"
+          : isSoundcloud
+            ? "h-20 w-full"
+            : "aspect-video w-full"
+      }
+    >
       <iframe
         src={embedUrl}
         className="w-full h-full"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         allowFullScreen
         loading="lazy"
         title={`${embed.type} embed`}
