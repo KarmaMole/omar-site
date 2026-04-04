@@ -36,6 +36,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid collection" }, { status: 400 });
   }
 
+  // Validate each item has a valid id and sortOrder
+  for (const item of items) {
+    if (typeof item.id !== "number" && typeof item.id !== "string") {
+      return NextResponse.json({ error: "Invalid item id" }, { status: 400 });
+    }
+    if (typeof item.sortOrder !== "number" || !Number.isFinite(item.sortOrder)) {
+      return NextResponse.json({ error: "Invalid sortOrder" }, { status: 400 });
+    }
+  }
+
   try {
     for (const item of items) {
       await payload.update({

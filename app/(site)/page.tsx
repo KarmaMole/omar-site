@@ -14,7 +14,7 @@ import {
   getRecentBlogPosts,
   getAllClients,
 } from "@/lib/payload/queries";
-import type { WorkDoc, ProjectDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
+import type { WorkDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
 
 function getCoverUrl(doc: WorkDoc | BlogPostDoc): string | null {
   const img = typeof doc.coverImage === "object" ? doc.coverImage : null;

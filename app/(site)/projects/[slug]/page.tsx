@@ -6,7 +6,7 @@ import JsonLd from "@/components/json-ld";
 import TagBadge from "@/components/tag-badge";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
-import { getProjectBySlug, getAllProjectSlugs } from "@/lib/payload/queries";
+import { getProjectBySlug } from "@/lib/payload/queries";
 
 interface ProjectDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -50,12 +50,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
   };
 }
 
-export const dynamic = "force-dynamic";
-
-export async function generateStaticParams() {
-  const slugs = await getAllProjectSlugs();
-  return slugs.map((slug) => ({ slug }));
-}
+export const revalidate = 60;
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { slug } = await params;

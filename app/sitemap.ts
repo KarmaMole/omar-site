@@ -13,26 +13,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: baseUrl, changeFrequency: "weekly", priority: 1 },
     { url: `${baseUrl}/work`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/projects`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/blog`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/explore`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${baseUrl}/writing`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/contact`, changeFrequency: "yearly", priority: 0.5 },
-    { url: `${baseUrl}/writing`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/explore`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/services`, changeFrequency: "monthly", priority: 0.6 },
   ];
 
   const workPages: MetadataRoute.Sitemap = workSlugs.map((slug) => ({
     url: `${baseUrl}/work/${slug}`, changeFrequency: "monthly", priority: 0.6,
   }));
 
-  const projectPages: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
-    url: `${baseUrl}/projects/${slug}`, changeFrequency: "monthly", priority: 0.6,
+  const explorePages: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
+    url: `${baseUrl}/explore/${slug}`, changeFrequency: "monthly", priority: 0.6,
   }));
 
-  const blogPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${baseUrl}/blog/${slug}`, changeFrequency: "monthly", priority: 0.7,
+  const writingPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
+    url: `${baseUrl}/writing/${slug}`, changeFrequency: "monthly", priority: 0.7,
   }));
 
-  return [...staticPages, ...workPages, ...projectPages, ...blogPages];
+  return [...staticPages, ...workPages, ...explorePages, ...writingPages];
 }

@@ -7,8 +7,9 @@ export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const mouse = useRef({ x: -100, y: -100 });
   const circle = useRef({ x: -100, y: -100 });
-  const [hovering, setHovering] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const hoveringRef = useRef(false);
+  const visibleRef = useRef(false);
+  const [, forceRender] = useState(0);
 
   useEffect(() => {
     // Only show on devices with hover capability
@@ -22,9 +23,29 @@ export default function CustomCursor() {
       "a, button, [role='button'], input, textarea, select, label { cursor: none !important; }";
     document.head.appendChild(style);
 
+    const setVisible = (v: boolean) => {
+      if (visibleRef.current === v) return;
+      visibleRef.current = v;
+      if (circleRef.current) circleRef.current.style.opacity = v ? "1" : "0";
+      if (dotRef.current) dotRef.current.style.opacity = v ? "1" : "0";
+    };
+
+    const setHovering = (h: boolean) => {
+      if (hoveringRef.current === h) return;
+      hoveringRef.current = h;
+      if (circleRef.current) {
+        const size = h ? 48 : 24;
+        circleRef.current.style.width = `${size}px`;
+        circleRef.current.style.height = `${size}px`;
+        circleRef.current.style.borderColor = h
+          ? "rgba(0, 217, 255, 1)"
+          : "rgba(0, 217, 255, 0.5)";
+      }
+    };
+
     const onMouseMove = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY };
-      if (!visible) setVisible(true);
+      if (!visibleRef.current) setVisible(true);
 
       // Update dot immediately
       if (dotRef.current) {
@@ -91,7 +112,7 @@ export default function CustomCursor() {
       circle.current.y += dy * 0.15;
 
       if (circleRef.current) {
-        const size = hovering ? 48 : 24;
+        const size = hoveringRef.current ? 48 : 24;
         const offset = size / 2;
         circleRef.current.style.transform = `translate(${circle.current.x - offset}px, ${circle.current.y - offset}px)`;
       }
@@ -99,6 +120,9 @@ export default function CustomCursor() {
       raf = requestAnimationFrame(animate);
     };
     raf = requestAnimationFrame(animate);
+
+    // Trigger a single render to show the cursor elements
+    forceRender(1);
 
     return () => {
       document.body.style.cursor = "";
@@ -115,7 +139,7 @@ export default function CustomCursor() {
       if (mutationRaf) cancelAnimationFrame(mutationRaf);
       cancelAnimationFrame(raf);
     };
-  }, [visible, hovering]);
+  }, []);
 
   return (
     <>
@@ -124,12 +148,10 @@ export default function CustomCursor() {
         ref={circleRef}
         className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full border transition-[width,height,border-color,opacity] duration-200"
         style={{
-          width: hovering ? 48 : 24,
-          height: hovering ? 48 : 24,
-          borderColor: hovering
-            ? "rgba(0, 217, 255, 1)"
-            : "rgba(0, 217, 255, 0.5)",
-          opacity: visible ? 1 : 0,
+          width: 24,
+          height: 24,
+          borderColor: "rgba(0, 217, 255, 0.5)",
+          opacity: 0,
         }}
       />
       {/* Precision dot - follows mouse exactly */}
@@ -139,7 +161,7 @@ export default function CustomCursor() {
         style={{
           width: 4,
           height: 4,
-          opacity: visible ? 1 : 0,
+          opacity: 0,
         }}
       />
     </>

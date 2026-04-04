@@ -3,18 +3,12 @@ export const revalidate = 60;
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Source_Serif_4 } from "next/font/google";
 import FadeIn from "@/components/fade-in";
 import ScrollFilters from "@/components/scroll-filters";
 import PageTransition from "@/components/page-transition";
 import { formatDate } from "@/lib/utils";
 import { getAllBlogPosts } from "@/lib/payload/queries";
 import type { BlogPostDoc, MediaUpload } from "@/lib/payload/types";
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const CATEGORIES = [
   "AEgypt",
@@ -80,7 +74,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
             </span>
           )}
         </div>
-        <h3 className={`${sourceSerif.className} text-lg font-light text-light-100 group-hover:text-cyan transition-colors duration-200`}>
+        <h3 className={`font-serif text-lg font-light text-light-100 group-hover:text-cyan transition-colors duration-200`}>
           {post.title}
           {isExternal && (
             <span className="inline-flex items-center gap-1 ml-2 text-cyan/70 group-hover:text-cyan transition-colors">
@@ -94,7 +88,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
           )}
         </h3>
         {post.excerpt && (
-          <p className={`${sourceSerif.className} text-sm text-light-300 line-clamp-3`}>{post.excerpt}</p>
+          <p className={`font-serif text-sm text-light-300 line-clamp-3`}>{post.excerpt}</p>
         )}
       </div>
     </Link>

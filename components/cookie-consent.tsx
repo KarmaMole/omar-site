@@ -23,6 +23,9 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
     setMounted(true);
   }, []);
 
+  // Validate GA ID format to prevent script injection
+  const isValidGaId = /^G-[A-Z0-9]+$/i.test(gaId);
+
   function accept() {
     localStorage.setItem(CONSENT_KEY, "accepted");
     setConsent("accepted");
@@ -36,7 +39,7 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
   return (
     <>
       {/* Only inject GA after explicit consent */}
-      {consent === "accepted" && (
+      {consent === "accepted" && isValidGaId && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}

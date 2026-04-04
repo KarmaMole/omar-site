@@ -43,7 +43,7 @@ export default buildConfig({
     Clients,
   ],
   globals: [SiteSettings],
-  secret: process.env.PAYLOAD_SECRET || "dev-secret-change-me",
+  secret: process.env.PAYLOAD_SECRET || require("crypto").randomBytes(32).toString("hex"),
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
