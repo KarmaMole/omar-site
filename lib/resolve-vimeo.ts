@@ -11,8 +11,12 @@ export async function resolveVimeoUrls(
     media.map(async (item) => {
       if (item.type !== "vimeo") return item;
 
-      // Already a numeric URL
-      if (/vimeo\.com\/\d+/.test(item.url)) return item;
+      // Extract numeric ID from any Vimeo URL format (/manage/videos/ID, /video/ID, /ID)
+      const numericMatch = item.url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
+      if (numericMatch) {
+        // Normalize to clean format
+        return { ...item, url: `https://vimeo.com/${numericMatch[1]}` };
+      }
 
       try {
         const res = await fetch(

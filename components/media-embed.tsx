@@ -11,7 +11,8 @@ function getEmbedUrl(embed: MediaEmbed): string {
   }
 
   if (type === "vimeo") {
-    const match = url.match(/vimeo\.com\/(\d+)/);
+    // Match numeric ID anywhere in the path (handles /manage/videos/ID, /video/ID, /ID)
+    const match = url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
     const id = match?.[1] ?? "";
     return `https://player.vimeo.com/video/${id}`;
   }
