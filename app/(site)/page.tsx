@@ -9,10 +9,11 @@ import { formatDate } from "@/lib/utils";
 import {
   getSiteSettings,
   getFeaturedWork,
+  getFeaturedProjects,
   getRecentBlogPosts,
   getAllClients,
 } from "@/lib/payload/queries";
-import type { WorkDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
+import type { WorkDoc, ProjectDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
 
 function getCoverUrl(doc: WorkDoc | BlogPostDoc): string | null {
   const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
@@ -26,9 +27,10 @@ function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
 }
 
 export default async function HomePage() {
-  const [, featuredWork, recentPosts, clients] = await Promise.all([
+  const [, featuredWork, featuredProjects, recentPosts, clients] = await Promise.all([
     getSiteSettings(),
     getFeaturedWork(),
+    getFeaturedProjects(),
     getRecentBlogPosts(3),
     getAllClients(),
   ]);
@@ -88,6 +90,60 @@ export default async function HomePage() {
                   </p>
                 )}
               </div>
+            </Link>
+          </FadeIn>
+        </section>
+      )}
+
+      {/* ── Featured Explorations ───────────────────────────── */}
+      {featuredProjects.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
+          <FadeIn>
+            <span className="section-label-primary">Featured Explorations</span>
+          </FadeIn>
+          <FadeIn className="mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {featuredProjects.map((project) => {
+                const cover = typeof project.coverImage === "object" && project.coverImage ? project.coverImage : null;
+                return (
+                  <Link
+                    key={project.id}
+                    href={`/explore/${project.slug}`}
+                    className="group block relative aspect-[4/3] overflow-hidden bg-dark-200"
+                  >
+                    {cover?.url ? (
+                      <Image
+                        src={(cover as MediaUpload).sizes?.hero?.url ?? cover.url}
+                        alt={(cover as MediaUpload).alt ?? project.title}
+                        fill
+                        className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                    <div className="absolute bottom-0 left-0 p-6 lg:p-8">
+                      {project.contentType && (
+                        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-cyan mb-1">
+                          {project.contentType === "project" ? "Project" : project.contentType === "music" ? "Music" : project.contentType === "photography" ? "Photography" : project.contentType === "graphic-design" ? "Graphic Design" : "Creative Work"}
+                        </p>
+                      )}
+                      <h3 className="text-xl md:text-2xl font-light tracking-tight text-white">
+                        {project.title}
+                      </h3>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </FadeIn>
+          <FadeIn className="mt-10">
+            <Link
+              href="/explore"
+              className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
+            >
+              View All Explorations &rarr;
             </Link>
           </FadeIn>
         </section>
