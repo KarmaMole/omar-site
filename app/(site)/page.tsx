@@ -220,7 +220,7 @@ export default async function HomePage() {
                 { number: "AI", label: "From Day 1" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <p className="font-mono text-4xl md:text-5xl font-light text-white tracking-tight">
+                  <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
                     {stat.number}
                   </p>
                   <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
