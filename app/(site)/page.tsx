@@ -565,7 +565,7 @@ export default async function HomePage() {
                       {post.title}
                     </h3>
                     {post.excerpt && (
-                      <p className="text-sm text-light-300 mt-2 line-clamp-2">
+                      <p className="text-sm text-light-300 mt-2 line-clamp-3">
                         {post.excerpt}
                       </p>
                     )}

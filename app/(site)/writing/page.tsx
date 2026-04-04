@@ -94,7 +94,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
           )}
         </h3>
         {post.excerpt && (
-          <p className={`${sourceSerif.className} text-sm text-light-300 line-clamp-2`}>{post.excerpt}</p>
+          <p className={`${sourceSerif.className} text-sm text-light-300 line-clamp-3`}>{post.excerpt}</p>
         )}
       </div>
     </Link>
