@@ -35,8 +35,6 @@ function getEmbedUrl(embed: MediaEmbed): string {
   return url;
 }
 
-const AUDIO_TYPES: MediaEmbed["type"][] = ["soundcloud", "spotify"];
-
 interface MediaEmbedProps {
   embed: MediaEmbed;
 }
