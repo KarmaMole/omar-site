@@ -194,10 +194,10 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={status === "sending"}
-        className="bg-transparent border border-cyan text-cyan font-mono text-xs tracking-widest uppercase px-8 py-3 transition-all duration-200 hover:bg-cyan hover:text-black disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-cyan inline-flex items-center gap-2"
+        className="bg-cyan text-black font-mono text-xs tracking-widest uppercase px-8 py-3 transition-all duration-200 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none disabled:hover:scale-100 inline-flex items-center gap-2"
       >
         {status === "sending" && (
-          <svg className="animate-spin h-4 w-4 text-cyan" viewBox="0 0 24 24" fill="none">
+          <svg className="animate-spin h-4 w-4 text-black" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
           </svg>

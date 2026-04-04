@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
+import FadeIn from "@/components/fade-in";
+import PageTransition from "@/components/page-transition";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
 import { getWorkBySlug, getAllWorkSlugs } from "@/lib/payload/queries";
@@ -70,12 +72,14 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       name: "Omar Kamel",
       url: "https://omarkamel.com",
     },
+    ...(work.categories?.length ? { keywords: work.categories } : {}),
     url: `https://omarkamel.com/work/${slug}`,
   };
 
   return (
     <>
     <JsonLd data={workJsonLd} />
+    <PageTransition>
     <div className="pt-24 pb-16">
       {cover?.url ? (
         <div className="relative aspect-[21/9] w-full">
@@ -86,11 +90,15 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       )}
       <div className="max-w-3xl mx-auto px-6 py-12">
         <Link href="/work" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
+        <FadeIn>
         {work.client && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-2">{work.client}</p>}
-        <h1 className="text-4xl md:text-5xl font-bold text-light-100 mb-4">{work.title}</h1>
+        <h1 className="text-5xl md:text-6xl font-light text-light-100 mb-4">{work.title}</h1>
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
+        </FadeIn>
         <div className="mb-8" />
+        <FadeIn>
         {work.description ? <RichText data={work.description} className="mb-10" /> : null}
+        </FadeIn>
         {work.gallery && Array.isArray(work.gallery) && work.gallery.length > 0 && (
           <GalleryGrid
             images={work.gallery.filter(
@@ -112,6 +120,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         )}
       </div>
     </div>
+    </PageTransition>
     </>
   );
 }

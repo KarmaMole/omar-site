@@ -78,31 +78,39 @@ export default function Nav() {
       </header>
 
       {/* Mobile Fullscreen Menu */}
-      {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col items-start justify-center px-12 gap-8" onClick={() => setMobileOpen(false)}>
-          {navItems.map((item, i) => {
-            const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={`text-4xl font-light tracking-tight transition-colors pl-4 -ml-4 border-l-2 ${
-                  isActive ? "text-cyan border-cyan bg-cyan/5" : "text-light-100 hover:text-cyan border-transparent"
-                }`}
-                style={{ animationDelay: `${i * 50}ms` }}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-          <div className="mt-8 pt-8 border-t border-[#1a1a1a]">
-            <Link href="/contact" onClick={() => setMobileOpen(false)} className="font-mono text-sm tracking-widest text-cyan uppercase">
-              Start a Project →
+      <div
+        className={`lg:hidden fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col items-start justify-center px-12 gap-8 transition-all duration-300 ease-out ${
+          mobileOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={() => setMobileOpen(false)}
+      >
+        {navItems.map((item, i) => {
+          const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className={`text-4xl font-light tracking-tight transition-all duration-300 pl-4 -ml-4 border-l-2 ${
+                isActive ? "text-cyan border-cyan bg-cyan/5" : "text-light-100 hover:text-cyan border-transparent"
+              } ${mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
+              style={{ transitionDelay: mobileOpen ? `${i * 60}ms` : "0ms" }}
+            >
+              {item.label}
             </Link>
-          </div>
+          );
+        })}
+        <div
+          className={`mt-8 pt-8 border-t border-[#1a1a1a] transition-all duration-300 ${
+            mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
+          }`}
+          style={{ transitionDelay: mobileOpen ? `${navItems.length * 60}ms` : "0ms" }}
+        >
+          <Link href="/contact" onClick={() => setMobileOpen(false)} className="font-mono text-sm tracking-widest text-cyan uppercase">
+            Start a Project →
+          </Link>
         </div>
-      )}
+      </div>
     </>
   );
 }

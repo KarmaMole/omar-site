@@ -35,7 +35,7 @@ export default async function Hero() {
       )}
 
       {/* Accent glow */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan/5 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/4" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan/10 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/4" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
         {/* Option B: Everything stacked vertically */}

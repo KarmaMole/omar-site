@@ -6,7 +6,7 @@ import JsonLd from "@/components/json-ld";
 import Hero from "@/components/hero";
 import FadeIn from "@/components/fade-in";
 import HeroCardVideo from "@/components/hero-card-video";
-import { formatDate } from "@/lib/utils";
+import { formatDate, getContentTypeLabel } from "@/lib/utils";
 import {
   getSiteSettings,
   getFeaturedWork,
@@ -28,7 +28,7 @@ function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
 }
 
 export default async function HomePage() {
-  const [, featuredWork, featuredProjects, recentPosts, clients] = await Promise.all([
+  const [settings, featuredWork, featuredProjects, recentPosts, clients] = await Promise.all([
     getSiteSettings(),
     getFeaturedWork(),
     getFeaturedProjects(),
@@ -42,7 +42,7 @@ export default async function HomePage() {
     name: "Omar Kamel",
     jobTitle: "AI Creative & Production Lead",
     url: "https://omarkamel.com",
-    sameAs: [] as string[],
+    sameAs: (settings.socialLinks ?? []).map((s: { url: string }) => s.url),
   };
 
   const heroWork = featuredWork.length > 0 ? featuredWork[0] : null;
@@ -62,7 +62,7 @@ export default async function HomePage() {
             <h2 className="section-label-primary">Featured Work</h2>
           </FadeIn>
           <FadeIn className="mt-8">
-            <div className={`relative overflow-hidden bg-dark-200 ${heroWork.media?.some((m) => m.type === "youtube" || m.type === "vimeo") ? "aspect-video" : "aspect-[21/9]"}`}>
+            <div className={`relative overflow-hidden bg-dark-200 border border-transparent hover:border-cyan/20 transition-all duration-500 hover:shadow-[0_4px_20px_rgba(0,217,255,0.1)] ${heroWork.media?.some((m) => m.type === "youtube" || m.type === "vimeo") ? "aspect-video" : "aspect-[21/9]"}`}>
               <Link href={`/work/${heroWork.slug}`} className="group block absolute inset-0">
                 {getCoverUrl(heroWork) ? (
                   <Image
@@ -98,6 +98,14 @@ export default async function HomePage() {
               )}
             </div>
           </FadeIn>
+          <FadeIn className="mt-10">
+            <Link
+              href="/work"
+              className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
+            >
+              View All Work &rarr;
+            </Link>
+          </FadeIn>
         </section>
       )}
 
@@ -114,7 +122,7 @@ export default async function HomePage() {
               const cover = typeof heroProject.coverImage === "object" && heroProject.coverImage ? heroProject.coverImage : null;
               const heroVideo = heroProject.media?.find((m) => m.type === "youtube" || m.type === "vimeo");
               return (
-                <div className={`relative overflow-hidden bg-dark-200 ${heroVideo ? "aspect-video" : "aspect-[21/9]"}`}>
+                <div className={`relative overflow-hidden bg-dark-200 border border-transparent hover:border-cyan/20 transition-all duration-500 hover:shadow-[0_4px_20px_rgba(0,217,255,0.1)] ${heroVideo ? "aspect-video" : "aspect-[21/9]"}`}>
                   <Link href={`/explore/${heroProject.slug}`} className="group block absolute inset-0">
                     {cover?.url ? (
                       <Image
@@ -132,7 +140,7 @@ export default async function HomePage() {
                     <div className="absolute bottom-0 left-0 p-8 lg:p-12">
                       {heroProject.contentType && (
                         <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-2">
-                          {heroProject.contentType === "music" ? "Music" : heroProject.contentType === "visual" ? "Visual" : heroProject.contentType === "comics" ? "Comics" : heroProject.contentType === "film" ? "Film" : heroProject.contentType === "ai" ? "AI" : heroProject.contentType === "writing" ? "Writing" : heroProject.contentType === "photography" ? "Photography" : heroProject.contentType}
+                          {getContentTypeLabel(heroProject.contentType)}
                         </p>
                       )}
                       <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
@@ -156,7 +164,7 @@ export default async function HomePage() {
                     <Link
                       key={project.id}
                       href={`/explore/${project.slug}`}
-                      className="group block relative aspect-[4/3] overflow-hidden bg-dark-200"
+                      className="group block relative aspect-[4/3] overflow-hidden bg-dark-200 border border-transparent hover:border-cyan/20 transition-all duration-500 hover:shadow-[0_4px_20px_rgba(0,217,255,0.1)]"
                     >
                       {cover?.url ? (
                         <Image
@@ -173,7 +181,7 @@ export default async function HomePage() {
                       <div className="absolute bottom-0 left-0 p-6 lg:p-8">
                         {project.contentType && (
                           <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-cyan mb-1">
-                            {project.contentType === "music" ? "Music" : project.contentType === "visual" ? "Visual" : project.contentType === "comics" ? "Comics" : project.contentType === "film" ? "Film" : project.contentType === "ai" ? "AI" : project.contentType === "writing" ? "Writing" : project.contentType === "photography" ? "Photography" : project.contentType}
+                            {getContentTypeLabel(project.contentType)}
                           </p>
                         )}
                         <h3 className="text-xl md:text-2xl font-light tracking-tight text-white">
@@ -212,7 +220,7 @@ export default async function HomePage() {
                 { number: "AI", label: "From Day 1" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
+                  <p className="font-mono text-4xl md:text-5xl font-light text-white tracking-tight">
                     {stat.number}
                   </p>
                   <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
@@ -248,7 +256,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Transmissions ─────────────────────────────────────── */}
+      {/* ── Transmissions ──────────────────────��──────────────── */}
       <section className="border-t border-dark-100 py-16 md:py-24 bg-[#0d0d0d]/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
@@ -259,226 +267,38 @@ export default async function HomePage() {
           </FadeIn>
           <FadeIn className="mt-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* 6DOF Reviews */}
-              <a
-                href="https://6dofreviews.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                    <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">
-                      Live
-                    </span>
+              {[
+                { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem. YouTube channel & editorial site.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
+                { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by actual human impact, cutting through noise to surface what matters.", tags: ["AI", "News", "Aggregator", "Impact"] },
+                { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that turn corporate course materials into interactive, voice-driven employee training.", tags: ["AI", "Voice", "Corporate", "Training"] },
+                { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time monitoring dashboard tracking military and geopolitical developments in the Iran region with live data visualization.", tags: ["Geopolitics", "Real-time", "Dashboard", "OSINT"] },
+                { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Centralized team platform for discovering, organizing, and managing AI tools and resources across collaborative workflows.", tags: ["AI", "Tools", "Team", "Platform"] },
+                { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking platform for the Optix creative production pipeline.", tags: ["Projects", "Management", "Production", "Workflow"] },
+              ].map((t) => (
+                <a
+                  key={t.name}
+                  href={t.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
+                      <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
+                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">{t.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-5">
+                      {t.tags.map((tag) => (
+                        <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1">{tag}</span>
+                      ))}
+                    </div>
+                    <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">{t.domain} &rarr;</span>
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
-                    6DOF Reviews
-                  </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
-                    VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem. YouTube channel &amp; editorial site.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {["VR", "Reviews", "YouTube", "Quest"].map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">
-                    6dofreviews.com &rarr;
-                  </span>
-                </div>
-              </a>
-
-              {/* Human Impact */}
-              <a
-                href="https://humanimpact.news"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                    <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">
-                      Live
-                    </span>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
-                    Human Impact
-                  </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
-                    AI-powered news aggregator that ranks global stories by actual human impact, cutting through noise to surface what matters.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {["AI", "News", "Aggregator", "Impact"].map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">
-                    humanimpact.news &rarr;
-                  </span>
-                </div>
-              </a>
-              {/* Mentora */}
-              <a
-                href="https://mentora.replit.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                    <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">
-                      Live
-                    </span>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
-                    Mentora
-                  </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
-                    Conversational AI coaches that turn corporate course materials into interactive, voice-driven employee training.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {["AI", "Voice", "Corporate", "Training"].map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">
-                    mentora.replit.app &rarr;
-                  </span>
-                </div>
-              </a>
-
-              {/* Iran War Monitor */}
-              <a
-                href="https://war-monitor.replit.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                    <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">
-                      Live
-                    </span>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
-                    Iran War Monitor
-                  </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
-                    Real-time monitoring dashboard tracking military and geopolitical developments in the Iran region with live data visualization.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {["Geopolitics", "Real-time", "Dashboard", "OSINT"].map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">
-                    war-monitor.replit.app &rarr;
-                  </span>
-                </div>
-              </a>
-
-              {/* Optix AI Hub */}
-              <a
-                href="https://optixhub.replit.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                    <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">
-                      Live
-                    </span>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
-                    Optix AI Hub
-                  </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
-                    Centralized team platform for discovering, organizing, and managing AI tools and resources across collaborative workflows.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {["AI", "Tools", "Team", "Platform"].map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">
-                    optixhub.replit.app &rarr;
-                  </span>
-                </div>
-              </a>
-
-              {/* Optix Projects */}
-              <a
-                href="https://optixprojects.replit.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                    <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">
-                      Live
-                    </span>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">
-                    Optix Projects
-                  </h3>
-                  <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
-                    Project management and tracking platform for the Optix creative production pipeline.
-                  </p>
-                  <div className="flex flex-wrap gap-2 mt-5">
-                    {["Projects", "Management", "Production", "Workflow"].map((tag) => (
-                      <span
-                        key={tag}
-                        className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">
-                    optixprojects.replit.app &rarr;
-                  </span>
-                </div>
-              </a>
+                </a>
+              ))}
             </div>
           </FadeIn>
         </div>

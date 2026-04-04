@@ -3,6 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
+import FadeIn from "@/components/fade-in";
+import PageTransition from "@/components/page-transition";
 import { RichText } from "@/components/rich-text";
 import MediaEmbedComponent from "@/components/media-embed";
 import GalleryGrid from "@/components/gallery-grid";
@@ -79,6 +81,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
   return (
     <>
     <JsonLd data={projectJsonLd} />
+    <PageTransition>
     <div className="pt-24 pb-16">
       {cover?.url ? (
         <div className="relative aspect-[21/9] w-full">
@@ -94,6 +97,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
           &larr; Back to Explore
         </Link>
 
+        <FadeIn>
         <div className="flex items-center gap-4 mb-6">
           {logo?.url && (
             <div className="flex-shrink-0 w-14 h-14 bg-[#111] border border-[#1a1a1a] rounded-[2px] flex items-center justify-center overflow-hidden">
@@ -107,7 +111,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
             </div>
           )}
           <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-light-100">{project.title}</h1>
+            <h1 className="text-5xl md:text-6xl font-light text-light-100">{project.title}</h1>
             {project.status && (
               <span className="font-mono text-[10px] tracking-widest uppercase text-cyan mt-1 inline-block">
                 {project.status}
@@ -129,7 +133,11 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
           </div>
         )}
 
+        </FadeIn>
+
+        <FadeIn>
         {project.description ? <RichText data={project.description} className="mb-10" /> : null}
+        </FadeIn>
 
         {gallery.length > 0 && <GalleryGrid images={gallery} title={project.title} />}
 
@@ -158,6 +166,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
         )}
       </div>
     </div>
+    </PageTransition>
     </>
   );
 }

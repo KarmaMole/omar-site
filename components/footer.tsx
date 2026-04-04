@@ -29,13 +29,31 @@ export default async function Footer() {
 
   return (
     <footer aria-label="Site footer" className="lg:ml-20 border-t border-[#1a1a1a]">
-      <div className="flex items-center justify-between px-6 py-6">
-        {/* Left: Copyright */}
+      {/* Top row: nav + CTA */}
+      <div className="flex flex-col sm:flex-row items-center justify-between px-6 py-8 gap-6">
+        <nav className="flex items-center gap-6" aria-label="Footer navigation">
+          {["Work", "Explore", "Writing", "About"].map((item) => (
+            <Link
+              key={item}
+              href={`/${item.toLowerCase()}`}
+              className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-light-100 transition-colors"
+            >
+              {item}
+            </Link>
+          ))}
+        </nav>
+        <Link
+          href="/contact"
+          className="font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-4 py-2 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
+        >
+          Start a Project
+        </Link>
+      </div>
+      {/* Bottom row: copyright + social */}
+      <div className="flex items-center justify-between px-6 py-4 border-t border-[#1a1a1a]">
         <p className="font-mono text-xs text-light-300">
           &copy; {currentYear} Omar Kamel
         </p>
-
-        {/* Right: Social links — icons on mobile, text on desktop */}
         <div className="flex items-center gap-4 md:gap-6">
           {socialLinks.map((social) => (
             <a
@@ -50,15 +68,6 @@ export default async function Footer() {
               <span className="hidden md:inline font-mono text-xs link-underline">{social.platform}</span>
             </a>
           ))}
-          <Link
-            href="/contact"
-            className="text-light-300 hover:text-light-100 transition-colors"
-          >
-            <span className="md:hidden p-2 -m-2 inline-flex items-center justify-center">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            </span>
-            <span className="hidden md:inline font-mono text-xs link-underline">Contact</span>
-          </Link>
         </div>
       </div>
     </footer>

@@ -47,7 +47,7 @@ export default function MediaEmbedComponent({ embed }: MediaEmbedProps) {
         isSpotify
           ? "w-full h-[352px] rounded-xl overflow-hidden"
           : isSoundcloud
-            ? "h-20 w-full"
+            ? "h-[166px] w-full"
             : "aspect-video w-full"
       }
     >
