@@ -56,7 +56,7 @@ export default async function AboutPage() {
             </div>
 
             {/* Two-column: bio left (2/3), photo right (1/3) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
+            <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-12 mb-20">
               <div className="md:col-span-2">
                 {settings.aboutBio ? (
                   <div className="prose prose-invert prose-sm prose-p:text-light-300 prose-p:leading-relaxed max-w-none">
@@ -70,11 +70,11 @@ export default async function AboutPage() {
               </div>
               <div className="md:col-span-1">
                 {photo?.url ? (
-                  <div className="relative aspect-[3/4] overflow-hidden border border-dark-100">
+                  <div className="relative aspect-[3/4] overflow-hidden border border-dark-100 border-l-2 border-l-cyan/30 bg-dark-200/50">
                     <Image src={photo.url} alt={photo.alt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 ) : (
-                  <div className="aspect-[3/4] bg-dark-200 border border-dark-100 flex items-center justify-center text-light-300 text-sm">Photo</div>
+                  <div className="aspect-[3/4] bg-dark-200 border border-dark-100 border-l-2 border-l-cyan/30 flex items-center justify-center text-light-300 text-sm">Photo</div>
                 )}
               </div>
             </div>
