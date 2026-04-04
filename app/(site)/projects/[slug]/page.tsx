@@ -98,9 +98,6 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <h1 className="text-4xl md:text-5xl font-bold text-light-100">{project.title}</h1>
-            {project.status && (
-              <span className={`inline-flex items-center px-2.5 py-1 rounded text-xs font-medium ${statusStyles[project.status] ?? ""}`}>{project.status}</span>
-            )}
           </div>
         </div>
         {tags.length > 0 && (

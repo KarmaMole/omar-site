@@ -112,11 +112,6 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
           )}
           <div>
             <h1 className="text-4xl md:text-5xl font-bold text-light-100">{project.title}</h1>
-            {project.status && (
-              <span className="font-mono text-[10px] tracking-widest uppercase text-cyan mt-1 inline-block">
-                {project.status}
-              </span>
-            )}
           </div>
         </div>
 
