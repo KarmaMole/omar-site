@@ -108,7 +108,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <Link href="/writing" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Writing</Link>
         {post.date && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-4">{formatDate(post.date)}</p>}
         <FadeIn>
-        <h1 className={`${sourceSerif.className} text-5xl md:text-6xl font-light text-light-100 mb-6`}>{post.title}</h1>
+        <h1 className={`${sourceSerif.className} text-4xl md:text-5xl font-bold text-light-100 mb-6`}>{post.title}</h1>
         </FadeIn>
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-10">

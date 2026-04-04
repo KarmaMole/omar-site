@@ -92,7 +92,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <Link href="/work" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
         <FadeIn>
         {work.client && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-2">{work.client}</p>}
-        <h1 className="text-5xl md:text-6xl font-light text-light-100 mb-4">{work.title}</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-light-100 mb-4">{work.title}</h1>
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
         </FadeIn>
         <div className="mb-8" />
