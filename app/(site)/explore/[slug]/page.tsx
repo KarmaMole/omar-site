@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { RichText } from "@/components/rich-text";
 import MediaEmbedComponent from "@/components/media-embed";
+import GalleryGrid from "@/components/gallery-grid";
 import { getProjectBySlug, getAllProjectSlugs } from "@/lib/payload/queries";
 
 interface ExploreDetailPageProps {
@@ -112,15 +113,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
 
         {project.description ? <RichText data={project.description} className="mb-10" /> : null}
 
-        {gallery.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-            {gallery.map((img, i) => (
-              <div key={img.id ?? i} className="relative aspect-[16/10] overflow-hidden rounded-[2px]">
-                <Image src={img.sizes?.hero?.url ?? img.url} alt={img.alt ?? ""} fill className="object-cover" />
-              </div>
-            ))}
-          </div>
-        )}
+        {gallery.length > 0 && <GalleryGrid images={gallery} />}
 
         {project.media && project.media.length > 0 && (
           <div className="space-y-6 mb-10">

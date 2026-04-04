@@ -6,6 +6,7 @@ import JsonLd from "@/components/json-ld";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
 import { getWorkBySlug, getAllWorkSlugs } from "@/lib/payload/queries";
+import GalleryGrid from "@/components/gallery-grid";
 import { formatDate } from "@/lib/utils";
 
 interface WorkDetailPageProps {
@@ -91,16 +92,12 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <div className="mb-8" />
         {work.description ? <RichText data={work.description} className="mb-10" /> : null}
         {work.gallery && Array.isArray(work.gallery) && work.gallery.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-            {work.gallery.map((img, i) => {
-              if (typeof img !== "object" || !img?.url) return null;
-              return (
-                <div key={img.id ?? i} className="relative aspect-[16/10] overflow-hidden rounded-[2px]">
-                  <Image src={img.sizes?.hero?.url ?? img.url} alt={img.alt ?? ""} fill className="object-cover" />
-                </div>
-              );
-            })}
-          </div>
+          <GalleryGrid
+            images={work.gallery.filter(
+              (img): img is Extract<typeof img, { url: string }> =>
+                typeof img === "object" && img !== null && "url" in img
+            )}
+          />
         )}
         {work.media && work.media.length > 0 && (
           <div className="space-y-6 mb-10">
