@@ -14,7 +14,7 @@ export default function ServicesPage() {
       <section className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
         <div className="w-12 h-0.5 bg-cyan mb-8" />
         <span className="section-label mb-4">Services</span>
-        <h2 className="text-4xl font-bold text-light-100 mb-4">Services</h2>
+        <h1 className="text-4xl font-bold text-light-100 mb-4">Services</h1>
         <p className="text-light-300 max-w-md mb-8 leading-relaxed">
           A full breakdown of AI production services — brand films, campaigns, generative content, and creative consulting — is coming soon. Get in touch to discuss your project in the meantime.
         </p>

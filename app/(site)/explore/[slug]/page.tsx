@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/json-ld";
 import { RichText } from "@/components/rich-text";
 import MediaEmbedComponent from "@/components/media-embed";
 import GalleryGrid from "@/components/gallery-grid";
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: ExploreDetailPageProps): Prom
     openGraph: {
       type: "article",
       title: project.title,
+      description: `${project.title} — ${project.contentType ?? "project"} by Omar Kamel.`,
       ...(cover?.url
         ? {
             images: [
@@ -60,7 +62,23 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
       typeof img === "object" && img !== null && "url" in img
   ) ?? [];
 
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.title,
+    description: `${project.title} — ${project.contentType ?? "project"} by Omar Kamel.`,
+    ...(cover?.url ? { image: cover.url } : {}),
+    author: {
+      "@type": "Person",
+      name: "Omar Kamel",
+      url: "https://omarkamel.com",
+    },
+    url: `https://omarkamel.com/explore/${slug}`,
+  };
+
   return (
+    <>
+    <JsonLd data={projectJsonLd} />
     <div className="pt-24 pb-16">
       {cover?.url ? (
         <div className="relative aspect-[21/9] w-full">
@@ -140,5 +158,6 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
         )}
       </div>
     </div>
+    </>
   );
 }

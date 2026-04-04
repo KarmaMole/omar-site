@@ -68,6 +68,7 @@ export interface BlogPostDoc {
   body?: unknown;
   excerpt?: string | null;
   date?: string | null;
+  updatedAt?: string | null;
   isExternal?: boolean | null;
   publicationUrl?: string | null;
   publicationName?: string | null;

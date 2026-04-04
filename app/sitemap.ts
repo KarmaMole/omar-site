@@ -28,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const writingPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${baseUrl}/writing/${slug}`, changeFrequency: "monthly", priority: 0.7,
+    url: `${baseUrl}/blog/${slug}`, changeFrequency: "monthly", priority: 0.7,
   }));
 
   return [...staticPages, ...workPages, ...explorePages, ...writingPages];

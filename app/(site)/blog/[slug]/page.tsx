@@ -71,6 +71,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     headline: post.title,
     ...(post.excerpt ? { description: post.excerpt } : {}),
     ...(post.date ? { datePublished: post.date } : {}),
+    ...(post.updatedAt ? { dateModified: post.updatedAt } : {}),
     ...(cover?.url ? { image: cover.url } : {}),
     author: {
       "@type": "Person",

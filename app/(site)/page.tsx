@@ -59,7 +59,7 @@ export default async function HomePage() {
       {heroWork && (
         <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 md:py-28 border-t border-dark-100">
           <FadeIn>
-            <span className="section-label-primary">Featured Work</span>
+            <h2 className="section-label-primary">Featured Work</h2>
           </FadeIn>
           <FadeIn className="mt-8">
             <div className={`relative overflow-hidden bg-dark-200 ${heroWork.media?.some((m) => m.type === "youtube" || m.type === "vimeo") ? "aspect-video" : "aspect-[21/9]"}`}>
@@ -105,7 +105,7 @@ export default async function HomePage() {
       {featuredProjects.length > 0 && (
         <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
           <FadeIn>
-            <span className="section-label-primary">Featured Explorations</span>
+            <h2 className="section-label-primary">Featured Explorations</h2>
           </FadeIn>
           {/* Hero exploration (first item) */}
           <FadeIn className="mt-8">
@@ -201,7 +201,7 @@ export default async function HomePage() {
       <section className="border-y border-dark-100 py-16 md:py-20 bg-[#0d0d0d]/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
-            <span className="section-label">By the Numbers</span>
+            <h2 className="section-label">By the Numbers</h2>
           </FadeIn>
           <FadeIn className="mt-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-dark-100">
@@ -230,7 +230,7 @@ export default async function HomePage() {
         <section className="py-12 md:py-16 border-t border-dark-100">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
-              <span className="section-label">Selected Clients</span>
+              <h2 className="section-label">Selected Clients</h2>
             </FadeIn>
             <FadeIn className="mt-8">
               <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4">
@@ -252,7 +252,7 @@ export default async function HomePage() {
       <section className="border-t border-dark-100 py-16 md:py-24 bg-[#0d0d0d]/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
-            <span className="section-label-primary">Transmissions</span>
+            <h2 className="section-label-primary">Transmissions</h2>
             <p className="text-light-300 text-sm mt-3 max-w-xl">
               Ongoing platforms and independent projects broadcasting on their own frequencies.
             </p>
@@ -488,7 +488,7 @@ export default async function HomePage() {
       {gridWork.length > 0 && (
         <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
           <FadeIn>
-            <span className="section-label">Recent Work</span>
+            <h2 className="section-label">Recent Work</h2>
           </FadeIn>
           <FadeIn className="mt-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -546,7 +546,7 @@ export default async function HomePage() {
         <section className="border-t border-dark-100 py-16 md:py-24 bg-[#0d0d0d]/30">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
-              <span className="section-label">Latest Writing</span>
+              <h2 className="section-label">Latest Writing</h2>
             </FadeIn>
             <FadeIn className="mt-10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

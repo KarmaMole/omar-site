@@ -49,6 +49,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     creator: "@omarkamel",
   },
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
+  },
 };
 
 export default function SiteLayout({
