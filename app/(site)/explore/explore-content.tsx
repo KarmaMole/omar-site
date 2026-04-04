@@ -10,11 +10,13 @@ import type { ProjectDoc } from "@/lib/payload/types";
 
 const categories = [
   { value: "all", label: "All" },
-  { value: "project", label: "Projects" },
   { value: "music", label: "Music" },
+  { value: "visual", label: "Visual" },
+  { value: "comics", label: "Comics" },
+  { value: "film", label: "Film" },
+  { value: "ai", label: "AI" },
+  { value: "writing", label: "Writing" },
   { value: "photography", label: "Photography" },
-  { value: "graphic-design", label: "Graphic Design" },
-  { value: "creative-work", label: "Creative Work" },
 ];
 
 interface ExploreContentProps {

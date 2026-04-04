@@ -132,7 +132,7 @@ export default async function HomePage() {
                     <div className="absolute bottom-0 left-0 p-8 lg:p-12">
                       {heroProject.contentType && (
                         <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-2">
-                          {heroProject.contentType === "project" ? "Project" : heroProject.contentType === "music" ? "Music" : heroProject.contentType === "photography" ? "Photography" : heroProject.contentType === "graphic-design" ? "Graphic Design" : "Creative Work"}
+                          {heroProject.contentType === "music" ? "Music" : heroProject.contentType === "visual" ? "Visual" : heroProject.contentType === "comics" ? "Comics" : heroProject.contentType === "film" ? "Film" : heroProject.contentType === "ai" ? "AI" : heroProject.contentType === "writing" ? "Writing" : heroProject.contentType === "photography" ? "Photography" : heroProject.contentType}
                         </p>
                       )}
                       <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
@@ -173,7 +173,7 @@ export default async function HomePage() {
                       <div className="absolute bottom-0 left-0 p-6 lg:p-8">
                         {project.contentType && (
                           <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-cyan mb-1">
-                            {project.contentType === "project" ? "Project" : project.contentType === "music" ? "Music" : project.contentType === "photography" ? "Photography" : project.contentType === "graphic-design" ? "Graphic Design" : "Creative Work"}
+                            {project.contentType === "music" ? "Music" : project.contentType === "visual" ? "Visual" : project.contentType === "comics" ? "Comics" : project.contentType === "film" ? "Film" : project.contentType === "ai" ? "AI" : project.contentType === "writing" ? "Writing" : project.contentType === "photography" ? "Photography" : project.contentType}
                           </p>
                         )}
                         <h3 className="text-xl md:text-2xl font-light tracking-tight text-white">

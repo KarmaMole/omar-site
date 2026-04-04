@@ -31,13 +31,15 @@ export const Projects: CollectionConfig = {
       name: "contentType",
       type: "select",
       options: [
-        { label: "Project", value: "project" },
-        { label: "Music Release", value: "music" },
+        { label: "Music", value: "music" },
+        { label: "Visual", value: "visual" },
+        { label: "Comics", value: "comics" },
+        { label: "Film", value: "film" },
+        { label: "AI", value: "ai" },
+        { label: "Writing", value: "writing" },
         { label: "Photography", value: "photography" },
-        { label: "Graphic Design", value: "graphic-design" },
-        { label: "Creative Work", value: "creative-work" },
       ],
-      defaultValue: "project",
+      defaultValue: "visual",
       admin: {
         position: "sidebar",
       },
@@ -71,7 +73,7 @@ export const Projects: CollectionConfig = {
         },
         condition: (_data, siblingData) =>
           siblingData?.contentType === "photography" ||
-          siblingData?.contentType === "graphic-design",
+          siblingData?.contentType === "visual",
       },
     },
     {

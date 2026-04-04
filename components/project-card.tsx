@@ -52,7 +52,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <div className="p-4 space-y-1">
         {project.contentType && (
           <p className="font-mono text-[10px] tracking-widest uppercase text-cyan">
-            {project.contentType === "project" ? "Project" : project.contentType === "music" ? "Music" : project.contentType === "photography" ? "Photography" : project.contentType === "graphic-design" ? "Graphic Design" : "Creative Work"}
+            {project.contentType === "music" ? "Music" : project.contentType === "visual" ? "Visual" : project.contentType === "comics" ? "Comics" : project.contentType === "film" ? "Film" : project.contentType === "ai" ? "AI" : project.contentType === "writing" ? "Writing" : project.contentType === "photography" ? "Photography" : project.contentType}
           </p>
         )}
         <h3 className="text-lg font-light text-light-100">{project.title}</h3>

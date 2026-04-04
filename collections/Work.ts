@@ -46,10 +46,13 @@ export const Work: CollectionConfig = {
       type: "select",
       hasMany: true,
       options: [
-        { label: "Commercial & Advertising", value: "Commercial & Advertising" },
-        { label: "Documentary & Awareness", value: "Documentary & Awareness" },
+        { label: "Commercial", value: "Commercial" },
+        { label: "Branding", value: "Branding" },
         { label: "Corporate", value: "Corporate" },
-        { label: "Branding & Design", value: "Branding & Design" },
+        { label: "Documentary", value: "Documentary" },
+        { label: "Awareness", value: "Awareness" },
+        { label: "Design", value: "Design" },
+        { label: "Digital", value: "Digital" },
       ],
     },
     {

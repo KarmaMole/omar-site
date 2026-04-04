@@ -37,7 +37,7 @@ export interface ProjectDoc {
   id: string;
   title: string;
   slug: string;
-  contentType?: "project" | "music" | "photography" | "graphic-design" | "creative-work" | null;
+  contentType?: "music" | "visual" | "comics" | "film" | "ai" | "writing" | "photography" | null;
   streamingUrl?: string | null;
   audioFile?: MediaUpload | string | null;
   description?: unknown;

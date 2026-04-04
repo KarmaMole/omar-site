@@ -5,10 +5,13 @@ import ScrollFilters from "@/components/scroll-filters";
 
 const CATEGORIES = [
   "All",
-  "Commercial & Advertising",
-  "Documentary & Awareness",
+  "Commercial",
+  "Branding",
   "Corporate",
-  "Branding & Design",
+  "Documentary",
+  "Awareness",
+  "Design",
+  "Digital",
 ];
 
 export default function CategoryFilter() {
