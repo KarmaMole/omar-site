@@ -595,9 +595,9 @@ export default async function HomePage() {
             <div className="mt-10">
               <Link
                 href="/contact"
-                className="font-mono text-sm tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
+                className="font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-4 py-2 hover:bg-cyan/90 transition-colors"
               >
-                Start a Project &rarr;
+                Start a Project
               </Link>
             </div>
           </div>
