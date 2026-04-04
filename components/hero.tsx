@@ -66,7 +66,7 @@ export default async function Hero() {
             <div className="mt-8 flex items-center gap-6">
               <Link
                 href="/contact"
-                className="font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-4 py-2 hover:bg-cyan/90 transition-colors"
+                className="font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-4 py-2 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
               >
                 Start a Project
               </Link>
