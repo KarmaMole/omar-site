@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Source_Serif_4 } from "next/font/google";
 import JsonLd from "@/components/json-ld";
 import FadeIn from "@/components/fade-in";
 import PageTransition from "@/components/page-transition";
@@ -9,6 +10,11 @@ import TagBadge from "@/components/tag-badge";
 import { RichText } from "@/components/rich-text";
 import { getBlogPostBySlug, getAllBlogSlugs } from "@/lib/payload/queries";
 import { formatDate } from "@/lib/utils";
+
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -102,14 +108,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <Link href="/writing" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Writing</Link>
         {post.date && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-4">{formatDate(post.date)}</p>}
         <FadeIn>
-        <h1 className="font-serif text-5xl md:text-6xl font-light text-light-100 mb-6">{post.title}</h1>
+        <h1 className="${sourceSerif.className} text-5xl md:text-6xl font-light text-light-100 mb-6">{post.title}</h1>
         </FadeIn>
         {tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-10">
             {tags.map((tag) => (<TagBadge key={tag} label={tag} href={`/writing?tag=${encodeURIComponent(tag)}`} />))}
           </div>
         )}
-        {post.body ? <RichText data={post.body} className="font-serif prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed" /> : null}
+        {post.body ? <RichText data={post.body} className="${sourceSerif.className} prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed" /> : null}
       </div>
     </article>
     </PageTransition>
