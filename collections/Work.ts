@@ -1,10 +1,21 @@
 import type { CollectionConfig } from "payload";
+import { resolveVimeoUrls } from "@/lib/resolve-vimeo";
 
 export const Work: CollectionConfig = {
   slug: "work",
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "client", "featured", "date"],
+  },
+  hooks: {
+    beforeChange: [
+      async ({ data }) => {
+        if (data.media) {
+          data.media = await resolveVimeoUrls(data.media);
+        }
+        return data;
+      },
+    ],
   },
   access: {
     read: () => true,

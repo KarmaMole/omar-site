@@ -1,9 +1,6 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import type { MediaEmbed } from "@/lib/payload/types";
 
-function getEmbedUrl(embed: MediaEmbed): string | null {
+function getEmbedUrl(embed: MediaEmbed): string {
   const { type, url } = embed;
 
   if (type === "youtube") {
@@ -15,11 +12,8 @@ function getEmbedUrl(embed: MediaEmbed): string | null {
 
   if (type === "vimeo") {
     const match = url.match(/vimeo\.com\/(\d+)/);
-    if (match) {
-      return `https://player.vimeo.com/video/${match[1]}`;
-    }
-    // Vanity URL — needs async resolution
-    return null;
+    const id = match?.[1] ?? "";
+    return `https://player.vimeo.com/video/${id}`;
   }
 
   if (type === "soundcloud") {
@@ -42,36 +36,7 @@ interface MediaEmbedProps {
 }
 
 export default function MediaEmbedComponent({ embed }: MediaEmbedProps) {
-  const staticUrl = getEmbedUrl(embed);
-  const [embedUrl, setEmbedUrl] = useState(staticUrl);
-
-  useEffect(() => {
-    if (staticUrl || embed.type !== "vimeo") return;
-
-    // Resolve Vimeo vanity URL via oEmbed API
-    fetch(
-      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(embed.url)}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.video_id) {
-          setEmbedUrl(
-            `https://player.vimeo.com/video/${data.video_id}`
-          );
-        }
-      })
-      .catch(() => {
-        // Fallback: just use the original URL
-        setEmbedUrl(embed.url);
-      });
-  }, [staticUrl, embed.type, embed.url]);
-
-  if (!embedUrl) {
-    return (
-      <div className="aspect-video w-full bg-dark-100 animate-pulse" />
-    );
-  }
-
+  const embedUrl = getEmbedUrl(embed);
   const isSpotify = embed.type === "spotify";
   const isSoundcloud = embed.type === "soundcloud";
 
