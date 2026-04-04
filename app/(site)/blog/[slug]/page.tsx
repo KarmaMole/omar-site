@@ -69,7 +69,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) notFound();
 
   const cover = typeof post.coverImage === "object" && post.coverImage ? post.coverImage : null;
-  const tags = post.tags?.map((t) => t.tag) ?? [];
+  const tags = post.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
 
   const articleJsonLd = {
     "@context": "https://schema.org",

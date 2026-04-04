@@ -99,12 +99,12 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
 
         {project.tags && project.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
-            {project.tags.map((t) => (
+            {project.tags.split(",").map((t) => t.trim()).filter(Boolean).map((tag) => (
               <span
-                key={t.tag}
+                key={tag}
                 className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
               >
-                {t.tag}
+                {tag}
               </span>
             ))}
           </div>

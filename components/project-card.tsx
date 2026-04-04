@@ -11,7 +11,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     typeof project.coverImage === "object" && project.coverImage
       ? project.coverImage
       : null;
-  const tags = project.tags?.map((t) => t.tag) ?? [];
+  const tags = project.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
 
   return (
     <Link

@@ -74,14 +74,10 @@ export const BlogPosts: CollectionConfig = {
     },
     {
       name: "tags",
-      type: "array",
-      fields: [
-        {
-          name: "tag",
-          type: "text",
-          required: true,
-        },
-      ],
+      type: "text",
+      admin: {
+        description: "Comma-separated tags (e.g. AEgypt, Amerika, Media)",
+      },
     },
   ],
 };

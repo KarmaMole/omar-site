@@ -126,14 +126,10 @@ export const Projects: CollectionConfig = {
     },
     {
       name: "tags",
-      type: "array",
-      fields: [
-        {
-          name: "tag",
-          type: "text",
-          required: true,
-        },
-      ],
+      type: "text",
+      admin: {
+        description: "Comma-separated tags (e.g. AI Art, Exhibition, Cairo)",
+      },
     },
     {
       name: "media",

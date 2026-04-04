@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) return {};
-  const tags = project.tags?.map((t) => t.tag) ?? [];
+  const tags = project.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
   const cover =
     typeof project.coverImage === "object" && project.coverImage
       ? project.coverImage
@@ -64,7 +64,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
 
   const cover = typeof project.coverImage === "object" ? project.coverImage : null;
   const logo = typeof project.logo === "object" && project.logo ? project.logo : null;
-  const tags = project.tags?.map((t) => t.tag) ?? [];
+  const tags = project.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
 
   const projectJsonLd = {
     "@context": "https://schema.org",

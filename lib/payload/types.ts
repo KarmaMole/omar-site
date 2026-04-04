@@ -24,7 +24,7 @@ export interface WorkDoc {
   description?: unknown;
   coverImage: MediaUpload | string;
   categories?: string[] | null;
-  tags?: { tag: string }[] | null;
+  tags?: string | null;
   gallery?: (MediaUpload | string)[] | null;
   media?: MediaEmbed[] | null;
   externalLink?: string | null;
@@ -45,7 +45,7 @@ export interface ProjectDoc {
   logo?: MediaUpload | string | null;
   status?: "active" | "paused" | "archived" | null;
   links?: { label: string; url: string }[] | null;
-  tags?: { tag: string }[] | null;
+  tags?: string | null;
   gallery?: (MediaUpload | string)[] | null;
   media?: MediaEmbed[] | null;
   featured?: boolean | null;
@@ -71,7 +71,7 @@ export interface BlogPostDoc {
   isExternal?: boolean | null;
   publicationUrl?: string | null;
   publicationName?: string | null;
-  tags?: { tag: string }[] | null;
+  tags?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;

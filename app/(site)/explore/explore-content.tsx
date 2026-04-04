@@ -34,7 +34,7 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
 
     if (initialTag) {
       result = result.filter((p) =>
-        p.tags?.some((t) => t.tag.toLowerCase() === initialTag.toLowerCase())
+        p.tags?.split(",").some((t) => t.trim().toLowerCase() === initialTag.toLowerCase())
       );
     }
 

@@ -57,14 +57,10 @@ export const Work: CollectionConfig = {
     },
     {
       name: "tags",
-      type: "array",
-      fields: [
-        {
-          name: "tag",
-          type: "text",
-          required: true,
-        },
-      ],
+      type: "text",
+      admin: {
+        description: "Comma-separated tags (e.g. Corporate, Metro, TV Ad)",
+      },
     },
     {
       name: "gallery",

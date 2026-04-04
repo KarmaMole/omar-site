@@ -113,8 +113,8 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
 
   const filtered = activeFilter
     ? posts.filter((p) =>
-        p.tags?.some(
-          (t) => t.tag.toLowerCase() === activeFilter.toLowerCase()
+        p.tags?.split(",").some(
+          (t) => t.trim().toLowerCase() === activeFilter.toLowerCase()
         )
       )
     : posts;
