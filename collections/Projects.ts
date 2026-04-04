@@ -71,9 +71,14 @@ export const Projects: CollectionConfig = {
         components: {
           Field: "@/components/admin/gallery-upload",
         },
-        condition: (_data, siblingData) =>
-          siblingData?.contentType === "photography" ||
-          siblingData?.contentType === "visual",
+        condition: (_data, siblingData) => {
+          const type = siblingData?.contentType;
+          return type === "photography" ||
+            type === "visual" ||
+            type === "comics" ||
+            type === "ai" ||
+            type === "film";
+        },
       },
     },
     {
