@@ -62,7 +62,7 @@ export default async function HomePage() {
             <span className="section-label-primary">Featured Work</span>
           </FadeIn>
           <FadeIn className="mt-8">
-            <div className="relative aspect-[21/9] overflow-hidden bg-dark-200">
+            <div className={`relative overflow-hidden bg-dark-200 ${heroWork.media?.some((m) => m.type === "youtube" || m.type === "vimeo") ? "aspect-video" : "aspect-[21/9]"}`}>
               <Link href={`/work/${heroWork.slug}`} className="group block absolute inset-0">
                 {getCoverUrl(heroWork) ? (
                   <Image
@@ -114,7 +114,7 @@ export default async function HomePage() {
               const cover = typeof heroProject.coverImage === "object" && heroProject.coverImage ? heroProject.coverImage : null;
               const heroVideo = heroProject.media?.find((m) => m.type === "youtube" || m.type === "vimeo");
               return (
-                <div className="relative aspect-[21/9] overflow-hidden bg-dark-200">
+                <div className={`relative overflow-hidden bg-dark-200 ${heroVideo ? "aspect-video" : "aspect-[21/9]"}`}>
                   <Link href={`/explore/${heroProject.slug}`} className="group block absolute inset-0">
                     {cover?.url ? (
                       <Image
