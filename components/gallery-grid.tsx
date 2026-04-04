@@ -11,9 +11,10 @@ const GalleryLightbox = dynamic(() => import("./gallery-lightbox"), {
 
 interface GalleryGridProps {
   images: MediaUpload[];
+  title: string;
 }
 
-export default function GalleryGrid({ images }: GalleryGridProps) {
+export default function GalleryGrid({ images, title }: GalleryGridProps) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
@@ -40,6 +41,7 @@ export default function GalleryGrid({ images }: GalleryGridProps) {
         <GalleryLightbox
           images={images}
           initialIndex={lightboxIndex}
+          title={title}
           onClose={() => setLightboxIndex(null)}
         />
       )}

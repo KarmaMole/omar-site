@@ -113,7 +113,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
 
         {project.description ? <RichText data={project.description} className="mb-10" /> : null}
 
-        {gallery.length > 0 && <GalleryGrid images={gallery} />}
+        {gallery.length > 0 && <GalleryGrid images={gallery} title={project.title} />}
 
         {project.media && project.media.length > 0 && (
           <div className="space-y-6 mb-10">

@@ -97,6 +97,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
               (img): img is Extract<typeof img, { url: string }> =>
                 typeof img === "object" && img !== null && "url" in img
             )}
+            title={work.title}
           />
         )}
         {work.media && work.media.length > 0 && (

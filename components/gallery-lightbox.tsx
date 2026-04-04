@@ -8,12 +8,14 @@ import type { MediaUpload } from "@/lib/payload/types";
 interface GalleryLightboxProps {
   images: MediaUpload[];
   initialIndex: number;
+  title: string;
   onClose: () => void;
 }
 
 export default function GalleryLightbox({
   images,
   initialIndex,
+  title,
   onClose,
 }: GalleryLightboxProps) {
   const [index, setIndex] = useState(initialIndex);
@@ -132,8 +134,9 @@ export default function GalleryLightbox({
       {/* Close button */}
       <button
         onClick={close}
+        onTouchEnd={(e) => { e.preventDefault(); close(); }}
         aria-label="Close gallery"
-        className="absolute top-6 right-6 z-10 font-mono text-[10px] tracking-widest uppercase text-light-300 hover:text-cyan transition-colors p-2"
+        className="absolute top-4 right-4 z-20 font-mono text-[10px] tracking-widest uppercase text-light-300 hover:text-cyan transition-colors p-4"
       >
         Close
       </button>
@@ -187,15 +190,13 @@ export default function GalleryLightbox({
       </div>
 
       {/* Counter + Caption */}
-      <div className="absolute bottom-6 left-0 right-0 z-10 text-center">
+      <div className="absolute bottom-6 left-0 right-0 z-20 text-center">
         <span className="font-mono text-[10px] tracking-widest uppercase text-light-300/60">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
-        {current.alt && (
-          <p className="font-mono text-[11px] text-light-300/40 mt-1">
-            {current.alt}
-          </p>
-        )}
+        <p className="font-mono text-[11px] text-light-300/40 mt-1">
+          {title}
+        </p>
       </div>
     </div>
   );
