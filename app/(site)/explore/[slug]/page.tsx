@@ -170,7 +170,14 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
 
 async function MoreExplorations({ currentSlug }: { currentSlug: string }) {
   const allProjects = await getAllProjects();
-  const others = allProjects.filter((p) => p.slug !== currentSlug).slice(0, 3);
+  // Rotate the list starting after the current item so each detail page
+  // shows a different set of neighbors instead of always the top 3.
+  const idx = allProjects.findIndex((p) => p.slug === currentSlug);
+  const rotated =
+    idx >= 0
+      ? [...allProjects.slice(idx + 1), ...allProjects.slice(0, idx)]
+      : allProjects;
+  const others = rotated.slice(0, 3);
   return (
     <MoreItems
       items={others.map((p) => ({

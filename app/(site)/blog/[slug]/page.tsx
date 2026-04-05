@@ -126,8 +126,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 }
 
 async function MoreWriting({ currentSlug }: { currentSlug: string }) {
-  const recent = await getRecentBlogPosts(4);
-  const others = recent.filter((p) => p.slug !== currentSlug).slice(0, 3);
+  // Pull a wider window so rotation has room to show different neighbors
+  // instead of always the same top 3.
+  const recent = await getRecentBlogPosts(20);
+  const idx = recent.findIndex((p) => p.slug === currentSlug);
+  const rotated =
+    idx >= 0 ? [...recent.slice(idx + 1), ...recent.slice(0, idx)] : recent;
+  const others = rotated.slice(0, 3);
   return (
     <MoreItems
       items={others.map((p) => ({

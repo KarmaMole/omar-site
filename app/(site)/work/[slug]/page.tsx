@@ -127,7 +127,12 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 
 async function MoreWork({ currentSlug }: { currentSlug: string }) {
   const allWork = await getAllWork();
-  const others = allWork.filter((w) => w.slug !== currentSlug).slice(0, 3);
+  // Rotate the list starting after the current item so each work detail
+  // page shows a different set of neighbors instead of always the top 3.
+  const idx = allWork.findIndex((w) => w.slug === currentSlug);
+  const rotated =
+    idx >= 0 ? [...allWork.slice(idx + 1), ...allWork.slice(0, idx)] : allWork;
+  const others = rotated.slice(0, 3);
   return (
     <MoreItems
       items={others.map((w) => ({
