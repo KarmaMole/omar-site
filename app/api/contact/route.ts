@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
 
     // Send email via Resend
     await resend!.emails.send({
-      from: "Omar Kamel Website <onboarding@resend.dev>",
+      from: "Incoming Transmission <contact@send.omarkamel.com>",
       to: CONTACT_EMAIL,
       replyTo: trimmedEmail,
       subject: `Contact Form: ${trimmedName}`,
