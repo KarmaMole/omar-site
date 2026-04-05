@@ -21,6 +21,7 @@
     "@types/sanitize-html": "^2.16.1",
     "autoprefixer": "^10.4.27",
     "next": "^15.4.11",
+    "nodemailer": "^8.0.4",
     "payload": "^3.81.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.37",
+    "@types/nodemailer": "^8.0.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "eslint": "^8.57.1",

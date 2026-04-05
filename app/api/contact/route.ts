@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { resend } from "@/lib/resend";
+import { mailer } from "@/lib/mailer";
 
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "omar@omarkamel.com";
 
@@ -109,8 +109,8 @@ export async function POST(req: NextRequest) {
     const trimmedEmail = email.trim();
     const trimmedMessage = message.trim();
 
-    // Graceful fallback if no API key
-    if (!process.env.RESEND_API_KEY) {
+    // Graceful fallback if SMTP not configured (e.g. local dev without env vars)
+    if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
       console.log("[Contact Form Submission]", {
         name: trimmedName,
         email: trimmedEmail,
@@ -120,9 +120,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true });
     }
 
-    // Send email via Resend
-    await resend!.emails.send({
-      from: "Incoming Transmission <contact@send.omarkamel.com>",
+    // Send email via Siteground SMTP.
+    // FROM must match the authenticated mailbox (SMTP_USER) — Siteground rejects
+    // sends from any other address. replyTo carries the submitter's email so
+    // Omar can reply directly from his inbox.
+    await mailer.sendMail({
+      from: `"Incoming Transmission" <${process.env.SMTP_USER}>`,
       to: CONTACT_EMAIL,
       replyTo: trimmedEmail,
       subject: `Contact Form: ${trimmedName}`,
