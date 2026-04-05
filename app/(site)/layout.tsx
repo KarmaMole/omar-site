@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
@@ -47,6 +47,10 @@ export const metadata: Metadata = {
       "application/rss+xml": "/feed.xml",
     },
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
 };
 
 export default function SiteLayout({
