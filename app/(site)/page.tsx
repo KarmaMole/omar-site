@@ -236,10 +236,10 @@ export default async function HomePage() {
           <FadeIn className="mt-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-dark-100">
               {[
-                { number: "20+", label: "Years", qualifier: "Cairo, Italy, Dubai" },
-                { number: "50+", label: "Brands", qualifier: "Coca-Cola, Ford Foundation, ILO" },
-                { number: "200+", label: "Projects", qualifier: "Film, brand, AI, music" },
-                { number: "AI", label: "From Day 1", qualifier: "Claude, MidJourney, ComfyUI" },
+                { number: "20+", label: "Years" },
+                { number: "50+", label: "Brands" },
+                { number: "200+", label: "Projects" },
+                { number: "AI", label: "From Day 1" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center md:px-4">
                   <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
@@ -247,9 +247,6 @@ export default async function HomePage() {
                   </p>
                   <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
                     {stat.label}
-                  </p>
-                  <p className="font-mono text-[10px] tracking-[0.1em] text-light-300/50 mt-1.5">
-                    {stat.qualifier}
                   </p>
                 </div>
               ))}
