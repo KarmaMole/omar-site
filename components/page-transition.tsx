@@ -18,7 +18,7 @@ export default function PageTransition({ children }: PageTransitionProps) {
   return (
     <div
       className="transition-all duration-300 ease-out"
-      style={{ opacity: mounted ? 1 : 0, transform: mounted ? "translateY(0)" : "translateY(8px)" }}
+      style={{ opacity: mounted ? 1 : 0 }}
     >
       {children}
     </div>

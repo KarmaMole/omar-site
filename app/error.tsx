@@ -12,7 +12,7 @@ export default function Error({
       <div className="max-w-md text-center">
         <h1
           className="text-6xl font-mono font-bold mb-4"
-          style={{ color: "#00e5ff" }}
+          style={{ color: "#00d9ff" }}
         >
           Error
         </h1>
@@ -26,16 +26,16 @@ export default function Error({
           onClick={() => reset()}
           className="px-6 py-3 border font-mono text-sm uppercase tracking-wider transition-colors duration-200"
           style={{
-            borderColor: "#00e5ff",
-            color: "#00e5ff",
+            borderColor: "#00d9ff",
+            color: "#00d9ff",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#00e5ff";
+            e.currentTarget.style.backgroundColor = "#00d9ff";
             e.currentTarget.style.color = "#0a0a0a";
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.backgroundColor = "transparent";
-            e.currentTarget.style.color = "#00e5ff";
+            e.currentTarget.style.color = "#00d9ff";
           }}
         >
           Try Again

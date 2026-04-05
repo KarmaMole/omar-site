@@ -2,6 +2,30 @@
 
 import { useEffect, useRef, useState } from "react";
 
+// Shared IntersectionObserver singleton for all FadeIn instances
+let sharedObserver: IntersectionObserver | null = null;
+const callbacks = new Map<Element, () => void>();
+
+function getObserver() {
+  if (sharedObserver) return sharedObserver;
+  sharedObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const cb = callbacks.get(entry.target);
+          if (cb) {
+            cb();
+            callbacks.delete(entry.target);
+            sharedObserver?.unobserve(entry.target);
+          }
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+  return sharedObserver;
+}
+
 interface FadeInProps {
   children: React.ReactNode;
   className?: string;
@@ -15,19 +39,14 @@ export default function FadeIn({ children, className = "" }: FadeInProps) {
     const element = ref.current;
     if (!element) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
+    const observer = getObserver();
+    callbacks.set(element, () => setVisible(true));
     observer.observe(element);
 
-    return () => observer.disconnect();
+    return () => {
+      callbacks.delete(element);
+      observer.unobserve(element);
+    };
   }, []);
 
   return (

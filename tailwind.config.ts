@@ -30,11 +30,6 @@ const config: Config = {
           medium: 'var(--color-accent-medium)',
           subtle: 'var(--color-accent-subtle)',
         },
-        magenta: {
-          DEFAULT: '#ff00ff',
-          dark: '#d900d9',
-          glow: 'rgba(255, 0, 255, 0.15)',
-        },
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],

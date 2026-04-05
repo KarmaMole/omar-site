@@ -80,7 +80,7 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
                 onClick={accept}
                 className="px-4 py-2 text-xs uppercase tracking-wider transition-colors"
                 style={{
-                  backgroundColor: "#00e5ff",
+                  backgroundColor: "#00d9ff",
                   color: "#0a0a0a",
                 }}
               >

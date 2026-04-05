@@ -8,7 +8,8 @@ import FadeIn from "@/components/fade-in";
 import PageTransition from "@/components/page-transition";
 import TagBadge from "@/components/tag-badge";
 import { RichText } from "@/components/rich-text";
-import { getBlogPostBySlug, getAllBlogSlugs } from "@/lib/payload/queries";
+import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from "@/lib/payload/queries";
+import MoreItems from "@/components/more-items";
 import { formatDate } from "@/lib/utils";
 
 const sourceSerif = Source_Serif_4({
@@ -100,8 +101,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       <PageTransition>
       <article className="pt-24 pb-16">
       {cover?.url && (
-        <div className="relative aspect-[21/9] w-full">
-          <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt} fill className="object-cover" priority />
+        <div className="relative aspect-[21/9] w-full bg-dark-200">
+          <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt ?? post.title} fill className="object-cover" priority />
         </div>
       )}
       <div className="max-w-3xl mx-auto px-6 py-12">
@@ -116,9 +117,29 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         )}
         {post.body ? <RichText data={post.body} className={`${sourceSerif.className} prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed`} /> : null}
+        <MoreWriting currentSlug={slug} />
       </div>
     </article>
     </PageTransition>
     </>
+  );
+}
+
+async function MoreWriting({ currentSlug }: { currentSlug: string }) {
+  const recent = await getRecentBlogPosts(4);
+  const others = recent.filter((p) => p.slug !== currentSlug).slice(0, 3);
+  return (
+    <MoreItems
+      items={others.map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        coverImage: p.coverImage,
+        href: `/blog/${p.slug}`,
+        subtitle: p.date ? new Date(p.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : undefined,
+      }))}
+      label="More Writing"
+      viewAllHref="/writing"
+      viewAllLabel="All Writing"
+    />
   );
 }

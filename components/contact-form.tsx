@@ -106,7 +106,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-lg" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-8" noValidate>
       {/* Honeypot — hidden from real users, bots fill it in */}
       <div className="absolute opacity-0 top-0 left-0 h-0 w-0 -z-10" aria-hidden="true">
         <label htmlFor="website">Website</label>
@@ -130,6 +130,7 @@ export function ContactForm() {
           placeholder=" "
           value={formData.name}
           onChange={handleChange}
+          aria-describedby={fieldErrors.name ? "name-error" : undefined}
           className={`peer w-full bg-dark-200 border-b ${fieldErrors.name ? "border-red-500/50" : "border-light-300/20"} border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors`}
         />
         <label
@@ -139,7 +140,7 @@ export function ContactForm() {
           Name
         </label>
         {fieldErrors.name && (
-          <p className="text-red-400 text-xs mt-1.5">{fieldErrors.name}</p>
+          <p id="name-error" role="alert" className="text-red-400 text-xs mt-1.5">{fieldErrors.name}</p>
         )}
       </div>
 
@@ -152,6 +153,7 @@ export function ContactForm() {
           placeholder=" "
           value={formData.email}
           onChange={handleChange}
+          aria-describedby={fieldErrors.email ? "email-error" : undefined}
           className={`peer w-full bg-dark-200 border-b ${fieldErrors.email ? "border-red-500/50" : "border-light-300/20"} border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors`}
         />
         <label
@@ -161,7 +163,7 @@ export function ContactForm() {
           Email
         </label>
         {fieldErrors.email && (
-          <p className="text-red-400 text-xs mt-1.5">{fieldErrors.email}</p>
+          <p id="email-error" role="alert" className="text-red-400 text-xs mt-1.5">{fieldErrors.email}</p>
         )}
       </div>
 
@@ -174,6 +176,7 @@ export function ContactForm() {
           placeholder=" "
           value={formData.message}
           onChange={handleChange}
+          aria-describedby={fieldErrors.message ? "message-error" : undefined}
           className={`peer w-full bg-dark-200 border-b ${fieldErrors.message ? "border-red-500/50" : "border-light-300/20"} border-t-0 border-l-0 border-r-0 px-3 pt-7 pb-3 text-sm text-light-100 placeholder-light-300/30 focus:border-b-cyan focus:outline-none transition-colors resize-none`}
         />
         <label
@@ -183,12 +186,12 @@ export function ContactForm() {
           Message
         </label>
         {fieldErrors.message && (
-          <p className="text-red-400 text-xs mt-1.5">{fieldErrors.message}</p>
+          <p id="message-error" role="alert" className="text-red-400 text-xs mt-1.5">{fieldErrors.message}</p>
         )}
       </div>
 
       {status === "error" && errorMessage && (
-        <p className="text-red-500 text-sm">{errorMessage}</p>
+        <div role="alert" className="text-red-500 text-sm">{errorMessage}</div>
       )}
 
       <button

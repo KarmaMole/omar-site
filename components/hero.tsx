@@ -66,7 +66,7 @@ export default async function Hero() {
             <div className="mt-8 flex items-center gap-6">
               <Link
                 href="/contact"
-                className="font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-4 py-2 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
+                className="font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-6 py-2.5 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
               >
                 Start a Project
               </Link>
@@ -83,10 +83,10 @@ export default async function Hero() {
 
       {/* Bottom scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-        <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-light-300/50">
+        <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-light-300/60">
           Scroll
         </span>
-        <div className="w-px h-6 bg-gradient-to-b from-light-300/50 to-transparent" />
+        <div className="w-px h-6 bg-gradient-to-b from-light-300/60 to-transparent" />
       </div>
     </section>
   );

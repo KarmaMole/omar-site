@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -15,6 +15,35 @@ const navItems = [
 export default function Nav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  // Focus trap for mobile menu
+  useEffect(() => {
+    if (!mobileOpen || !menuRef.current) return;
+    const menu = menuRef.current;
+    const focusable = menu.querySelectorAll<HTMLElement>('a, button, [tabindex]:not([tabindex="-1"])');
+    if (focusable.length === 0) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    first.focus();
+
+    const trap = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        hamburgerRef.current?.focus();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    };
+    menu.addEventListener("keydown", trap);
+    return () => menu.removeEventListener("keydown", trap);
+  }, [mobileOpen]);
 
   return (
     <>
@@ -66,8 +95,9 @@ export default function Nav() {
           OK
         </Link>
         <button
+          ref={hamburgerRef}
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-light-100 p-2"
+          className="text-light-100 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
           <div className="w-6 flex flex-col gap-1.5">
@@ -79,8 +109,12 @@ export default function Nav() {
 
       {/* Mobile Fullscreen Menu */}
       <div
+        ref={menuRef}
+        role="dialog"
+        aria-modal={mobileOpen ? "true" : undefined}
+        aria-label="Navigation menu"
         className={`lg:hidden fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col items-start justify-center px-12 gap-8 transition-all duration-300 ease-out ${
-          mobileOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          mobileOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
         onClick={() => setMobileOpen(false)}
       >

@@ -2,7 +2,13 @@ export const revalidate = 60;
 
 import Link from "next/link";
 import Image from "next/image";
+import { Source_Serif_4 } from "next/font/google";
 import JsonLd from "@/components/json-ld";
+
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  display: "swap",
+});
 import Hero from "@/components/hero";
 import FadeIn from "@/components/fade-in";
 import HeroCardVideo from "@/components/hero-card-video";
@@ -205,105 +211,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Stats Interstitial ────────────────────────────────── */}
-      <section className="border-y border-dark-100 py-16 md:py-20 bg-[#0d0d0d]/30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <FadeIn>
-            <h2 className="section-label">By the Numbers</h2>
-          </FadeIn>
-          <FadeIn className="mt-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-dark-100">
-              {[
-                { number: "20+", label: "Years" },
-                { number: "50+", label: "Brands" },
-                { number: "200+", label: "Projects" },
-                { number: "AI", label: "From Day 1" },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
-                    {stat.number}
-                  </p>
-                  <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* ── Clients ─────────────────────────────────────────── */}
-      {clients.length > 0 && (
-        <section className="py-12 md:py-16 border-t border-dark-100">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <FadeIn>
-              <h2 className="section-label">Selected Clients</h2>
-            </FadeIn>
-            <FadeIn className="mt-8">
-              <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4">
-                {clients.slice(0, 12).map((client) => (
-                  <span
-                    key={client.id}
-                    className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/70"
-                  >
-                    {client.name}
-                  </span>
-                ))}
-              </div>
-            </FadeIn>
-          </div>
-        </section>
-      )}
-
-      {/* ── Transmissions ──────────────────────��──────────────── */}
-      <section className="border-t border-dark-100 py-16 md:py-24 bg-[#0d0d0d]/30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <FadeIn>
-            <h2 className="section-label-primary">Transmissions</h2>
-            <p className="text-light-300 text-sm mt-3 max-w-xl">
-              Ongoing platforms and independent projects broadcasting on their own frequencies.
-            </p>
-          </FadeIn>
-          <FadeIn className="mt-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem. YouTube channel & editorial site.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
-                { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by actual human impact, cutting through noise to surface what matters.", tags: ["AI", "News", "Aggregator", "Impact"] },
-                { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that turn corporate course materials into interactive, voice-driven employee training.", tags: ["AI", "Voice", "Corporate", "Training"] },
-                { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time monitoring dashboard tracking military and geopolitical developments in the Iran region with live data visualization.", tags: ["Geopolitics", "Real-time", "Dashboard", "OSINT"] },
-                { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Centralized team platform for discovering, organizing, and managing AI tools and resources across collaborative workflows.", tags: ["AI", "Tools", "Team", "Platform"] },
-                { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking platform for the Optix creative production pipeline.", tags: ["Projects", "Management", "Production", "Workflow"] },
-              ].map((t) => (
-                <a
-                  key={t.name}
-                  href={t.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                      <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
-                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">{t.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-5">
-                      {t.tags.map((tag) => (
-                        <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1">{tag}</span>
-                      ))}
-                    </div>
-                    <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">{t.domain} &rarr;</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
-      </section>
-
       {/* ── Recent Work Grid ──────────────────────────────────── */}
       {gridWork.length > 0 && (
         <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
@@ -381,11 +288,11 @@ export default async function HomePage() {
                         {formatDate(post.date)}
                       </p>
                     )}
-                    <h3 className="text-lg font-light text-light-100 group-hover:text-cyan transition-colors leading-snug">
+                    <h3 className={`${sourceSerif.className} text-lg font-light text-light-100 group-hover:text-cyan transition-colors leading-snug`}>
                       {post.title}
                     </h3>
                     {post.excerpt && (
-                      <p className="text-sm text-light-300 mt-2 line-clamp-3">
+                      <p className={`${sourceSerif.className} text-sm text-light-300 mt-2 line-clamp-3`}>
                         {post.excerpt}
                       </p>
                     )}
@@ -405,6 +312,105 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* ── Stats Interstitial ────────────────────────────────── */}
+      <section className="border-y border-dark-100 py-16 md:py-20 bg-[#0d0d0d]/30">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <FadeIn>
+            <h2 className="section-label">By the Numbers</h2>
+          </FadeIn>
+          <FadeIn className="mt-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-dark-100">
+              {[
+                { number: "20+", label: "Years" },
+                { number: "50+", label: "Brands" },
+                { number: "200+", label: "Projects" },
+                { number: "AI", label: "From Day 1" },
+              ].map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
+                    {stat.number}
+                  </p>
+                  <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ── Clients ─────────────────────────────────────────── */}
+      {clients.length > 0 && (
+        <section className="py-12 md:py-16 border-t border-dark-100">
+          <div className="max-w-7xl mx-auto px-6 lg:px-12">
+            <FadeIn>
+              <h2 className="section-label">Selected Clients</h2>
+            </FadeIn>
+            <FadeIn className="mt-8">
+              <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4">
+                {clients.slice(0, 12).map((client) => (
+                  <span
+                    key={client.id}
+                    className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/70"
+                  >
+                    {client.name}
+                  </span>
+                ))}
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+      )}
+
+      {/* ── Transmissions ────────────────────────────────────── */}
+      <section className="border-t border-dark-100 py-16 md:py-24 bg-[#0d0d0d]/30">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <FadeIn>
+            <h2 className="section-label-primary">Transmissions</h2>
+            <p className="text-light-300 text-sm mt-3 max-w-xl">
+              Ongoing platforms and independent projects broadcasting on their own frequencies.
+            </p>
+          </FadeIn>
+          <FadeIn className="mt-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem. YouTube channel & editorial site.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
+                { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by actual human impact, cutting through noise to surface what matters.", tags: ["AI", "News", "Aggregator", "Impact"] },
+                { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that turn corporate course materials into interactive, voice-driven employee training.", tags: ["AI", "Voice", "Corporate", "Training"] },
+                { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time monitoring dashboard tracking military and geopolitical developments in the Iran region with live data visualization.", tags: ["Geopolitics", "Real-time", "Dashboard", "OSINT"] },
+                { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Centralized team platform for discovering, organizing, and managing AI tools and resources across collaborative workflows.", tags: ["AI", "Tools", "Team", "Platform"] },
+                { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking platform for the Optix creative production pipeline.", tags: ["Projects", "Management", "Production", "Workflow"] },
+              ].map((t) => (
+                <a
+                  key={t.name}
+                  href={t.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-all duration-500 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="relative">
+                    <div className="flex items-center gap-3 mb-4">
+                      <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
+                      <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
+                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">{t.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-5">
+                      {t.tags.map((tag) => (
+                        <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1">{tag}</span>
+                      ))}
+                    </div>
+                    <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">{t.domain} &rarr;</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ── CTA ───────────────────────────────────────────────── */}
       <section className="border-t border-dark-100 py-20 md:py-32">
         <FadeIn>
@@ -415,7 +421,7 @@ export default async function HomePage() {
             <div className="mt-10">
               <Link
                 href="/contact"
-                className="inline-block font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-4 py-2 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
+                className="inline-block font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-6 py-2.5 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
               >
                 Start a Project
               </Link>

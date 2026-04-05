@@ -60,7 +60,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
               (cover as MediaUpload).sizes?.card?.url ??
               (cover as MediaUpload).url
             }
-            alt={(cover as MediaUpload).alt}
+            alt={(cover as MediaUpload).alt ?? post.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
@@ -109,12 +109,13 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
   const { tag, category } = await searchParams;
   const posts = await getAllBlogPosts();
 
-  const activeFilter = tag || category || null;
+  // Both "tag" (from tag links) and "category" (from filter pills) match against the tags field
+  const activeTag = tag || category || null;
 
-  const filtered = activeFilter
+  const filtered = activeTag
     ? posts.filter((p) =>
         p.tags?.split(",").some(
-          (t) => t.trim().toLowerCase() === activeFilter.toLowerCase()
+          (t) => t.trim().toLowerCase() === activeTag.toLowerCase()
         )
       )
     : posts;
@@ -126,7 +127,7 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
           <FadeIn>
             <div className="mb-12">
               <span className="section-label">Writing</span>
-              <h1 className="text-4xl font-light text-light-100 mt-2">
+              <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Writing
               </h1>
               <p className="text-light-300 text-lg mt-3">
@@ -142,7 +143,7 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
                 <Link
                   href="/writing"
                   className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
-                    !activeFilter
+                    !activeTag
                       ? "bg-cyan/10 border-cyan text-cyan"
                       : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
                   }`}
@@ -154,7 +155,7 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
                     key={cat}
                     href={`/writing?category=${encodeURIComponent(cat)}`}
                     className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
-                      activeFilter?.toLowerCase() === cat.toLowerCase()
+                      activeTag?.toLowerCase() === cat.toLowerCase()
                         ? "bg-cyan/10 border-cyan text-cyan"
                         : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
                     }`}
@@ -198,7 +199,7 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
           ) : (
             <div className="text-center py-12">
               <p className="text-light-300 font-mono text-sm mb-4">
-                No posts found{activeFilter ? ` for "${activeFilter}"` : ""}.
+                No posts found{activeTag ? ` for "${activeTag}"` : ""}.
               </p>
               <Link href="/writing" className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline">
                 Clear filters

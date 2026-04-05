@@ -45,7 +45,7 @@ export default async function AboutPage() {
     <>
       <JsonLd data={personJsonLd} />
       <div className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
             {/* Cinematic header */}
             <div className="mb-16">

@@ -28,17 +28,13 @@ export default function HeroAnimations({
   animation,
   delay = 0,
 }: HeroAnimationsProps) {
-  // SSR: start visible, animate on client hydration
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Start hidden, then animate in after delay
-    setVisible(false);
-    const frame = requestAnimationFrame(() => {
-      const timer = setTimeout(() => setVisible(true), delay);
-      return () => clearTimeout(timer);
-    });
-    return () => cancelAnimationFrame(frame);
+    setMounted(true);
+    const timer = setTimeout(() => setVisible(true), delay);
+    return () => clearTimeout(timer);
   }, [delay]);
 
   const styles = animationStyles[animation];
@@ -47,8 +43,10 @@ export default function HeroAnimations({
     <div
       style={{
         ...(visible ? styles.animate : styles.initial),
-        transition: `opacity 0.8s ease-out, transform 0.8s ease-out`,
+        // No transition on SSR/first paint to avoid flash; enable after mount
+        transition: mounted ? `opacity 0.8s ease-out, transform 0.8s ease-out` : "none",
       }}
+      suppressHydrationWarning
     >
       {children}
     </div>

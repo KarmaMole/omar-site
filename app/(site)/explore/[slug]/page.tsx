@@ -8,7 +8,8 @@ import PageTransition from "@/components/page-transition";
 import { RichText } from "@/components/rich-text";
 import MediaEmbedComponent from "@/components/media-embed";
 import GalleryGrid from "@/components/gallery-grid";
-import { getProjectBySlug, getAllProjectSlugs } from "@/lib/payload/queries";
+import { getProjectBySlug, getAllProjectSlugs, getAllProjects } from "@/lib/payload/queries";
+import MoreItems from "@/components/more-items";
 
 interface ExploreDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -84,8 +85,8 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
     <PageTransition>
     <div className="pt-24 pb-16">
       {cover?.url ? (
-        <div className="relative aspect-[21/9] w-full">
-          <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt} fill className="object-cover" priority />
+        <div className="relative aspect-[21/9] w-full bg-dark-200">
+          <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt ?? project.title} fill className="object-cover" priority />
         </div>
       ) : null}
 
@@ -159,9 +160,28 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
             ))}
           </div>
         )}
+        <MoreExplorations currentSlug={slug} />
       </div>
     </div>
     </PageTransition>
     </>
+  );
+}
+
+async function MoreExplorations({ currentSlug }: { currentSlug: string }) {
+  const allProjects = await getAllProjects();
+  const others = allProjects.filter((p) => p.slug !== currentSlug).slice(0, 3);
+  return (
+    <MoreItems
+      items={others.map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        coverImage: p.coverImage,
+        href: `/explore/${p.slug}`,
+      }))}
+      label="More Explorations"
+      viewAllHref="/explore"
+      viewAllLabel="View All"
+    />
   );
 }

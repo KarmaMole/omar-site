@@ -146,7 +146,7 @@ export default function GalleryLightbox({
         <button
           onClick={() => goTo(index - 1)}
           aria-label="Previous image"
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 text-light-300/50 hover:text-cyan transition-colors"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 text-light-300/60 hover:text-cyan transition-colors"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M15 18l-6-6 6-6" />
@@ -157,7 +157,7 @@ export default function GalleryLightbox({
         <button
           onClick={() => goTo(index + 1)}
           aria-label="Next image"
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 text-light-300/50 hover:text-cyan transition-colors"
+          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 text-light-300/60 hover:text-cyan transition-colors"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M9 18l6-6-6-6" />
@@ -179,7 +179,7 @@ export default function GalleryLightbox({
         >
           <Image
             src={imgSrc}
-            alt={current.alt ?? ""}
+            alt={current.alt || `${title} — image ${index + 1}`}
             width={current.width ?? 1200}
             height={current.height ?? 800}
             className="max-w-full max-h-[85vh] w-auto h-auto object-contain"

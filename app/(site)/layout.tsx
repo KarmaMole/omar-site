@@ -58,9 +58,11 @@ export default function SiteLayout({
       <head />
       <body className={`${inter.className} bg-[#0a0a0a] text-[#f5f5f5]`}>
         <CustomCursor />
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-cyan focus:text-black focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:tracking-widest focus:uppercase">
+          Skip to content
+        </a>
         <Nav />
-        {/* TODO: Add Suspense boundaries around page sections for streaming / partial rendering */}
-        <main className="lg:pl-20 pt-14 lg:pt-0">{children}</main>
+        <main id="main-content" className="lg:pl-20 pt-14 lg:pt-0">{children}</main>
         <Footer />
         {process.env.NEXT_PUBLIC_GA_ID && (
           <CookieConsent gaId={process.env.NEXT_PUBLIC_GA_ID} />

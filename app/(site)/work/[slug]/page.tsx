@@ -7,7 +7,8 @@ import FadeIn from "@/components/fade-in";
 import PageTransition from "@/components/page-transition";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
-import { getWorkBySlug, getAllWorkSlugs } from "@/lib/payload/queries";
+import { getWorkBySlug, getAllWorkSlugs, getAllWork } from "@/lib/payload/queries";
+import MoreItems from "@/components/more-items";
 import GalleryGrid from "@/components/gallery-grid";
 import { formatDate } from "@/lib/utils";
 
@@ -81,12 +82,10 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
     <JsonLd data={workJsonLd} />
     <PageTransition>
     <div className="pt-24 pb-16">
-      {cover?.url ? (
-        <div className="relative aspect-[21/9] w-full">
-          <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt} fill className="object-cover" priority />
+      {cover?.url && (
+        <div className="relative aspect-[21/9] w-full bg-dark-200">
+          <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt ?? work.title} fill className="object-cover" priority />
         </div>
-      ) : (
-        <div className="aspect-[21/9] bg-dark-100 w-full flex items-center justify-center text-light-300 text-lg font-medium">{work.title}</div>
       )}
       <div className="max-w-3xl mx-auto px-6 py-12">
         <Link href="/work" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
@@ -118,9 +117,29 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
             View Project &rarr;
           </a>
         )}
+        <MoreWork currentSlug={slug} />
       </div>
     </div>
     </PageTransition>
     </>
+  );
+}
+
+async function MoreWork({ currentSlug }: { currentSlug: string }) {
+  const allWork = await getAllWork();
+  const others = allWork.filter((w) => w.slug !== currentSlug).slice(0, 3);
+  return (
+    <MoreItems
+      items={others.map((w) => ({
+        slug: w.slug,
+        title: w.title,
+        coverImage: w.coverImage,
+        href: `/work/${w.slug}`,
+        subtitle: w.client || undefined,
+      }))}
+      label="More Work"
+      viewAllHref="/work"
+      viewAllLabel="View All Work"
+    />
   );
 }
