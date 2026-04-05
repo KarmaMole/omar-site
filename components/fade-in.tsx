@@ -33,9 +33,19 @@ interface FadeInProps {
 
 export default function FadeIn({ children, className = "" }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
+  // If the user prefers reduced motion, start visible and skip the observer.
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      setVisible(true);
+      return;
+    }
+
     const element = ref.current;
     if (!element) return;
 

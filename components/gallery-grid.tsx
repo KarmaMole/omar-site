@@ -32,8 +32,9 @@ export default function GalleryGrid({ images, title }: GalleryGridProps) {
           >
             <Image
               src={img.sizes?.hero?.url ?? img.url}
-              alt={img.alt || `${title} — image ${i + 1}`}
+              alt={img.alt || `${title} image ${i + 1}`}
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
             />
             <div className="absolute inset-0 bg-cyan/0 group-hover:bg-cyan/5 transition-colors duration-300" />

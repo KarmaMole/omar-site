@@ -59,22 +59,22 @@ export default async function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-12 mb-20">
               <div className="md:col-span-2">
                 {settings.aboutBio ? (
-                  <div className="prose prose-invert prose-p:text-light-300 prose-p:leading-relaxed prose-p:text-sm max-w-none prose-p:first:mt-0 [&_p:first-of-type]:!mt-0">
+                  <div className="prose prose-invert prose-p:text-light-200 prose-p:leading-relaxed max-w-none prose-p:first:mt-0 [&_p:first-of-type]:!mt-0">
                     <RichText data={settings.aboutBio} />
                   </div>
                 ) : (
-                  <div className="prose prose-invert prose-p:text-light-300 prose-p:leading-relaxed prose-p:text-sm max-w-none prose-p:first:mt-0 [&_p:first-of-type]:!mt-0">
+                  <div className="prose prose-invert prose-p:text-light-200 prose-p:leading-relaxed max-w-none prose-p:first:mt-0 [&_p:first-of-type]:!mt-0">
                     <p>I&apos;m Omar Kamel, AI Creative &amp; Production Lead at Optix, where I help regional and global brands harness AI across every stage of creative production.</p>
                   </div>
                 )}
               </div>
               <div className="md:col-span-1">
                 {photo?.url ? (
-                  <div className="relative aspect-[3/4] overflow-hidden border border-dark-100 border-l-2 border-l-cyan/30 bg-dark-200/50">
+                  <div className="relative aspect-[3/4] overflow-hidden border border-dark-100 bg-dark-200/50">
                     <Image src={photo.url} alt={photo.alt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 ) : (
-                  <div className="aspect-[3/4] bg-dark-200 border border-dark-100 border-l-2 border-l-cyan/30 flex items-center justify-center text-light-300 text-sm">Photo</div>
+                  <div className="aspect-[3/4] bg-dark-200 border border-dark-100 flex items-center justify-center text-light-300 text-sm">Photo</div>
                 )}
               </div>
             </div>
@@ -86,7 +86,7 @@ export default async function AboutPage() {
               <span className="section-label">Skills &amp; Tools</span>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
                 {skills.map((group) => (
-                  <div key={group.category} className="border-l border-cyan pl-4">
+                  <div key={group.category} className="border-l border-dark-100 pl-4">
                     <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-4">{group.category}</h3>
                     <ul className="space-y-2">
                       {group.items.map((item) => (<li key={item} className="text-sm text-light-300">{item}</li>))}

@@ -3,7 +3,6 @@ export const revalidate = 60;
 import type { Metadata } from "next";
 import Link from "next/link";
 import FadeIn from "@/components/fade-in";
-import PageTransition from "@/components/page-transition";
 import { getAllClients } from "@/lib/payload/queries";
 
 export const metadata: Metadata = {
@@ -105,8 +104,7 @@ export default async function ServicesPage() {
   const clients = await getAllClients();
 
   return (
-    <PageTransition>
-      <div className="pt-24 pb-16">
+      <div className="pt-24 pb-16 animate-fade-in">
         {/* Header */}
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
@@ -125,7 +123,7 @@ export default async function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-12">
             {services.map((service) => (
               <FadeIn key={service.label}>
-                <div className="border-l-2 border-cyan/30 pl-5 lg:pl-8 py-2">
+                <div className="py-2">
                   <h2 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-4">
                     {service.label}
                   </h2>
@@ -227,6 +225,5 @@ export default async function ServicesPage() {
           </FadeIn>
         </section>
       </div>
-    </PageTransition>
   );
 }

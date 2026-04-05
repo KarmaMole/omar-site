@@ -33,6 +33,15 @@ export default function HeroAnimations({
 
   useEffect(() => {
     setMounted(true);
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      setVisible(true);
+      return;
+    }
+
     const timer = setTimeout(() => setVisible(true), delay);
     return () => clearTimeout(timer);
   }, [delay]);

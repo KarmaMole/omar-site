@@ -1,17 +1,11 @@
 export const revalidate = 60;
 
 import Link from "next/link";
-import Image from "next/image";
-import { Source_Serif_4 } from "next/font/google";
 import JsonLd from "@/components/json-ld";
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  display: "swap",
-});
+import { sourceSerif } from "@/lib/fonts";
 import Hero from "@/components/hero";
 import FadeIn from "@/components/fade-in";
-import HeroCardVideo from "@/components/hero-card-video";
+import HeroCard from "@/components/hero-card";
 import { formatDate, getContentTypeLabel } from "@/lib/utils";
 import {
   getSiteSettings,
@@ -21,12 +15,6 @@ import {
   getAllClients,
 } from "@/lib/payload/queries";
 import type { WorkDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
-
-function getCoverUrl(doc: WorkDoc | BlogPostDoc): string | null {
-  const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
-  if (!img) return null;
-  return (img as MediaUpload).sizes?.hero?.url ?? (img as MediaUpload).url ?? null;
-}
 
 function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
   const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
@@ -62,154 +50,96 @@ export default async function HomePage() {
       <Hero />
 
       {/* ── Featured Work Showcase ────────────────────────────── */}
-      {heroWork && (
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 md:py-28 border-t border-dark-100">
-          <FadeIn>
-            <h2 className="section-label-primary">Featured Work</h2>
-          </FadeIn>
-          <FadeIn className="mt-8">
-            <div className={`relative overflow-hidden bg-dark-200 border border-transparent hover:border-cyan/20 transition-all duration-500 hover:shadow-[0_4px_20px_rgba(0,217,255,0.1)] ${heroWork.media?.some((m) => m.type === "youtube" || m.type === "vimeo") ? "aspect-video" : "aspect-[21/9]"}`}>
-              <Link href={`/work/${heroWork.slug}`} className="group block absolute inset-0">
-                {getCoverUrl(heroWork) ? (
-                  <Image
-                    src={getCoverUrl(heroWork)!}
-                    alt={getCoverAlt(heroWork)}
-                    fill
-                    className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                    sizes="100vw"
-                    priority
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 p-8 lg:p-12">
-                  {heroWork.client && (
-                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-2">
-                      {heroWork.client}
-                    </p>
-                  )}
-                  <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
-                    {heroWork.title}
-                  </h3>
-                  {heroWork.categories && heroWork.categories.length > 0 && (
-                    <p className="font-mono text-xs tracking-[0.15em] uppercase text-light-300 mt-3">
-                      {heroWork.categories.join(" / ")}
-                    </p>
-                  )}
-                </div>
+      {heroWork && (() => {
+        const heroVideo = heroWork.media?.find((m) => m.type === "youtube" || m.type === "vimeo") ?? null;
+        const cover = typeof heroWork.coverImage === "object" ? heroWork.coverImage : null;
+        return (
+          <section className="max-w-7xl mx-auto px-6 lg:px-12 py-20 md:py-28 border-t border-dark-100">
+            <FadeIn>
+              <h2 className="section-label-primary">Featured Work</h2>
+            </FadeIn>
+            <FadeIn className="mt-8">
+              <HeroCard
+                href={`/work/${heroWork.slug}`}
+                title={heroWork.title}
+                coverImage={cover}
+                coverAlt={getCoverAlt(heroWork)}
+                eyebrow={heroWork.client ?? null}
+                bottomMeta={heroWork.categories && heroWork.categories.length > 0 ? heroWork.categories.join(" / ") : null}
+                size="lg"
+                aspect={heroVideo ? "video" : "21/9"}
+                priority
+                videoEmbed={heroVideo}
+              />
+            </FadeIn>
+            <FadeIn className="mt-10">
+              <Link
+                href="/work"
+                className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
+              >
+                View All Work &rarr;
               </Link>
-              {heroWork.media && heroWork.media.length > 0 && (heroWork.media[0].type === "youtube" || heroWork.media[0].type === "vimeo") && (
-                <HeroCardVideo embed={heroWork.media[0]} />
-              )}
-            </div>
-          </FadeIn>
-          <FadeIn className="mt-10">
-            <Link
-              href="/work"
-              className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
-            >
-              View All Work &rarr;
-            </Link>
-          </FadeIn>
-        </section>
-      )}
+            </FadeIn>
+          </section>
+        );
+      })()}
 
       {/* ── Featured Explorations ───────────────────────────── */}
-      {featuredProjects.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
-          <FadeIn>
-            <h2 className="section-label-primary">Featured Explorations</h2>
-          </FadeIn>
-          {/* Hero exploration (first item) */}
-          <FadeIn className="mt-8">
-            {(() => {
-              const heroProject = featuredProjects[0];
-              const cover = typeof heroProject.coverImage === "object" && heroProject.coverImage ? heroProject.coverImage : null;
-              const heroVideo = heroProject.media?.find((m) => m.type === "youtube" || m.type === "vimeo");
-              return (
-                <div className={`relative overflow-hidden bg-dark-200 border border-transparent hover:border-cyan/20 transition-all duration-500 hover:shadow-[0_4px_20px_rgba(0,217,255,0.1)] ${heroVideo ? "aspect-video" : "aspect-[21/9]"}`}>
-                  <Link href={`/explore/${heroProject.slug}`} className="group block absolute inset-0">
-                    {cover?.url ? (
-                      <Image
-                        src={(cover as MediaUpload).sizes?.hero?.url ?? cover.url}
-                        alt={(cover as MediaUpload).alt ?? heroProject.title}
-                        fill
-                        className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                        sizes="100vw"
-                        priority
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-8 lg:p-12">
-                      {heroProject.contentType && (
-                        <p className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-2">
-                          {getContentTypeLabel(heroProject.contentType)}
-                        </p>
-                      )}
-                      <h3 className="text-3xl md:text-5xl font-light tracking-tight text-gradient">
-                        {heroProject.title}
-                      </h3>
-                    </div>
-                  </Link>
-                  {heroVideo && <HeroCardVideo embed={heroVideo} />}
-                </div>
-              );
-            })()}
-          </FadeIn>
-
-          {/* Remaining featured explorations */}
-          {featuredProjects.length > 1 && (
-            <FadeIn className="mt-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {featuredProjects.slice(1).map((project) => {
-                  const cover = typeof project.coverImage === "object" && project.coverImage ? project.coverImage : null;
-                  return (
-                    <Link
-                      key={project.id}
-                      href={`/explore/${project.slug}`}
-                      className="group block relative aspect-[4/3] overflow-hidden bg-dark-200 border border-transparent hover:border-cyan/20 transition-all duration-500 hover:shadow-[0_4px_20px_rgba(0,217,255,0.1)]"
-                    >
-                      {cover?.url ? (
-                        <Image
-                          src={(cover as MediaUpload).sizes?.hero?.url ?? cover.url}
-                          alt={(cover as MediaUpload).alt ?? project.title}
-                          fill
-                          className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                      <div className="absolute bottom-0 left-0 p-6 lg:p-8">
-                        {project.contentType && (
-                          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-cyan mb-1">
-                            {getContentTypeLabel(project.contentType)}
-                          </p>
-                        )}
-                        <h3 className="text-xl md:text-2xl font-light tracking-tight text-white">
-                          {project.title}
-                        </h3>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
+      {featuredProjects.length > 0 && (() => {
+        const heroProject = featuredProjects[0];
+        const heroCover = typeof heroProject.coverImage === "object" && heroProject.coverImage ? heroProject.coverImage : null;
+        const heroProjectVideo = heroProject.media?.find((m) => m.type === "youtube" || m.type === "vimeo") ?? null;
+        return (
+          <section className="max-w-7xl mx-auto px-6 lg:px-12 py-16 md:py-24 border-t border-dark-100">
+            <FadeIn>
+              <h2 className="section-label-primary">Featured Explorations</h2>
             </FadeIn>
-          )}
-          <FadeIn className="mt-10">
-            <Link
-              href="/explore"
-              className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
-            >
-              View All Explorations &rarr;
-            </Link>
-          </FadeIn>
-        </section>
-      )}
+            {/* Hero exploration (first item) */}
+            <FadeIn className="mt-8">
+              <HeroCard
+                href={`/explore/${heroProject.slug}`}
+                title={heroProject.title}
+                coverImage={heroCover}
+                eyebrow={heroProject.contentType ? getContentTypeLabel(heroProject.contentType) : null}
+                size="lg"
+                aspect={heroProjectVideo ? "video" : "21/9"}
+                priority
+                videoEmbed={heroProjectVideo}
+              />
+            </FadeIn>
+
+            {/* Remaining featured explorations */}
+            {featuredProjects.length > 1 && (
+              <FadeIn className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {featuredProjects.slice(1).map((project) => {
+                    const cover = typeof project.coverImage === "object" && project.coverImage ? project.coverImage : null;
+                    return (
+                      <HeroCard
+                        key={project.id}
+                        href={`/explore/${project.slug}`}
+                        title={project.title}
+                        coverImage={cover}
+                        eyebrow={project.contentType ? getContentTypeLabel(project.contentType) : null}
+                        size="sm"
+                        aspect="4/3"
+                      />
+                    );
+                  })}
+                </div>
+              </FadeIn>
+            )}
+            <FadeIn className="mt-10">
+              <Link
+                href="/explore"
+                className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
+              >
+                View All Explorations &rarr;
+              </Link>
+            </FadeIn>
+          </section>
+        );
+      })()}
 
       {/* ── Recent Work Grid ──────────────────────────────────── */}
       {gridWork.length > 0 && (
@@ -220,39 +150,24 @@ export default async function HomePage() {
           <FadeIn className="mt-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {gridWork.map((work, i) => {
-                const coverUrl = getCoverUrl(work);
+                const cover = typeof work.coverImage === "object" ? work.coverImage : null;
                 const isFullWidth = i === 0;
                 return (
-                  <Link
+                  <div
                     key={work.id}
-                    href={`/work/${work.slug}`}
-                    className={`group block relative overflow-hidden bg-dark-200 ${
-                      isFullWidth ? "md:col-span-2 aspect-[21/9]" : "aspect-[4/3]"
-                    }`}
+                    className={isFullWidth ? "md:col-span-2" : undefined}
                   >
-                    {coverUrl ? (
-                      <Image
-                        src={coverUrl}
-                        alt={getCoverAlt(work)}
-                        fill
-                        className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
-                        sizes={isFullWidth ? "100vw" : "50vw"}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                    <div className="absolute bottom-0 left-0 p-6 lg:p-8">
-                      {work.client && (
-                        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-cyan mb-1">
-                          {work.client}
-                        </p>
-                      )}
-                      <h3 className="text-xl md:text-2xl font-light tracking-tight text-white">
-                        {work.title}
-                      </h3>
-                    </div>
-                  </Link>
+                    <HeroCard
+                      href={`/work/${work.slug}`}
+                      title={work.title}
+                      coverImage={cover}
+                      coverAlt={getCoverAlt(work)}
+                      eyebrow={work.client ?? null}
+                      size="sm"
+                      aspect={isFullWidth ? "21/9" : "4/3"}
+                      sizes={isFullWidth ? "100vw" : "50vw"}
+                    />
+                  </div>
                 );
               })}
             </div>
@@ -312,26 +227,29 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Stats Interstitial ────────────────────────────────── */}
+      {/* ── Track Record ──────────────────────────────────────── */}
       <section className="border-y border-dark-100 py-16 md:py-20 bg-[#0d0d0d]/30">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
-            <h2 className="section-label">By the Numbers</h2>
+            <h2 className="section-label">Track Record</h2>
           </FadeIn>
           <FadeIn className="mt-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-dark-100">
               {[
-                { number: "20+", label: "Years" },
-                { number: "50+", label: "Brands" },
-                { number: "200+", label: "Projects" },
-                { number: "AI", label: "From Day 1" },
+                { number: "20+", label: "Years", qualifier: "Cairo, Italy, Dubai" },
+                { number: "50+", label: "Brands", qualifier: "Coca-Cola, Ford Foundation, ILO" },
+                { number: "200+", label: "Projects", qualifier: "Film, brand, AI, music" },
+                { number: "AI", label: "From Day 1", qualifier: "Claude, MidJourney, ComfyUI" },
               ].map((stat) => (
-                <div key={stat.label} className="text-center">
+                <div key={stat.label} className="text-center md:px-4">
                   <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
                     {stat.number}
                   </p>
                   <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
                     {stat.label}
+                  </p>
+                  <p className="font-mono text-[10px] tracking-[0.1em] text-light-300/50 mt-1.5">
+                    {stat.qualifier}
                   </p>
                 </div>
               ))}
@@ -392,8 +310,8 @@ export default async function HomePage() {
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative">
                     <div className="flex items-center gap-3 mb-4">
-                      <span className="inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                      <span className="font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
+                      <span className="live-indicator-dot inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
+                      <span className="live-indicator-label font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
                     </div>
                     <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
                     <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">{t.description}</p>

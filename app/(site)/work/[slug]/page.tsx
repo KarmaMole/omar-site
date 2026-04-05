@@ -3,14 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
-import FadeIn from "@/components/fade-in";
-import PageTransition from "@/components/page-transition";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
 import { getWorkBySlug, getAllWorkSlugs, getAllWork } from "@/lib/payload/queries";
 import MoreItems from "@/components/more-items";
 import GalleryGrid from "@/components/gallery-grid";
 import { formatDate } from "@/lib/utils";
+import { sourceSerif } from "@/lib/fonts";
 
 interface WorkDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -80,24 +79,26 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   return (
     <>
     <JsonLd data={workJsonLd} />
-    <PageTransition>
-    <div className="pt-24 pb-16">
+    <div className="pt-24 pb-16 animate-fade-in">
       {cover?.url && (
         <div className="relative aspect-[21/9] w-full bg-dark-200">
-          <Image src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt ?? work.title} fill className="object-cover" priority />
+          <Image
+            src={cover.sizes?.hero?.url ?? cover.url}
+            alt={cover.alt ?? work.title}
+            fill
+            sizes="(max-width: 1024px) 100vw, calc(100vw - 80px)"
+            className="object-cover"
+            priority
+          />
         </div>
       )}
-      <div className="max-w-3xl mx-auto px-6 py-12">
+      <div className={`max-w-3xl mx-auto px-6 ${cover?.url ? "py-12" : "pt-20 pb-12"}`}>
         <Link href="/work" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
-        <FadeIn>
         {work.client && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-2">{work.client}</p>}
-        <h1 className="text-4xl md:text-5xl font-bold text-light-100 mb-4">{work.title}</h1>
+        <h1 className={`${sourceSerif.className} text-4xl md:text-6xl font-light text-light-100 leading-tight mb-4`}>{work.title}</h1>
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
-        </FadeIn>
         <div className="mb-8" />
-        <FadeIn>
         {work.description ? <RichText data={work.description} className="mb-10" /> : null}
-        </FadeIn>
         {work.gallery && Array.isArray(work.gallery) && work.gallery.length > 0 && (
           <GalleryGrid
             images={work.gallery.filter(
@@ -109,7 +110,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         )}
         {work.media && work.media.length > 0 && (
           <div className="space-y-6 mb-10">
-            {work.media.map((embed, i) => (<MediaEmbedComponent key={i} embed={embed} />))}
+            {work.media.map((embed) => (<MediaEmbedComponent key={embed.url} embed={embed} />))}
           </div>
         )}
         {work.externalLink && (
@@ -120,7 +121,6 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <MoreWork currentSlug={slug} />
       </div>
     </div>
-    </PageTransition>
     </>
   );
 }

@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import ProjectCard from "@/components/project-card";
+import ContentCard from "@/components/content-card";
 import FadeIn from "@/components/fade-in";
+import { getContentTypeLabel } from "@/lib/utils";
 import ScrollFilters from "@/components/scroll-filters";
-import PageTransition from "@/components/page-transition";
+import FilterPill from "@/components/filter-pill";
 import type { ProjectDoc } from "@/lib/payload/types";
 
 const categories = [
@@ -44,8 +45,7 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
   })();
 
   return (
-    <PageTransition>
-      <div className="pt-24 pb-16">
+      <div className="pt-24 pb-16 animate-fade-in">
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn>
             <div className="mb-12">
@@ -66,17 +66,12 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
                 {categories.map((cat) => {
                   const href = cat.value === "all" ? "/explore" : `/explore?category=${cat.value}`;
                   return (
-                    <Link
+                    <FilterPill
                       key={cat.value}
                       href={href}
-                      className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
-                        activeCategory === cat.value && !activeTag
-                          ? "bg-cyan/10 border-cyan text-cyan"
-                          : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
-                      }`}
-                    >
-                      {cat.label}
-                    </Link>
+                      label={cat.label}
+                      active={activeCategory === cat.value && !activeTag}
+                    />
                   );
                 })}
               </ScrollFilters>
@@ -105,11 +100,28 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filtered.map((project) => (
-              <FadeIn key={project.id}>
-                <ProjectCard project={project} />
-              </FadeIn>
-            ))}
+            {filtered.map((project) => {
+              const cover =
+                typeof project.coverImage === "object" && project.coverImage
+                  ? project.coverImage
+                  : null;
+              const tags = project.tags
+                ?.split(",")
+                .map((t) => t.trim())
+                .filter(Boolean);
+              return (
+                <FadeIn key={project.id}>
+                  <ContentCard
+                    href={`/explore/${project.slug}`}
+                    title={project.title}
+                    coverImage={cover}
+                    label={project.contentType ? getContentTypeLabel(project.contentType) : null}
+                    overlayTags={tags}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </FadeIn>
+              );
+            })}
           </div>
 
           {filtered.length === 0 && (
@@ -127,6 +139,5 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
           )}
         </div>
       </div>
-    </PageTransition>
   );
 }

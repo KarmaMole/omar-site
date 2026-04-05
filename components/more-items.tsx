@@ -1,9 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Source_Serif_4 } from "next/font/google";
+import { sourceSerif } from "@/lib/fonts";
 import type { MediaUpload } from "@/lib/payload/types";
-
-const sourceSerif = Source_Serif_4({ subsets: ["latin"], display: "swap" });
 
 interface MoreItem {
   slug: string;

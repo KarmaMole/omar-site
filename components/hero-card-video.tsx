@@ -20,9 +20,11 @@ function getEmbedUrl(embed: MediaEmbed): string {
 
 interface HeroCardVideoProps {
   embed: MediaEmbed;
+  /** Title announced by screen readers when the iframe receives focus */
+  title?: string;
 }
 
-export default function HeroCardVideo({ embed }: HeroCardVideoProps) {
+export default function HeroCardVideo({ embed, title }: HeroCardVideoProps) {
   const [playing, setPlaying] = useState(false);
 
   if (!playing) {
@@ -56,7 +58,7 @@ export default function HeroCardVideo({ embed }: HeroCardVideoProps) {
         className="w-full h-full"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
-        title={`${embed.type} embed`}
+        title={title ?? `${embed.type} video`}
       />
     </div>
   );

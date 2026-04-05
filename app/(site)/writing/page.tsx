@@ -3,18 +3,13 @@ export const revalidate = 60;
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Source_Serif_4 } from "next/font/google";
 import FadeIn from "@/components/fade-in";
 import ScrollFilters from "@/components/scroll-filters";
-import PageTransition from "@/components/page-transition";
+import FilterPill from "@/components/filter-pill";
 import { formatDate } from "@/lib/utils";
 import { getAllBlogPosts } from "@/lib/payload/queries";
+import { sourceSerif } from "@/lib/fonts";
 import type { BlogPostDoc, MediaUpload } from "@/lib/payload/types";
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  display: "swap",
-});
 
 const CATEGORIES = [
   "AEgypt",
@@ -121,13 +116,11 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
     : posts;
 
   return (
-    <PageTransition>
-      <div className="pt-24 pb-16">
+    <div className="pt-24 pb-16 animate-fade-in">
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn>
             <div className="mb-12">
-              <span className="section-label">Writing</span>
-              <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
+              <h1 className="text-4xl md:text-5xl font-light text-light-100">
                 Writing
               </h1>
               <p className="text-light-300 text-lg mt-3">
@@ -140,28 +133,14 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
           <FadeIn>
             <div className="mb-10">
               <ScrollFilters>
-                <Link
-                  href="/writing"
-                  className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
-                    !activeTag
-                      ? "bg-cyan/10 border-cyan text-cyan"
-                      : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
-                  }`}
-                >
-                  All
-                </Link>
+                <FilterPill href="/writing" label="All" active={!activeTag} />
                 {CATEGORIES.map((cat) => (
-                  <Link
+                  <FilterPill
                     key={cat}
                     href={`/writing?category=${encodeURIComponent(cat)}`}
-                    className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
-                      activeTag?.toLowerCase() === cat.toLowerCase()
-                        ? "bg-cyan/10 border-cyan text-cyan"
-                        : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
-                    }`}
-                  >
-                    {cat}
-                  </Link>
+                    label={cat}
+                    active={activeTag?.toLowerCase() === cat.toLowerCase()}
+                  />
                 ))}
               </ScrollFilters>
             </div>
@@ -208,6 +187,5 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
           )}
         </div>
       </div>
-    </PageTransition>
   );
 }

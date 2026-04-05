@@ -67,13 +67,6 @@
     width: 100%;
   }
 
-  .text-gradient {
-    background: linear-gradient(135deg, #00d9ff, #ff00ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
   .border-glow {
     border: 1px solid transparent;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -134,5 +127,16 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  /* Explicit override wins over html[data-theme="site"] specificity */
+  html[data-theme="site"] {
+    scroll-behavior: auto !important;
+  }
+  /* Transmission "Live" dot: preserve the live affordance without animation */
+  html[data-theme="site"] .live-indicator-dot {
+    opacity: 1 !important;
+  }
+  html[data-theme="site"] .live-indicator-label {
+    color: var(--color-accent) !important;
   }
 }

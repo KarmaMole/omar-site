@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -111,8 +111,9 @@ export default function Nav() {
       <div
         ref={menuRef}
         role="dialog"
-        aria-modal={mobileOpen ? "true" : undefined}
+        aria-modal="true"
         aria-label="Navigation menu"
+        inert={!mobileOpen}
         className={`lg:hidden fixed inset-0 z-40 bg-[#0a0a0a] flex flex-col items-start justify-center px-12 gap-8 transition-all duration-300 ease-out ${
           mobileOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
@@ -135,13 +136,17 @@ export default function Nav() {
           );
         })}
         <div
-          className={`mt-8 pt-8 border-t border-[#1a1a1a] transition-all duration-300 ${
+          className={`mt-8 transition-all duration-300 ${
             mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"
           }`}
           style={{ transitionDelay: mobileOpen ? `${navItems.length * 60}ms` : "0ms" }}
         >
-          <Link href="/contact" onClick={() => setMobileOpen(false)} className="font-mono text-sm tracking-widest text-cyan uppercase">
-            Start a Project →
+          <Link
+            href="/contact"
+            onClick={() => setMobileOpen(false)}
+            className="font-mono text-[10px] tracking-[0.15em] uppercase text-cyan hover:text-white transition-colors"
+          >
+            Start a Project &rarr;
           </Link>
         </div>
       </div>

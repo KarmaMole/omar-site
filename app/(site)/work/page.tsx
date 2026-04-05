@@ -2,10 +2,9 @@ export const revalidate = 60;
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import WorkCard from "@/components/work-card";
+import ContentCard from "@/components/content-card";
 import CategoryFilter from "@/components/category-filter";
 import FadeIn from "@/components/fade-in";
-import PageTransition from "@/components/page-transition";
 import { getAllWork } from "@/lib/payload/queries";
 
 export const metadata: Metadata = {
@@ -25,20 +24,31 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
     : allWork;
 
   return (
-    <PageTransition>
-    <div className="pt-24 pb-16">
+    <div className="pt-24 pb-16 animate-fade-in">
       <div className="max-w-7xl mx-auto px-6">
         <FadeIn>
           <div className="mb-12">
-            <span className="section-label">Work</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
+            <h1 className="text-4xl md:text-5xl font-light text-light-100">Work</h1>
             <p className="text-light-300 text-lg mt-3">AI production, video, music, and comics.</p>
           </div>
         </FadeIn>
         <CategoryFilter />
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filtered.map((work) => (<FadeIn key={work.id}><WorkCard work={work} /></FadeIn>))}
+            {filtered.map((work) => {
+              const cover = typeof work.coverImage === "object" ? work.coverImage : null;
+              return (
+                <FadeIn key={work.id}>
+                  <ContentCard
+                    href={`/work/${work.slug}`}
+                    title={work.title}
+                    coverImage={cover}
+                    label={work.client}
+                    overlayTags={work.categories}
+                  />
+                </FadeIn>
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-12">
@@ -50,6 +60,5 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
         )}
       </div>
     </div>
-    </PageTransition>
   );
 }
