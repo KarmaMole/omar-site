@@ -70,11 +70,11 @@ export default async function AboutPage() {
               </div>
               <div className="md:col-span-1">
                 {photo?.url ? (
-                  <div className="relative aspect-[3/4] overflow-hidden border border-dark-100 border-l-2 border-l-cyan/30 bg-dark-200/50">
+                  <div className="relative aspect-[2/3] overflow-hidden border border-dark-100 border-l-2 border-l-cyan/30 bg-dark-200/50">
                     <Image src={photo.url} alt={photo.alt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 ) : (
-                  <div className="aspect-[3/4] bg-dark-200 border border-dark-100 border-l-2 border-l-cyan/30 flex items-center justify-center text-light-300 text-sm">Photo</div>
+                  <div className="aspect-[2/3] bg-dark-200 border border-dark-100 border-l-2 border-l-cyan/30 flex items-center justify-center text-light-300 text-sm">Photo</div>
                 )}
               </div>
             </div>
