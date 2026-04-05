@@ -152,18 +152,6 @@ export default async function ServicesPage() {
             ))}
           </div>
 
-          {/* Mid-page CTA */}
-          <FadeIn className="mt-16">
-            <div className="text-center py-8 border-t border-dark-100">
-              <p className="text-light-300 text-sm mb-4">Seen enough?</p>
-              <Link
-                href="/contact"
-                className="inline-block font-mono text-xs tracking-[0.2em] uppercase border border-cyan text-cyan px-6 py-2.5 hover:bg-cyan hover:text-black transition-colors"
-              >
-                Start a Conversation
-              </Link>
-            </div>
-          </FadeIn>
         </div>
 
         {/* How I Work */}
