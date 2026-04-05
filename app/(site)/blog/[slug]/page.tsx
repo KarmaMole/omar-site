@@ -135,12 +135,13 @@ async function MoreWriting({ currentSlug }: { currentSlug: string }) {
   const others = rotated.slice(0, 3);
   return (
     <MoreItems
+      variant="text"
       items={others.map((p) => ({
         slug: p.slug,
         title: p.title,
-        coverImage: p.coverImage,
         href: `/blog/${p.slug}`,
         subtitle: p.date ? new Date(p.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : undefined,
+        excerpt: p.excerpt ?? null,
       }))}
       label="More Writing"
       viewAllHref="/writing"

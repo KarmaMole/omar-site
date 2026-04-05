@@ -1,6 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Source_Serif_4 } from "next/font/google";
 import type { MediaUpload } from "@/lib/payload/types";
+
+const sourceSerif = Source_Serif_4({ subsets: ["latin"], display: "swap" });
 
 interface MoreItem {
   slug: string;
@@ -8,6 +11,7 @@ interface MoreItem {
   coverImage?: MediaUpload | string | null;
   href: string;
   subtitle?: string;
+  excerpt?: string | null;
 }
 
 interface MoreItemsProps {
@@ -15,9 +19,15 @@ interface MoreItemsProps {
   label?: string;
   viewAllHref?: string;
   viewAllLabel?: string;
+  /**
+   * Layout variant. "media" (default) shows a 16:9 cover image card.
+   * "text" shows a text-only card with date, serif title, and excerpt —
+   * use this for blog/writing where posts typically don't have covers.
+   */
+  variant?: "media" | "text";
 }
 
-export default function MoreItems({ items, label = "More", viewAllHref, viewAllLabel = "View All" }: MoreItemsProps) {
+export default function MoreItems({ items, label = "More", viewAllHref, viewAllLabel = "View All", variant = "media" }: MoreItemsProps) {
   if (items.length === 0) return null;
 
   return (
@@ -32,6 +42,34 @@ export default function MoreItems({ items, label = "More", viewAllHref, viewAllL
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {items.map((item) => {
+          if (variant === "text") {
+            return (
+              <Link
+                key={item.slug}
+                href={item.href}
+                className="group block border-l border-dark-100 hover:border-cyan transition-colors pl-5 py-1"
+              >
+                {item.subtitle && (
+                  <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-light-300 mb-2">
+                    {item.subtitle}
+                  </p>
+                )}
+                <h3
+                  className={`${sourceSerif.className} text-lg font-light text-light-100 group-hover:text-cyan transition-colors mb-2`}
+                >
+                  {item.title}
+                </h3>
+                {item.excerpt && (
+                  <p
+                    className={`${sourceSerif.className} text-sm text-light-300 line-clamp-3`}
+                  >
+                    {item.excerpt}
+                  </p>
+                )}
+              </Link>
+            );
+          }
+
           const cover = typeof item.coverImage === "object" && item.coverImage ? item.coverImage : null;
           return (
             <Link key={item.slug} href={item.href} className="group block">
