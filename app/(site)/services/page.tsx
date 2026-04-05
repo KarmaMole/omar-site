@@ -30,10 +30,11 @@ const services = [
   {
     label: "AI Consultation & Training",
     description:
-      "I help teams figure out where AI actually fits in their workflow. Not a pitch deck about the future. A practical assessment of what tools to use, what processes to change, and what results to expect.",
+      "I run structured AI training programs for marketing teams. Six sessions covering content creation, social media, strategy, presentations, and automation. Live, online, practical. Participants leave with tools and workflows they can use the next day.",
     benefit:
-      "I work with ChatGPT, Claude, MidJourney, Gemini, ComfyUI, Ollama, and RunPod daily. I know what works and what's still hype. Currently leading AI integration at Optix in Dubai.",
+      "Currently leading AI creative and production at Optix / Publicis Groupe, building AI-powered pipelines for major airlines, automotive brands, and financial institutions. I use Claude, ChatGPT, MidJourney, ComfyUI, Veo, Kling, and Suno daily. I know what works and what's still hype.",
     references: [
+      { label: "AI Workshop Program", href: "/contact" },
       { label: "Optix AI Hub", href: "/explore/optix-ai-hub" },
       { label: "Mentora", href: "/explore/mentora" },
     ],
