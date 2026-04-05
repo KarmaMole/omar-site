@@ -17,50 +17,63 @@ const services = [
   {
     label: "AI Video & Motion",
     description:
-      "I produce video content using generative AI tools alongside traditional post-production. MidJourney for concepting. Stable Diffusion with custom LoRAs for animation. Kling and Veo for AI-generated footage. DaVinci Resolve and Premiere for final assembly. The result: high-quality video at a fraction of the time and cost of conventional shoots.",
-    details:
-      "This covers AI music videos, brand films, social content, product promos, explainers, and experimental film. If it moves on a screen, I can build it.",
-    references: ["Mycelium (Marze)", "More Fool You (Doc & The Revelators)", "The Strangers (AI Film)", "El Wa7sh El Kasir"],
-  },
-  {
-    label: "Branding & Design",
-    description:
-      "From logo systems and business cards to full identity packages and CSR reports. I work across Photoshop, Illustrator, and InDesign to build brand systems that hold up at every scale. No templates. No generic output. Every asset designed with intent.",
-    details:
-      "Particular strength in bilingual English/Arabic design, having worked across Cairo, Italy, and Dubai for over two decades.",
-    references: ["7 Black / Lunch Box", "SAWA Media", "Mansour CSR Reports"],
-  },
-  {
-    label: "Production & Film",
-    description:
-      "I shoot, direct, edit, and post-produce. DSLR cameras. DaVinci Resolve. After Effects for motion graphics. Reaper for audio. I have produced documentaries, awareness campaigns, PSAs, corporate films, and live event coverage across the Middle East and Europe.",
-    details:
-      "This is not theoretical. It is 200+ projects of hands-on production work with brands like Coca-Cola, Swarovski, the Ford Foundation, and the International Labor Organization.",
-    references: ["Kolona (Ford Foundation)", "ILO Working Mothers", "Coca-Cola Earth Day", "Swarovski CX Journey", "Studio Emad Eddin"],
-  },
-  {
-    label: "Digital Builds",
-    description:
-      "I build functional web platforms, dashboards, and internal tools using Replit, Claude Code, and modern frameworks. Not wireframes and Figma decks that sit in a drawer. Working products.",
-    details:
-      "Current live builds include an AI-powered news aggregator, a real-time geopolitical monitoring dashboard, a voice-driven corporate training platform, and team collaboration tools. I ship things.",
-    references: ["Human Impact", "Iran War Monitor", "Mentora", "Optix AI Hub"],
-  },
-  {
-    label: "Music Videos & Audio",
-    description:
-      "AI-generated and traditionally produced music videos, plus sound design and audio production using Suno, ElevenLabs, and Reaper. From concept to final cut.",
-    details:
-      "I direct and produce music videos for artists, blending AI-generated visuals with conventional post-production for a look that stands out.",
-    references: ["More Fool You (Doc & The Revelators)", "Mycelium (Marze)", "Pulse Music World"],
+      "I produce video content using generative AI tools alongside traditional post-production. MidJourney for concepting. Stable Diffusion with custom LoRAs for animation. Kling and Veo for AI-generated footage. DaVinci Resolve and Premiere for final assembly.",
+    benefit:
+      "The result: high-quality video at a fraction of the time and cost of conventional shoots. Brand films, music videos, social content, promos, explainers, experimental film.",
+    references: [
+      { label: "Mycelium (Marze)", href: "/explore/mycelium" },
+      { label: "More Fool You", href: "/explore/more-fool-you" },
+      { label: "The Strangers", href: "/explore/the-strangers" },
+      { label: "El Wa7sh El Kasir", href: "/explore/el-wahsh-el-kasir" },
+    ],
   },
   {
     label: "AI Consultation & Training",
     description:
       "I help teams figure out where AI actually fits in their workflow. Not a pitch deck about the future. A practical assessment of what tools to use, what processes to change, and what results to expect.",
-    details:
-      "I work with ChatGPT, Claude, MidJourney, Gemini, ComfyUI, Ollama, and RunPod daily. I know what works and what is still hype. Currently leading AI integration at Optix in Dubai.",
-    references: ["Optix AI Hub", "Mentora"],
+    benefit:
+      "I work with ChatGPT, Claude, MidJourney, Gemini, ComfyUI, Ollama, and RunPod daily. I know what works and what's still hype. Currently leading AI integration at Optix in Dubai.",
+    references: [
+      { label: "Optix AI Hub", href: "/explore/optix-ai-hub" },
+      { label: "Mentora", href: "/explore/mentora" },
+    ],
+  },
+  {
+    label: "Digital Builds",
+    description:
+      "I build functional web platforms, dashboards, and internal tools using Replit, Claude Code, and modern frameworks. Not wireframes and Figma decks that sit in a drawer. Working products.",
+    benefit:
+      "Current live builds include an AI-powered news aggregator, a real-time geopolitical monitoring dashboard, a voice-driven training platform, and team collaboration tools. I ship things.",
+    references: [
+      { label: "Human Impact", href: "/explore/human-impact" },
+      { label: "Iran War Monitor", href: "/explore/iran-war-monitor" },
+      { label: "Mentora", href: "/explore/mentora" },
+    ],
+  },
+  {
+    label: "Production & Film",
+    description:
+      "I shoot, direct, edit, and post-produce. DSLR cameras. DaVinci Resolve. After Effects for motion graphics. Reaper for audio and sound design. Documentaries, awareness campaigns, PSAs, corporate films, and live event coverage.",
+    benefit:
+      "200+ projects of hands-on production work with brands like Coca-Cola, Swarovski, the Ford Foundation, and the International Labor Organization. Not theoretical. Battle-tested.",
+    references: [
+      { label: "Kolona", href: "/work/kolona" },
+      { label: "ILO Working Mothers", href: "/work/ilo-working-mothers" },
+      { label: "Coca-Cola Earth Day", href: "/work/coca-cola-earth-day" },
+      { label: "Studio Emad Eddin", href: "/work/studio-emad-eddin" },
+    ],
+  },
+  {
+    label: "Branding & Design",
+    description:
+      "From logo systems and business cards to full identity packages and CSR reports. Photoshop, Illustrator, InDesign. Brand systems that hold up at every scale. No templates. No generic output.",
+    benefit:
+      "Particular strength in bilingual English/Arabic design, having worked across Cairo, Italy, and Dubai for over two decades. Every asset designed with intent.",
+    references: [
+      { label: "7 Black / Lunch Box", href: "/work/7-black-lunch-box" },
+      { label: "SAWA Media", href: "/work/sawabusinesscards" },
+      { label: "Mansour CSR", href: "/work/csr2016" },
+    ],
   },
 ];
 
@@ -68,7 +81,7 @@ const steps = [
   {
     number: "01",
     title: "Scope",
-    description: "We talk. You tell me what you need, I tell you what is actually possible. No discovery phase that takes six weeks. Usually one call.",
+    description: "We talk. You tell me what you need, I tell you what's actually possible. No discovery phase that takes six weeks. Usually one call.",
   },
   {
     number: "02",
@@ -83,7 +96,7 @@ const steps = [
   {
     number: "04",
     title: "Iterate",
-    description: "If something needs adjusting, we adjust. No change-order bureaucracy. The goal is work that performs, not work that passed a review gate.",
+    description: "If something needs adjusting, we adjust. No change-order bureaucracy. The goal is work that performs.",
   },
 ];
 
@@ -97,39 +110,40 @@ export default async function ServicesPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
             <div className="mb-16">
-              <span className="section-label">Services</span>
+              <span className="section-label-primary">Services</span>
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
-                What I Do
+                Production Without the Agency
               </h1>
               <p className="text-light-300 text-lg mt-4 max-w-2xl">
-                Creative production, AI integration, and digital builds for brands that want to move faster and look sharper.
+                One person. No agency overhead. Twenty years of production experience now accelerated by AI.
               </p>
             </div>
           </FadeIn>
 
-          {/* Service Categories */}
-          <div className="space-y-8">
+          {/* Service Categories — 2-col grid on desktop */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-12">
             {services.map((service) => (
               <FadeIn key={service.label}>
-                <div className="border-l-2 border-cyan/30 pl-8 lg:pl-10 py-6">
+                <div className="border-l-2 border-cyan/30 pl-5 lg:pl-8 py-2">
                   <h2 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-4">
                     {service.label}
                   </h2>
-                  <p className="text-light-200 leading-relaxed max-w-2xl">
+                  <p className="text-light-200 leading-relaxed">
                     {service.description}
                   </p>
-                  <p className="text-light-300 text-sm leading-relaxed mt-3 max-w-2xl">
-                    {service.details}
+                  <p className="text-light-300 text-sm leading-relaxed mt-3">
+                    {service.benefit}
                   </p>
                   {service.references.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-5">
                       {service.references.map((ref) => (
-                        <span
-                          key={ref}
-                          className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-2.5 py-1"
+                        <Link
+                          key={ref.label}
+                          href={ref.href}
+                          className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-3 py-1.5 hover:text-cyan hover:border-cyan/30 transition-colors"
                         >
-                          {ref}
-                        </span>
+                          {ref.label}
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -137,10 +151,23 @@ export default async function ServicesPage() {
               </FadeIn>
             ))}
           </div>
+
+          {/* Mid-page CTA */}
+          <FadeIn className="mt-16">
+            <div className="text-center py-8 border-t border-dark-100">
+              <p className="text-light-300 text-sm mb-4">Seen enough?</p>
+              <Link
+                href="/contact"
+                className="inline-block font-mono text-xs tracking-[0.2em] uppercase border border-cyan text-cyan px-6 py-2.5 hover:bg-cyan hover:text-black transition-colors"
+              >
+                Start a Conversation
+              </Link>
+            </div>
+          </FadeIn>
         </div>
 
         {/* How I Work */}
-        <section className="border-t border-dark-100 mt-20 py-16 md:py-24">
+        <section className="border-t border-dark-100 mt-12 py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
               <span className="section-label">Process</span>
@@ -168,32 +195,13 @@ export default async function ServicesPage() {
           </div>
         </section>
 
-        {/* Track Record */}
-        <section className="border-t border-dark-100 py-16 md:py-20 bg-[#0d0d0d]/30">
+        {/* Client Trust Strip */}
+        <section className="border-t border-dark-100 py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
-              <span className="section-label mb-10 block">Track Record</span>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-dark-100">
-                {[
-                  { number: "20+", label: "Years" },
-                  { number: "50+", label: "Brands" },
-                  { number: "200+", label: "Projects" },
-                  { number: "AI", label: "From Day 1" },
-                ].map((stat) => (
-                  <div key={stat.label} className="text-center">
-                    <p className="font-mono text-4xl md:text-5xl font-light text-light-100 tracking-tight">
-                      {stat.number}
-                    </p>
-                    <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </FadeIn>
-            {clients.length > 0 && (
-              <FadeIn className="mt-12">
-                <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4 justify-center">
+              <span className="section-label mb-8 block">Selected Clients</span>
+              {clients.length > 0 && (
+                <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4">
                   {clients.slice(0, 12).map((client) => (
                     <span
                       key={client.id}
@@ -203,8 +211,8 @@ export default async function ServicesPage() {
                     </span>
                   ))}
                 </div>
-              </FadeIn>
-            )}
+              )}
+            </FadeIn>
           </div>
         </section>
 
@@ -216,7 +224,7 @@ export default async function ServicesPage() {
                 Let&apos;s build something.
               </h2>
               <p className="text-light-300 mt-4 max-w-md mx-auto">
-                Whether it is a brand film, a product platform, or an AI workflow overhaul, I am one message away.
+                Whether it&apos;s a brand film, a product platform, or an AI workflow overhaul, I&apos;m one message away.
               </p>
               <div className="mt-10">
                 <Link
