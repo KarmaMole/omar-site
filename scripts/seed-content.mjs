@@ -528,25 +528,26 @@ const projectItems = [
 // ─── CLIENTS ────────────────────────────────────────────────────
 
 const clients = [
-  { name: "Coca-Cola", sortOrder: 1 },
-  { name: "Mansour Holdings", sortOrder: 2 },
-  { name: "Metro Markets", sortOrder: 3 },
-  { name: "Swarovski", sortOrder: 4 },
-  { name: "Cartier", sortOrder: 5 },
-  { name: "Tanagra", sortOrder: 6 },
-  { name: "Christie's Education", sortOrder: 7 },
-  { name: "Centrepoint", sortOrder: 8 },
-  { name: "Schneider Electric", sortOrder: 9 },
-  { name: "Ford Foundation", sortOrder: 10 },
-  { name: "Transparency International", sortOrder: 11 },
-  { name: "Studio Emad Eddin", sortOrder: 12 },
-  { name: "Publicis Groupe", sortOrder: 13 },
-  { name: "Modern Media Factory", sortOrder: 14 },
-  { name: "Photopia", sortOrder: 15 },
-  { name: "Pulse Music World", sortOrder: 16 },
-  { name: "Orient Productions", sortOrder: 17 },
-  { name: "Sudan365", sortOrder: 18 },
-  { name: "5D Egypt", sortOrder: 19 },
+  { name: "Metro Markets", sortOrder: 1 },        // 8 work items, most recent (2023)
+  { name: "Mansour Holdings", sortOrder: 2 },      // 11 work items, recent (2022)
+  { name: "Publicis Groupe", sortOrder: 3 },        // current employer
+  { name: "Centrepoint", sortOrder: 4 },             // 2 items (2019)
+  { name: "Savage Impulse", sortOrder: 5 },          // 1 item (2023)
+  { name: "Studio Emad Eddin", sortOrder: 6 },       // 2 items (2015)
+  { name: "Swarovski", sortOrder: 7 },               // 1 item (2019)
+  { name: "Christie's Education", sortOrder: 8 },    // 1 item (2019)
+  { name: "Schneider Electric", sortOrder: 9 },      // 1 item (2019)
+  { name: "Tanagra", sortOrder: 10 },                // 1 item (2019)
+  { name: "Photopia", sortOrder: 11 },               // 1 item (2019)
+  { name: "Modern Media Factory", sortOrder: 12 },   // co-client (2019)
+  { name: "Ford Foundation", sortOrder: 13 },         // 2 items (2010)
+  { name: "Orient Productions", sortOrder: 14 },     // 1 item (2015)
+  { name: "Transparency International", sortOrder: 15 }, // 1 item (2014)
+  { name: "Coca-Cola", sortOrder: 16 },              // 1 item (2010)
+  { name: "Cartier", sortOrder: 17 },                // no work items
+  { name: "Pulse Music World", sortOrder: 18 },      // 1 item (2010)
+  { name: "Sudan365", sortOrder: 19 },               // 1 item (2010)
+  { name: "5D Egypt", sortOrder: 20 },               // no work items
 ];
 
 // ─── MAIN ───────────────────────────────────────────────────────

@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
   const body = await req.json();
   const { collection, items } = body as {
-    collection: "work" | "projects";
+    collection: "work" | "projects" | "clients";
     items: { id: string; sortOrder: number }[];
   };
 
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
 
-  if (collection !== "work" && collection !== "projects") {
+  if (collection !== "work" && collection !== "projects" && collection !== "clients") {
     return NextResponse.json({ error: "Invalid collection" }, { status: 400 });
   }
 
