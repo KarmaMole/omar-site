@@ -43,3 +43,5 @@ screenshot-*.png
 
 # env files with credentials
 import.env
+
+.vercel
