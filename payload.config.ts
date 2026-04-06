@@ -84,6 +84,7 @@ export default buildConfig({
     },
     components: {
       beforeDashboard: ["@/components/admin/reorder-link#default"],
+      afterNavLinks: ["@/components/admin/reorder-nav-link#default"],
     },
   },
 });
