@@ -139,7 +139,7 @@ export default async function ServicesPage() {
                         <Link
                           key={ref.label}
                           href={ref.href}
-                          className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-dark-100 px-3 py-1.5 hover:text-cyan hover:border-cyan/30 transition-colors"
+                          className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-white/[0.07] px-3 py-1.5 hover:text-cyan hover:border-cyan/30 transition-colors"
                         >
                           {ref.label}
                         </Link>
@@ -154,7 +154,7 @@ export default async function ServicesPage() {
         </div>
 
         {/* How I Work */}
-        <section className="border-t border-dark-100 mt-12 py-16 md:py-24">
+        <section className="border-t border-white/[0.07] mt-12 py-16 md:py-24">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
               <span className="section-label">Process</span>
@@ -183,7 +183,7 @@ export default async function ServicesPage() {
         </section>
 
         {/* Client Trust Strip */}
-        <section className="border-t border-dark-100 py-12 md:py-16">
+        <section className="border-t border-white/[0.07] py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
               <span className="section-label mb-8 block">Selected Clients</span>
@@ -204,10 +204,10 @@ export default async function ServicesPage() {
         </section>
 
         {/* CTA */}
-        <section className="border-t border-dark-100 py-20 md:py-32">
+        <section className="border-t border-white/[0.07] py-20 md:py-32">
           <FadeIn>
             <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center">
-              <h2 className="text-4xl md:text-6xl font-light tracking-tight text-light-100">
+              <h2 className="text-4xl md:text-6xl font-light tracking-display text-light-100">
                 Let&apos;s build something.
               </h2>
               <p className="text-light-300 mt-4 max-w-md mx-auto">
@@ -216,7 +216,7 @@ export default async function ServicesPage() {
               <div className="mt-10">
                 <Link
                   href="/contact"
-                  className="inline-block font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-6 py-2.5 hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
+                  className="inline-block font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-6 py-2.5 shadow-[0_2px_8px_rgba(0,217,255,0.2)] hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
                 >
                   Start a Conversation
                 </Link>

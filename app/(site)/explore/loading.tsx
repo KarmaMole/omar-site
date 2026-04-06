@@ -9,7 +9,7 @@ export default function ExploreLoading() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="bg-dark-200 border border-dark-100 rounded-[2px] overflow-hidden animate-pulse">
+            <div key={i} className="bg-dark-200 border border-white/[0.07] rounded-[2px] overflow-hidden animate-pulse">
               <div className="aspect-video bg-dark-100" />
               <div className="p-4 space-y-2">
                 <div className="h-3 w-16 bg-dark-100 rounded" />

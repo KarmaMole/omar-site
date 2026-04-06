@@ -9,7 +9,7 @@ export default function WritingLoading() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="pb-6 border-b border-dark-100 animate-pulse">
+            <div key={i} className="pb-6 border-b border-white/[0.07] animate-pulse">
               <div className="aspect-video bg-dark-200 rounded-[2px] mb-4" />
               <div className="space-y-2">
                 <div className="h-3 w-24 bg-dark-200 rounded" />

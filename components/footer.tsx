@@ -28,7 +28,7 @@ export default async function Footer() {
   const socialLinks = settings.socialLinks ?? [];
 
   return (
-    <footer aria-label="Site footer" className="lg:ml-20 border-t border-[#1a1a1a]">
+    <footer aria-label="Site footer" className="lg:ml-20 border-t border-white/[0.07]">
       <div className="flex items-center justify-between px-6 py-6">
         {/* Left: Copyright */}
         <p className="font-mono text-xs text-light-300">

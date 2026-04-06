@@ -43,3 +43,6 @@ screenshot-*.png
 
 # env files with credentials
 import.env
+
+# local reference material
+/references/

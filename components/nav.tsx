@@ -48,7 +48,7 @@ export default function Nav() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:flex fixed left-0 top-0 h-screen w-20 flex-col items-center justify-between py-8 z-50 border-r border-[#1a1a1a]" aria-label="Main navigation">
+      <nav className="hidden lg:flex fixed left-0 top-0 h-screen w-20 flex-col items-center justify-between py-8 z-50 border-r border-white/[0.06]" aria-label="Main navigation">
         {/* Logo */}
         <Link href="/" className="font-mono text-xs tracking-widest text-light-300 hover:text-cyan transition-colors [writing-mode:vertical-lr] rotate-180">
           OMAR KAMEL
@@ -62,18 +62,12 @@ export default function Nav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative font-mono text-[10px] tracking-[0.2em] uppercase transition-all duration-200 [writing-mode:vertical-lr] rotate-180 px-1.5 py-2 ${
+                className={`font-mono text-[10px] tracking-[0.2em] uppercase transition-all duration-200 [writing-mode:vertical-lr] rotate-180 px-1.5 py-2 border-l-2 ${
                   isActive
-                    ? "text-cyan bg-cyan/5"
-                    : "text-light-300 hover:text-light-100 hover:bg-white/5"
+                    ? "text-cyan bg-cyan/5 border-cyan shadow-[0_0_8px_rgba(0,217,255,0.4)]"
+                    : "text-light-300 hover:text-light-100 hover:bg-white/5 border-transparent"
                 }`}
               >
-                {isActive && (
-                  <span
-                    className="absolute -left-[21px] top-1/2 -translate-y-1/2 w-[3px] h-4 bg-cyan"
-                    style={{ boxShadow: "0 0 8px rgba(0, 217, 255, 0.4)" }}
-                  />
-                )}
                 {item.label}
               </Link>
             );
@@ -90,7 +84,7 @@ export default function Nav() {
       </nav>
 
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-[#1a1a1a]">
+      <header className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-white/[0.06]">
         <Link href="/" className="font-mono text-sm tracking-widest text-light-100">
           OK
         </Link>

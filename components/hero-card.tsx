@@ -63,7 +63,7 @@ export default function HeroCard({
 
   return (
     <div
-      className={`relative overflow-hidden bg-dark-200 border border-transparent hover:border-cyan/20 transition-all duration-500 hover:shadow-[0_4px_20px_rgba(0,217,255,0.1)] ${aspectCls}`}
+      className={`relative overflow-hidden bg-dark-200 border border-white/[0.06] shadow-card hover:border-cyan/30 hover:shadow-card-hover transition-all duration-500 ${aspectCls}`}
     >
       <Link href={href} className="group block absolute inset-0">
         {coverImage?.url ? (

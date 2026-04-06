@@ -70,11 +70,11 @@ export default async function AboutPage() {
               </div>
               <div className="md:col-span-1">
                 {photo?.url ? (
-                  <div className="relative aspect-[3/4] overflow-hidden border border-dark-100 bg-dark-200/50">
+                  <div className="relative aspect-[3/4] overflow-hidden border border-white/[0.07] bg-dark-200/50">
                     <Image src={photo.url} alt={photo.alt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
                   </div>
                 ) : (
-                  <div className="aspect-[3/4] bg-dark-200 border border-dark-100 flex items-center justify-center text-light-300 text-sm">Photo</div>
+                  <div className="aspect-[3/4] bg-dark-200 border border-white/[0.07] flex items-center justify-center text-light-300 text-sm">Photo</div>
                 )}
               </div>
             </div>
@@ -82,11 +82,11 @@ export default async function AboutPage() {
 
           <FadeIn>
             {/* Skills section */}
-            <div className="border-t border-dark-100 pt-16">
+            <div className="border-t border-white/[0.07] pt-16">
               <span className="section-label">Skills &amp; Tools</span>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
                 {skills.map((group) => (
-                  <div key={group.category} className="border-l border-dark-100 pl-4">
+                  <div key={group.category} className="border-l border-white/[0.07] pl-4">
                     <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-4">{group.category}</h3>
                     <ul className="space-y-2">
                       {group.items.map((item) => (<li key={item} className="text-sm text-light-300">{item}</li>))}

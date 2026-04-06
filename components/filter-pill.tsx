@@ -15,10 +15,10 @@ export default function FilterPill({ href, label, active }: FilterPillProps) {
   return (
     <Link
       href={href}
-      className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 border transition-colors duration-200 ${
+      className={`shrink-0 whitespace-nowrap font-mono text-xs tracking-[0.15em] uppercase px-4 py-2 rounded border transition-colors duration-200 ${
         active
           ? "bg-cyan/10 border-cyan text-cyan"
-          : "border-dark-100 text-light-300 hover:text-white hover:border-white/30"
+          : "border-white/[0.07] text-light-300 hover:text-white hover:border-white/30"
       }`}
     >
       {label}

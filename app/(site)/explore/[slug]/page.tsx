@@ -104,7 +104,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
 
         <div className="flex items-center gap-4 mb-6">
           {logo?.url && (
-            <div className="flex-shrink-0 w-14 h-14 bg-[#111] border border-[#1a1a1a] rounded-[2px] flex items-center justify-center overflow-hidden">
+            <div className="flex-shrink-0 w-14 h-14 bg-[#111] border border-white/[0.07] rounded-[2px] flex items-center justify-center overflow-hidden">
               <Image
                 src={logo.sizes?.thumbnail?.url ?? logo.url}
                 alt={logo.alt}

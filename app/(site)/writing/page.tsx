@@ -46,7 +46,7 @@ function WritingCard({ post }: { post: BlogPostDoc }) {
       {...(isExternal
         ? { target: "_blank", rel: "noopener noreferrer" }
         : {})}
-      className="group block pb-6 border-b border-[#1a1a1a]"
+      className="group block pb-6 border-b border-white/[0.07]"
     >
       {cover?.url && (
         <div className="relative aspect-video overflow-hidden rounded-[2px] mb-4">

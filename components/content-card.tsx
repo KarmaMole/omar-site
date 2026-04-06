@@ -33,7 +33,7 @@ export default function ContentCard({
   return (
     <Link
       href={href}
-      className="group block rounded-[2px] bg-[#141414] border border-[#1a1a1a] hover:border-cyan/50 hover:shadow-[0_0_20px_rgba(0,217,255,0.15)] transition-all duration-300"
+      className="group block rounded-[2px] bg-[#141414] border border-white/[0.07] shadow-card hover:border-cyan/50 hover:shadow-card-hover transition-all duration-300"
     >
       <div className="relative aspect-video overflow-hidden rounded-t-[2px]">
         {cover?.url ? (
@@ -46,8 +46,13 @@ export default function ContentCard({
             className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-light-300 text-sm font-light px-4 text-center bg-[#111]">
-            {title}
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-[#0a0a0a] flex flex-col justify-end p-4">
+            {label && (
+              <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-light-300/50 mb-1">
+                {label}
+              </p>
+            )}
+            <p className="text-sm font-light text-light-100/60 leading-snug">{title}</p>
           </div>
         )}
         {tags.length > 0 && (
@@ -56,7 +61,7 @@ export default function ContentCard({
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="font-mono text-[10px] tracking-widest uppercase text-cyan bg-black/50 px-2 py-0.5 border border-cyan/20"
+                  className="font-mono text-[10px] tracking-widest uppercase text-cyan bg-black/50 px-2 py-0.5 rounded border border-cyan/20"
                 >
                   {tag}
                 </span>
@@ -67,7 +72,7 @@ export default function ContentCard({
       </div>
       <div className="p-4 space-y-1">
         {label && (
-          <p className="font-mono text-[10px] tracking-widest uppercase text-cyan">
+          <p className="font-mono text-[10px] tracking-widest uppercase text-light-300">
             {label}
           </p>
         )}

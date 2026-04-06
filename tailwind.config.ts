@@ -41,6 +41,22 @@ const config: Config = {
         "hero": "clamp(3rem, 8vw, 8rem)",
         "hero-sub": "clamp(1.25rem, 2.5vw, 2rem)",
       },
+      letterSpacing: {
+        'display': '-0.04em',
+        'tight-xl': '-0.03em',
+      },
+      transitionTimingFunction: {
+        'spring-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
+      boxShadow: {
+        'card': 'rgba(255, 255, 255, 0.04) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.3) 0px 1px 3px 0px',
+        'card-hover': 'rgba(255, 255, 255, 0.06) 0px 1px 0px 0px inset, rgba(0, 217, 255, 0.12) 0px 0px 20px 0px, rgba(0, 0, 0, 0.3) 0px 2px 8px 0px',
+      },
+      spacing: {
+        'section': '6rem',
+        'section-sm': '4rem',
+        'section-lg': '8rem',
+      },
       borderRadius: {
         DEFAULT: '2px',
         sm: '1px',
