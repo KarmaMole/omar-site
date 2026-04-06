@@ -8,7 +8,6 @@ import MediaEmbedComponent from "@/components/media-embed";
 import GalleryGrid from "@/components/gallery-grid";
 import { getProjectBySlug, getAllProjectSlugs, getAllProjects } from "@/lib/payload/queries";
 import MoreItems from "@/components/more-items";
-import { sourceSerif } from "@/lib/fonts";
 
 interface ExploreDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -116,7 +115,7 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
             </div>
           )}
           <div>
-            <h1 className={`${sourceSerif.className} text-4xl md:text-6xl font-light text-light-100 leading-tight`}>{project.title}</h1>
+            <h1 className="text-4xl md:text-5xl font-light text-light-100">{project.title}</h1>
           </div>
         </div>
 

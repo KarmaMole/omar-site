@@ -9,7 +9,6 @@ import { getWorkBySlug, getAllWorkSlugs, getAllWork } from "@/lib/payload/querie
 import MoreItems from "@/components/more-items";
 import GalleryGrid from "@/components/gallery-grid";
 import { formatDate } from "@/lib/utils";
-import { sourceSerif } from "@/lib/fonts";
 
 interface WorkDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -95,7 +94,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       <div className={`max-w-3xl mx-auto px-6 ${cover?.url ? "py-12" : "pt-20 pb-12"}`}>
         <Link href="/work" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
         {work.client && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-2">{work.client}</p>}
-        <h1 className={`${sourceSerif.className} text-4xl md:text-6xl font-light text-light-100 leading-tight mb-4`}>{work.title}</h1>
+        <h1 className="text-4xl md:text-5xl font-light text-light-100 mb-4">{work.title}</h1>
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
         <div className="mb-8" />
         {work.description ? <RichText data={work.description} className="mb-10" /> : null}
