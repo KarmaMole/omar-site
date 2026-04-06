@@ -49,6 +49,7 @@ export const Projects: CollectionConfig = {
         { label: "AI", value: "ai" },
         { label: "Writing", value: "writing" },
         { label: "Photography", value: "photography" },
+        { label: "Research", value: "research" },
       ],
       defaultValue: "visual",
       admin: {
