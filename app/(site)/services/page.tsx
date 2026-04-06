@@ -113,7 +113,7 @@ export default async function ServicesPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Production Without the Agency
               </h1>
-              <p className="text-light-300 text-lg mt-4 max-w-2xl">
+              <p className="text-light-300 mt-3 max-w-2xl">
                 One person. No agency overhead. Twenty years of production experience now accelerated by AI.
               </p>
             </div>

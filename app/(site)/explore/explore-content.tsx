@@ -54,7 +54,7 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Explore
               </h1>
-              <p className="text-light-300 text-lg mt-3">
+              <p className="text-light-300 mt-3">
                 Personal projects, music, tools, and experiments.
               </p>
             </div>

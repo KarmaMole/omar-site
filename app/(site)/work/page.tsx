@@ -30,7 +30,7 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
           <div className="mb-12">
             <span className="section-label">Portfolio</span>
             <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
-            <p className="text-light-300 text-lg mt-3">AI production, video, music, and comics.</p>
+            <p className="text-light-300 mt-3">AI production, video, music, and comics.</p>
           </div>
         </FadeIn>
         <CategoryFilter />
