@@ -23,7 +23,7 @@ export default async function ContactPage() {
           {/* Header */}
           <div className="mb-16">
             <span className="section-label">Contact</span>
-            <h1 className="text-5xl md:text-6xl font-light text-light-100 mt-3">
+            <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-3">
               Start a Project
             </h1>
             <p className="text-light-300 mt-4">Tell me about your vision.</p>

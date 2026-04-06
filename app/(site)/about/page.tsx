@@ -50,7 +50,7 @@ export default async function AboutPage() {
             {/* Cinematic header */}
             <div className="mb-16">
               <span className="section-label">About</span>
-              <h1 className="text-5xl md:text-6xl font-light text-light-100 mt-3">
+              <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-3">
                 Omar Kamel
               </h1>
             </div>
