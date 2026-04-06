@@ -59,11 +59,11 @@ export default async function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 items-start gap-12 mb-20">
               <div className="md:col-span-2">
                 {settings.aboutBio ? (
-                  <div className="prose prose-sm prose-invert max-w-none text-sm text-light-200 leading-relaxed [&_p]:text-sm [&_p:first-of-type]:!mt-0">
+                  <div className="prose prose-invert max-w-none text-[15px] text-light-200 leading-relaxed [&_p]:text-[15px] [&_p:first-of-type]:!mt-0">
                     <RichText data={settings.aboutBio} />
                   </div>
                 ) : (
-                  <div className="prose prose-sm prose-invert max-w-none text-sm text-light-200 leading-relaxed [&_p]:text-sm [&_p:first-of-type]:!mt-0">
+                  <div className="prose prose-invert max-w-none text-[15px] text-light-200 leading-relaxed [&_p]:text-[15px] [&_p:first-of-type]:!mt-0">
                     <p>I&apos;m Omar Kamel, AI Creative &amp; Production Lead at Optix, where I help regional and global brands harness AI across every stage of creative production.</p>
                   </div>
                 )}
