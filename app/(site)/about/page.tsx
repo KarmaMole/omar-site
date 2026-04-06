@@ -53,6 +53,7 @@ export default async function AboutPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Omar Kamel
               </h1>
+              <p className="text-light-300 mt-3">Origin story.</p>
             </div>
 
             {/* Two-column: bio left (2/3), photo right (1/3) */}
