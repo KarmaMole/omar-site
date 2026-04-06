@@ -7,6 +7,21 @@ import sanitizeHtml from "sanitize-html";
 
 const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
   ...defaultConverters,
+  paragraph: ({ node, nodesToJSX }) => {
+    const children = node.children ?? [];
+    if (
+      children.length === 1 &&
+      children[0].type === "text" &&
+      (children[0] as { text?: string }).text?.trim() === "---"
+    ) {
+      return (
+        <p className="text-center text-light-300 tracking-[0.5em] my-8 select-none" aria-hidden="true">
+          · · ·
+        </p>
+      );
+    }
+    return <p>{nodesToJSX({ nodes: children })}</p>;
+  },
 });
 
 interface RichTextProps {
