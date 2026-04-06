@@ -109,7 +109,7 @@ export default async function ServicesPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <FadeIn>
             <div className="mb-16">
-              <span className="section-label-primary">Services</span>
+              <span className="section-label">Services</span>
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Production Without the Agency
               </h1>

@@ -28,7 +28,8 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
       <div className="max-w-7xl mx-auto px-6">
         <FadeIn>
           <div className="mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-light-100">Work</h1>
+            <span className="section-label">Portfolio</span>
+            <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
             <p className="text-light-300 text-lg mt-3">AI production, video, music, and comics.</p>
           </div>
         </FadeIn>
