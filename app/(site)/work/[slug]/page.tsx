@@ -59,7 +59,6 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   if (!work) notFound();
 
   const cover = typeof work.coverImage === "object" ? work.coverImage : null;
-  const doc = typeof work.document === "object" && work.document ? work.document : null;
 
   const workJsonLd = {
     "@context": "https://schema.org",
@@ -100,26 +99,6 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
         <div className="mb-8" />
         {work.description ? <RichText data={work.description} className="mb-10" /> : null}
-        {doc?.url && (
-          <div className="mb-10">
-            <div className="border border-dark-100 rounded-[2px] overflow-hidden bg-dark-200">
-              <iframe
-                src={doc.url}
-                title={`${work.title} PDF`}
-                className="w-full h-[70vh] min-h-[500px]"
-              />
-            </div>
-            <div className="mt-4">
-              <a
-                href={doc.url}
-                download
-                className="inline-block border border-cyan text-cyan px-6 py-2.5 text-sm font-mono hover:bg-cyan hover:text-black transition-colors rounded-[2px]"
-              >
-                Download PDF &darr;
-              </a>
-            </div>
-          </div>
-        )}
         {work.gallery && Array.isArray(work.gallery) && work.gallery.length > 0 && (
           <GalleryGrid
             images={work.gallery.filter(

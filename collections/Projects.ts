@@ -49,7 +49,6 @@ export const Projects: CollectionConfig = {
         { label: "AI", value: "ai" },
         { label: "Writing", value: "writing" },
         { label: "Photography", value: "photography" },
-        { label: "Research", value: "research" },
       ],
       defaultValue: "visual",
       admin: {
@@ -71,15 +70,6 @@ export const Projects: CollectionConfig = {
       label: "Audio File",
       admin: {
         condition: (_data, siblingData) => siblingData?.contentType === "music",
-      },
-    },
-    {
-      name: "document",
-      type: "upload",
-      relationTo: "media",
-      label: "PDF Document",
-      admin: {
-        description: "Upload a PDF for preview and download on the detail page",
       },
     },
     {

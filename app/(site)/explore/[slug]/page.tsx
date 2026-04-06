@@ -59,7 +59,6 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
 
   const cover = typeof project.coverImage === "object" ? project.coverImage : null;
   const logo = typeof project.logo === "object" && project.logo ? project.logo : null;
-  const doc = typeof project.document === "object" && project.document ? project.document : null;
   const gallery = project.gallery?.filter(
     (img): img is Extract<typeof img, { url: string }> =>
       typeof img === "object" && img !== null && "url" in img
@@ -130,27 +129,6 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
         )}
 
         {project.description ? <RichText data={project.description} className="mb-10" /> : null}
-
-        {doc?.url && (
-          <div className="mb-10">
-            <div className="border border-dark-100 rounded-[2px] overflow-hidden bg-dark-200">
-              <iframe
-                src={doc.url}
-                title={`${project.title} PDF`}
-                className="w-full h-[70vh] min-h-[500px]"
-              />
-            </div>
-            <div className="mt-4">
-              <a
-                href={doc.url}
-                download
-                className="inline-block border border-cyan text-cyan px-6 py-2.5 text-sm font-mono hover:bg-cyan hover:text-black transition-colors rounded-[2px]"
-              >
-                Download PDF &darr;
-              </a>
-            </div>
-          </div>
-        )}
 
         {gallery.length > 0 && <GalleryGrid images={gallery} title={project.title} />}
 

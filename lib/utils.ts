@@ -18,7 +18,6 @@ const CONTENT_TYPE_LABELS: Record<string, string> = {
   ai: "AI",
   writing: "Writing",
   photography: "Photography",
-  research: "Research",
 };
 
 export function getContentTypeLabel(type: string): string {
