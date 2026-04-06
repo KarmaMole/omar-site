@@ -18,6 +18,7 @@ const categories = [
   { value: "ai", label: "AI" },
   { value: "writing", label: "Writing" },
   { value: "photography", label: "Photography" },
+  { value: "research", label: "Research" },
 ];
 
 interface ExploreContentProps {

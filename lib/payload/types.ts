@@ -25,6 +25,7 @@ export interface WorkDoc {
   coverImage: MediaUpload | string;
   categories?: string[] | null;
   tags?: string | null;
+  document?: DocumentUpload | string | null;
   gallery?: (MediaUpload | string)[] | null;
   media?: MediaEmbed[] | null;
   externalLink?: string | null;
@@ -33,13 +34,22 @@ export interface WorkDoc {
   date?: string | null;
 }
 
+export interface DocumentUpload {
+  id: string;
+  alt: string;
+  url: string;
+  mimeType?: string;
+  filename?: string;
+}
+
 export interface ProjectDoc {
   id: string;
   title: string;
   slug: string;
-  contentType?: "music" | "visual" | "comics" | "film" | "ai" | "writing" | "photography" | null;
+  contentType?: "music" | "visual" | "comics" | "film" | "ai" | "writing" | "photography" | "research" | null;
   streamingUrl?: string | null;
   audioFile?: MediaUpload | string | null;
+  document?: DocumentUpload | string | null;
   description?: unknown;
   coverImage: MediaUpload | string;
   logo?: MediaUpload | string | null;

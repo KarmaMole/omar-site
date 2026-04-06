@@ -74,6 +74,15 @@ export const Work: CollectionConfig = {
       },
     },
     {
+      name: "document",
+      type: "upload",
+      relationTo: "media",
+      label: "PDF Document",
+      admin: {
+        description: "Upload a PDF for preview and download on the detail page",
+      },
+    },
+    {
       name: "gallery",
       type: "relationship",
       relationTo: "media",
