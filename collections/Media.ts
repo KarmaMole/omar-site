@@ -9,7 +9,7 @@ export const Media: CollectionConfig = {
     delete: ({ req: { user } }) => !!user,
   },
   upload: {
-    mimeTypes: ["image/*", "video/*", "application/pdf"],
+    mimeTypes: ["image/*", "video/*"],
     formatOptions: {
       format: "webp",
       options: {

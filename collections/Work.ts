@@ -76,7 +76,7 @@ export const Work: CollectionConfig = {
     {
       name: "document",
       type: "upload",
-      relationTo: "media",
+      relationTo: "documents",
       label: "PDF Document",
       admin: {
         description: "Upload a PDF for preview and download on the detail page",

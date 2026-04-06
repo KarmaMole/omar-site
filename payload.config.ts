@@ -12,6 +12,7 @@ import { Work } from "./collections/Work";
 import { Projects } from "./collections/Projects";
 import { BlogPosts } from "./collections/BlogPosts";
 import { Clients } from "./collections/Clients";
+import { Documents } from "./collections/Documents";
 import { SiteSettings } from "./globals/SiteSettings";
 
 const filename = fileURLToPath(import.meta.url);
@@ -41,6 +42,7 @@ export default buildConfig({
     Projects,
     BlogPosts,
     Clients,
+    Documents,
   ],
   globals: [SiteSettings],
   secret: process.env.PAYLOAD_SECRET || require("crypto").randomBytes(32).toString("hex"),
@@ -59,6 +61,7 @@ export default buildConfig({
             enabled: true,
             collections: {
               media: true,
+              documents: true,
             },
             token: process.env.BLOB_READ_WRITE_TOKEN,
           }),
