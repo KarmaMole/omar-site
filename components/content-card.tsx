@@ -72,7 +72,7 @@ export default function ContentCard({
       </div>
       <div className="p-4 space-y-1">
         {label && (
-          <p className="font-mono text-[10px] tracking-widest uppercase text-light-300">
+          <p className="font-mono text-[10px] tracking-widest uppercase text-cyan">
             {label}
           </p>
         )}
