@@ -76,7 +76,7 @@ export const Projects: CollectionConfig = {
     {
       name: "document",
       type: "upload",
-      relationTo: "documents",
+      relationTo: "media",
       label: "PDF Document",
       admin: {
         description: "Upload a PDF for preview and download on the detail page",

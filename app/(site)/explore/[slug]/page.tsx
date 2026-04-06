@@ -137,15 +137,13 @@ export default async function ExploreDetailPage({ params }: ExploreDetailPagePro
               <iframe
                 src={doc.url}
                 title={`${project.title} PDF`}
-                sandbox="allow-same-origin"
                 className="w-full h-[70vh] min-h-[500px]"
               />
             </div>
             <div className="mt-4">
               <a
                 href={doc.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                download
                 className="inline-block border border-cyan text-cyan px-6 py-2.5 text-sm font-mono hover:bg-cyan hover:text-black transition-colors rounded-[2px]"
               >
                 Download PDF &darr;
