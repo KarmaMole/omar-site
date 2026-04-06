@@ -113,7 +113,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {tags.map((tag) => (<TagBadge key={tag} label={tag} href={`/writing?tag=${encodeURIComponent(tag)}`} />))}
           </div>
         )}
-        {post.body ? <RichText data={post.body} className={`${sourceSerif.className} prose prose-invert max-w-none text-light-200 leading-relaxed font-light`} /> : null}
+        {post.body ? <RichText data={post.body} className={`${sourceSerif.className} prose prose-lg prose-invert max-w-none text-light-200 leading-relaxed font-light`} /> : null}
         <MoreWriting currentSlug={slug} />
       </div>
     </article>
