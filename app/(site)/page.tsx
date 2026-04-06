@@ -195,7 +195,7 @@ export default async function HomePage() {
                 <FadeIn key={post.id} delay={i * 100}>
                   <Link
                     href={`/blog/${post.slug}`}
-                    className="group block -mx-3 px-3 py-3 rounded-sm hover:bg-white/[0.02] transition-colors border-b border-white/[0.05] md:border-b-0"
+                    className="group block -mx-3 px-3 py-3 rounded-sm hover:bg-white/[0.02] transition-colors border-b border-white/[0.05] md:border-b-0 border-l-2 border-l-transparent hover:border-l-cyan"
                   >
                     {post.date && (
                       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-light-300 mb-2">

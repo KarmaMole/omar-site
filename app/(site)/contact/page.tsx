@@ -30,7 +30,7 @@ export default async function ContactPage() {
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-5 items-start gap-16">
           {/* Left: form (60%) */}
           <div className="md:col-span-3">
             <FadeIn>
