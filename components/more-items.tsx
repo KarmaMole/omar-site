@@ -45,7 +45,7 @@ export default function MoreItems({ items, label = "More", viewAllHref, viewAllL
               <Link
                 key={item.slug}
                 href={item.href}
-                className="group block border-l border-white/[0.07] hover:border-cyan transition-colors pl-5 py-1"
+                className="group block border-l border-white/[0.07] hover:border-cyan rounded-sm hover:bg-white/[0.02] transition-colors pl-5 py-1"
               >
                 {item.subtitle && (
                   <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-light-300 mb-2">
