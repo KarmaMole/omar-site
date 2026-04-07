@@ -297,16 +297,16 @@ export default async function HomePage() {
                   href={t.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative block bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-[border-color,box-shadow] duration-300 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden shadow-[rgba(255,255,255,0.03)_0px_1px_0px_0px_inset]"
+                  className="group relative flex flex-col h-full bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-[border-color,box-shadow] duration-300 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden shadow-[rgba(255,255,255,0.03)_0px_1px_0px_0px_inset]"
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative">
+                  <div className="relative flex flex-col flex-1">
                     <div className="flex items-center gap-3 mb-4">
                       <span className="live-indicator-dot inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
                       <span className="live-indicator-label font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
                     </div>
                     <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
-                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">{t.description}</p>
+                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md flex-1">{t.description}</p>
                     <div className="flex flex-wrap gap-2 mt-5">
                       {t.tags.map((tag) => (
                         <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-white/[0.07] rounded px-2.5 py-1">{tag}</span>
