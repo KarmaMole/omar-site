@@ -30,10 +30,15 @@ export default async function Footer() {
   return (
     <footer aria-label="Site footer" className="lg:ml-20 border-t border-white/[0.07]">
       <div className="flex items-center justify-between px-6 py-6">
-        {/* Left: Copyright */}
-        <p className="font-mono text-xs text-light-300">
-          &copy; {currentYear} Omar Kamel
-        </p>
+        {/* Left: Copyright + easter egg */}
+        <div className="flex items-center gap-3">
+          <p className="font-mono text-xs text-light-300">
+            &copy; {currentYear} Omar Kamel
+          </p>
+          <Link href="/play" className="font-mono text-xs text-white/20 hover:text-cyan transition-colors" aria-label="Grid Override">
+            {"//"}
+          </Link>
+        </div>
 
         {/* Right: Social links — icons on mobile, text on desktop */}
         <div className="flex items-center gap-4 md:gap-6">

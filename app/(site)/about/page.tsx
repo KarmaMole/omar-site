@@ -2,6 +2,7 @@ export const revalidate = 60;
 
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import JsonLd from "@/components/json-ld";
 import FadeIn from "@/components/fade-in";
 import { RichText } from "@/components/rich-text";
@@ -68,6 +69,9 @@ export default async function AboutPage() {
                     <p>I&apos;m Omar Kamel, AI Creative &amp; Production Lead at Optix, where I help regional and global brands harness AI across every stage of creative production.</p>
                   </div>
                 )}
+                <Link href="/play" className="inline-block mt-6 font-mono text-xs uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors">
+                  Want my CV? Earn it &rarr;
+                </Link>
               </div>
               <div className="md:col-span-1">
                 {photo?.url ? (
