@@ -70,7 +70,7 @@ export default async function AboutPage() {
                   </div>
                 )}
                 <Link href="/play" className="inline-block mt-6 font-mono text-xs uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors">
-                  Want my CV? Earn it &rarr;
+                  CV behind /play
                 </Link>
               </div>
               <div className="md:col-span-1">

@@ -35,8 +35,10 @@ export default async function Footer() {
           <p className="font-mono text-xs text-light-300">
             &copy; {currentYear} Omar Kamel
           </p>
-          <Link href="/play" className="font-mono text-xs text-white/20 hover:text-cyan transition-colors" aria-label="Grid Override">
-            {"//"}
+          <Link href="/play" className="text-white/15 hover:text-cyan transition-colors" aria-label="Grid Override">
+            <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3" aria-hidden="true">
+              <path d="M1 8h4l2-3h2l2 3h4M8 5V1" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </Link>
         </div>
 
