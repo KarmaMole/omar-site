@@ -54,7 +54,9 @@ export default async function AboutPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Omar Kamel
               </h1>
-              <p className="text-light-300 mt-3">Origin story.</p>
+              <p className="text-light-300 mt-3">
+                Origin story <span className="text-white/20 mx-2">|</span> <Link href="/play" className="font-mono text-xs uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors">CV behind /play</Link>
+              </p>
             </div>
 
             {/* Two-column: bio left (2/3), photo right (1/3) */}
@@ -69,9 +71,6 @@ export default async function AboutPage() {
                     <p>I&apos;m Omar Kamel, AI Creative &amp; Production Lead at Optix, where I help regional and global brands harness AI across every stage of creative production.</p>
                   </div>
                 )}
-                <Link href="/play" className="inline-block mt-6 font-mono text-xs uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors">
-                  CV behind /play
-                </Link>
               </div>
               <div className="md:col-span-1">
                 {photo?.url ? (
