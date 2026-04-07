@@ -28,6 +28,7 @@ type Phase = "boot" | "ready" | "playing" | "won" | "lost";
 const MIN_CELL = 10;
 const MAX_CELL = 14;
 const TICK_MS = 110;
+const WALL_PAD = 2; // px padding inside arena border
 
 const CYAN = "#00d9ff";
 const ORANGE = "#ff6b00";
@@ -41,6 +42,121 @@ function key(x: number, y: number) {
 
 function opposites(dx: number, dy: number, ndx: number, ndy: number) {
   return dx === -ndx && dy === -ndy;
+}
+
+/* ── Sound FX (Web Audio API) ──────────────────────────────────── */
+
+function getAudioCtx(): AudioContext | null {
+  if (typeof window === "undefined") return null;
+  const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+  if (!AC) return null;
+  return new AC();
+}
+
+let audioCtx: AudioContext | null = null;
+
+function ensureAudio() {
+  if (!audioCtx || audioCtx.state === "closed") {
+    audioCtx = getAudioCtx();
+  }
+  if (audioCtx?.state === "suspended") {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playTone(freq: number, duration: number, type: OscillatorType = "square", volume = 0.08) {
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime);
+  gain.gain.setValueAtTime(volume, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + duration);
+}
+
+function sfxBoot() {
+  playTone(800, 0.06, "square", 0.04);
+}
+
+function sfxCountdown() {
+  playTone(440, 0.15, "square", 0.06);
+}
+
+function sfxStart() {
+  playTone(880, 0.2, "square", 0.08);
+  setTimeout(() => playTone(1100, 0.3, "square", 0.06), 100);
+}
+
+function sfxTurn() {
+  playTone(600, 0.04, "square", 0.03);
+}
+
+function sfxEnemyCrash() {
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  // Noise burst
+  const bufferSize = ctx.sampleRate * 0.15;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.12, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+  source.connect(gain);
+  gain.connect(ctx.destination);
+  source.start();
+}
+
+function sfxPlayerCrash() {
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  // Low rumble + noise
+  const osc = ctx.createOscillator();
+  osc.type = "sawtooth";
+  osc.frequency.setValueAtTime(120, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.4);
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.15, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.4);
+  // Noise on top
+  const bufferSize = ctx.sampleRate * 0.3;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  const ng = ctx.createGain();
+  ng.gain.setValueAtTime(0.1, ctx.currentTime);
+  ng.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+  source.connect(ng);
+  ng.connect(ctx.destination);
+  source.start();
+}
+
+function sfxWin() {
+  [660, 880, 1100, 1320].forEach((f, i) => {
+    setTimeout(() => playTone(f, 0.3, "square", 0.06), i * 100);
+  });
+}
+
+function sfxTick() {
+  playTone(200, 0.02, "square", 0.01);
 }
 
 /* ── AI ────────────────────────────────────────────────────────── */
@@ -130,6 +246,7 @@ export default function TronGame() {
     occupied: Set<string>;
     tickInterval: ReturnType<typeof setInterval> | null;
     pendingDir: [number, number] | null;
+    prevEnemyAlive: boolean[];
   } | null>(null);
 
   /* ── Resize ──────────────────────────────────────────────────── */
@@ -139,8 +256,8 @@ export default function TronGame() {
     const container = containerRef.current;
     if (!canvas || !container) return { cols: 40, rows: 30, cellSize: 12 };
 
-    const w = container.clientWidth;
-    const h = container.clientHeight;
+    const w = container.clientWidth - WALL_PAD * 2;
+    const h = container.clientHeight - WALL_PAD * 2;
     const dpr = window.devicePixelRatio || 1;
 
     // Choose cell size to get a reasonable grid density
@@ -150,10 +267,13 @@ export default function TronGame() {
     const cols = Math.floor(w / cellSize);
     const rows = Math.floor(h / cellSize);
 
-    canvas.width = cols * cellSize * dpr;
-    canvas.height = rows * cellSize * dpr;
-    canvas.style.width = `${cols * cellSize}px`;
-    canvas.style.height = `${rows * cellSize}px`;
+    const canvasW = cols * cellSize;
+    const canvasH = rows * cellSize;
+
+    canvas.width = canvasW * dpr;
+    canvas.height = canvasH * dpr;
+    canvas.style.width = `${canvasW}px`;
+    canvas.style.height = `${canvasH}px`;
 
     const ctx = canvas.getContext("2d");
     if (ctx) ctx.scale(dpr, dpr);
@@ -218,6 +338,7 @@ export default function TronGame() {
       occupied,
       tickInterval: null,
       pendingDir: null,
+      prevEnemyAlive: [true, true],
     };
   }, [computeGrid]);
 
@@ -260,9 +381,7 @@ export default function TronGame() {
       if (cycle.trail.length === 0) continue;
 
       // Trail
-      ctx.fillStyle = cycle.alive
-        ? cycle.color
-        : `${cycle.color}44`;
+      ctx.fillStyle = cycle.alive ? cycle.color : `${cycle.color}44`;
       for (const pt of cycle.trail) {
         ctx.fillRect(
           pt.x * cellSize + 1,
@@ -288,13 +407,42 @@ export default function TronGame() {
       }
     }
 
-    // Border glow
-    ctx.shadowColor = "rgba(0, 217, 255, 0.15)";
-    ctx.shadowBlur = 20;
-    ctx.strokeStyle = "rgba(0, 217, 255, 0.2)";
-    ctx.lineWidth = 1;
-    ctx.strokeRect(0, 0, w, h);
+    // Arena border - visible glowing edge
+    ctx.shadowColor = "rgba(0, 217, 255, 0.3)";
+    ctx.shadowBlur = 15;
+    ctx.strokeStyle = "rgba(0, 217, 255, 0.4)";
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
     ctx.shadowBlur = 0;
+
+    // Corner accents
+    const corner = 8;
+    ctx.strokeStyle = "rgba(0, 217, 255, 0.6)";
+    ctx.lineWidth = 2;
+    // Top-left
+    ctx.beginPath();
+    ctx.moveTo(0, corner);
+    ctx.lineTo(0, 0);
+    ctx.lineTo(corner, 0);
+    ctx.stroke();
+    // Top-right
+    ctx.beginPath();
+    ctx.moveTo(w - corner, 0);
+    ctx.lineTo(w, 0);
+    ctx.lineTo(w, corner);
+    ctx.stroke();
+    // Bottom-left
+    ctx.beginPath();
+    ctx.moveTo(0, h - corner);
+    ctx.lineTo(0, h);
+    ctx.lineTo(corner, h);
+    ctx.stroke();
+    // Bottom-right
+    ctx.beginPath();
+    ctx.moveTo(w - corner, h);
+    ctx.lineTo(w, h);
+    ctx.lineTo(w, h - corner);
+    ctx.stroke();
   }, []);
 
   /* ── Game tick ───────────────────────────────────────────────── */
@@ -309,6 +457,9 @@ export default function TronGame() {
     if (game.pendingDir) {
       const [ndx, ndy] = game.pendingDir;
       if (!opposites(player.dx, player.dy, ndx, ndy)) {
+        if (ndx !== player.dx || ndy !== player.dy) {
+          sfxTurn();
+        }
         player.dx = ndx;
         player.dy = ndy;
       }
@@ -349,14 +500,27 @@ export default function TronGame() {
       occupied.add(key(nx, ny));
     }
 
+    // Sound effects for enemy crashes
+    enemies.forEach((e, i) => {
+      if (game.prevEnemyAlive[i] && !e.alive) {
+        sfxEnemyCrash();
+      }
+    });
+    game.prevEnemyAlive = enemies.map((e) => e.alive);
+
+    // Subtle tick sound
+    sfxTick();
+
     // Check win/lose
     if (!player.alive) {
       if (game.tickInterval) clearInterval(game.tickInterval);
       game.tickInterval = null;
+      sfxPlayerCrash();
       setPhase("lost");
     } else if (enemies.every((e) => !e.alive)) {
       if (game.tickInterval) clearInterval(game.tickInterval);
       game.tickInterval = null;
+      sfxWin();
       setPhase("won");
     }
 
@@ -366,9 +530,11 @@ export default function TronGame() {
   /* ── Start game ──────────────────────────────────────────────── */
 
   const startGame = useCallback(() => {
+    ensureAudio();
     initGame();
     render();
     setPhase("playing");
+    sfxStart();
 
     const interval = setInterval(tick, TICK_MS);
     if (gameRef.current) {
@@ -417,9 +583,11 @@ export default function TronGame() {
     const interval = setInterval(() => {
       if (i < lines.length) {
         setBootLines((prev) => [...prev, lines[i]]);
+        sfxBoot();
         i++;
       } else {
         clearInterval(interval);
+        sfxCountdown();
         setPhase("ready");
       }
     }, 250);
@@ -579,7 +747,6 @@ export default function TronGame() {
 
     const ro = new ResizeObserver(() => {
       if (phase === "playing" && gameRef.current) {
-        // Don't resize during active game - it would reset state
         return;
       }
       if (phase === "ready") {
@@ -646,7 +813,7 @@ export default function TronGame() {
       {/* Game area */}
       <div
         ref={containerRef}
-        className="flex-1 flex items-center justify-center overflow-hidden p-2 md:p-4"
+        className="flex-1 flex items-center justify-center overflow-hidden p-3 pt-4 md:p-6"
       >
         <canvas
           ref={canvasRef}
