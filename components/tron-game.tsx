@@ -376,6 +376,26 @@ export default function TronGame() {
     }
   }, [initGame, render, tick]);
 
+  /* ── Lock body scroll on mobile ────────────────────────────── */
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    html.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    body.style.position = "fixed";
+    body.style.inset = "0";
+    body.style.width = "100%";
+
+    return () => {
+      html.style.overflow = "";
+      body.style.overflow = "";
+      body.style.position = "";
+      body.style.inset = "";
+      body.style.width = "";
+    };
+  }, []);
+
   /* ── Boot sequence ───────────────────────────────────────────── */
 
   useEffect(() => {
@@ -483,6 +503,11 @@ export default function TronGame() {
       const touch = e.touches[0];
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
+      e.preventDefault();
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
@@ -534,10 +559,14 @@ export default function TronGame() {
     canvas.addEventListener("touchstart", handleTouchStart, {
       passive: false,
     });
+    canvas.addEventListener("touchmove", handleTouchMove, {
+      passive: false,
+    });
     canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
 
     return () => {
       canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchmove", handleTouchMove);
       canvas.removeEventListener("touchend", handleTouchEnd);
     };
   }, [phase, startGame]);
@@ -585,7 +614,7 @@ export default function TronGame() {
   /* ── UI ──────────────────────────────────────────────────────── */
 
   return (
-    <div className="relative flex flex-col h-[calc(100vh-3.5rem)] lg:h-screen select-none">
+    <div className="relative flex flex-col h-[calc(100dvh-3.5rem)] lg:h-[100dvh] select-none overflow-hidden touch-none">
       {/* CRT scanline overlay */}
       <div
         className="pointer-events-none absolute inset-0 z-20"
