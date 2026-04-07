@@ -32,11 +32,11 @@ export default async function Footer() {
       <div className="flex items-center justify-between px-6 py-6">
         {/* Left: Copyright + easter egg */}
         <div className="flex items-center gap-3">
-          <p className="font-mono text-xs text-light-300">
+          <span className="font-mono text-xs text-light-300 leading-none">
             &copy; {currentYear} Omar Kamel
-          </p>
-          <Link href="/play" className="text-white/15 hover:text-cyan transition-colors" aria-label="Grid Override">
-            <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3" aria-hidden="true">
+          </span>
+          <Link href="/play" className="inline-flex items-center text-white/15 hover:text-cyan transition-colors" aria-label="Grid Override">
+            <svg viewBox="0 0 16 16" className="w-3 h-3" aria-hidden="true">
               <path d="M1 8h4l2-3h2l2 3h4M8 5V1" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </Link>
