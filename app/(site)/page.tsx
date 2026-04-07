@@ -285,12 +285,12 @@ export default async function HomePage() {
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-10">
             {[
-              { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem. YouTube channel & editorial site.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
-              { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by actual human impact, cutting through noise to surface what matters.", tags: ["AI", "News", "Aggregator", "Impact"] },
-              { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that turn corporate course materials into interactive, voice-driven employee training.", tags: ["AI", "Voice", "Corporate", "Training"] },
-              { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time monitoring dashboard tracking military and geopolitical developments in the Iran region with live data visualization.", tags: ["Geopolitics", "Real-time", "Dashboard", "OSINT"] },
-              { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Centralized team platform for discovering, organizing, and managing AI tools and resources across collaborative workflows.", tags: ["AI", "Tools", "Team", "Platform"] },
-              { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking platform for the Optix creative production pipeline.", tags: ["Projects", "Management", "Production", "Workflow"] },
+              { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
+              { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by actual human impact, not engagement.", tags: ["AI", "News", "Aggregator", "Impact"] },
+              { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that turn corporate course materials into interactive voice-driven training.", tags: ["AI", "Voice", "Corporate", "Training"] },
+              { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time dashboard tracking military and geopolitical developments in the Iran region.", tags: ["Geopolitics", "Real-time", "Dashboard"] },
+              { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Team platform for discovering, organizing, and managing AI tools and resources.", tags: ["AI", "Tools", "Team", "Platform"] },
+              { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking for the Optix creative production pipeline.", tags: ["Projects", "Management", "Production"] },
             ].map((t, i) => (
               <FadeIn key={t.name} delay={i * 80}>
                 <a
@@ -306,8 +306,8 @@ export default async function HomePage() {
                       <span className="live-indicator-label font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
                     </div>
                     <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
-                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-2">{t.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-5 max-h-[1.75rem] overflow-hidden">
+                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md">{t.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-5">
                       {t.tags.map((tag) => (
                         <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-white/[0.07] rounded px-2.5 py-1">{tag}</span>
                       ))}
