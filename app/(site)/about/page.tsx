@@ -55,7 +55,7 @@ export default async function AboutPage() {
                 Omar Kamel
               </h1>
               <p className="text-light-300 mt-3">
-                Origin story <span className="text-white/20 mx-2">|</span> <Link href="/play" className="font-mono text-xs uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors">CV behind /play</Link>
+                origin story <span className="text-white/20 mx-2">|</span> <Link href="/play" className="font-mono text-xs uppercase tracking-widest text-cyan/70 hover:text-cyan transition-colors">CV behind /play</Link>
               </p>
             </div>
 

@@ -114,7 +114,7 @@ export default async function ServicesPage() {
                 Production Without the Agency
               </h1>
               <p className="text-light-300 mt-3 max-w-2xl">
-                One person. No agency overhead. Twenty years of production experience now accelerated by AI.
+                one person. no agency overhead. twenty years of production experience now accelerated by AI.
               </p>
             </div>
           </FadeIn>

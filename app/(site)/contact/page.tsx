@@ -26,7 +26,7 @@ export default async function ContactPage() {
             <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
               Start a Project
             </h1>
-            <p className="text-light-300 mt-3">Tell me about your vision.</p>
+            <p className="text-light-300 mt-3">tell me about your vision.</p>
           </div>
         </FadeIn>
 

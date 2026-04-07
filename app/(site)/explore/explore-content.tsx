@@ -55,7 +55,7 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
                 Explore
               </h1>
               <p className="text-light-300 mt-3">
-                Personal projects, music, tools, and experiments.
+                personal projects, music, tools, and experiments.
               </p>
             </div>
           </FadeIn>

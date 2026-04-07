@@ -125,7 +125,7 @@ export default async function WritingPage({ searchParams }: WritingPageProps) {
                 Writing
               </h1>
               <p className="text-light-300 mt-3">
-                Thoughts, articles, and published work.
+                thoughts, articles, and published work.
               </p>
             </div>
           </FadeIn>
