@@ -880,7 +880,7 @@ export default function TronGame() {
             </div>
             <div className="flex flex-col gap-3 items-center">
               <a
-                href="/omar-kamel-cv.pdf"
+                href="/Omar Kamel CV2026.pdf"
                 download
                 className="font-mono text-sm tracking-widest text-black bg-cyan px-8 py-3 hover:bg-cyan/90 transition-colors inline-block"
               >
