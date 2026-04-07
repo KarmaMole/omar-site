@@ -285,12 +285,12 @@ export default async function HomePage() {
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-10">
             {[
-              { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game coverage, and immersive tech analysis for the Meta Quest ecosystem.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
-              { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by actual human impact, not engagement.", tags: ["AI", "News", "Aggregator", "Impact"] },
-              { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that turn corporate course materials into interactive voice-driven training.", tags: ["AI", "Voice", "Corporate", "Training"] },
-              { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time dashboard tracking military and geopolitical developments in the Iran region.", tags: ["Geopolitics", "Real-time", "Dashboard"] },
-              { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Team platform for discovering, organizing, and managing AI tools and resources.", tags: ["AI", "Tools", "Team", "Platform"] },
-              { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking for the Optix creative production pipeline.", tags: ["Projects", "Management", "Production"] },
+              { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game deep-dives, and immersive tech analysis focused on the Meta Quest ecosystem and beyond.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
+              { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by their actual human impact rather than clicks or engagement.", tags: ["AI", "News", "Aggregator", "Impact"] },
+              { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that transform corporate training materials into interactive, voice-driven learning sessions.", tags: ["AI", "Voice", "Corporate", "Training"] },
+              { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time monitoring dashboard tracking military and geopolitical developments across the Iran region with live data.", tags: ["Geopolitics", "Real-time", "Dashboard"] },
+              { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Centralized team platform for discovering, organizing, and managing AI tools and resources across workflows.", tags: ["AI", "Tools", "Team", "Platform"] },
+              { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking platform built for the Optix creative production pipeline and team coordination.", tags: ["Projects", "Management", "Production"] },
             ].map((t, i) => (
               <FadeIn key={t.name} delay={i * 80}>
                 <a
