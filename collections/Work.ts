@@ -137,7 +137,7 @@ export const Work: CollectionConfig = {
       defaultValue: false,
       admin: {
         position: "sidebar",
-        description: "Hide this item from the site without deleting it",
+        description: "Hide this item from the site without deleting it. Hidden items won't appear even if featured.",
       },
     },
     {
