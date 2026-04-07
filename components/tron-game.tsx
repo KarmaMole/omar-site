@@ -813,7 +813,7 @@ export default function TronGame() {
       {/* Game area */}
       <div
         ref={containerRef}
-        className="flex-1 flex items-center justify-center overflow-hidden p-3 pt-4 md:p-6"
+        className="flex-1 flex items-center justify-center overflow-hidden p-5 pt-6 md:p-6"
       >
         <canvas
           ref={canvasRef}
