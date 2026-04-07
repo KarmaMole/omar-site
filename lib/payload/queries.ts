@@ -25,6 +25,7 @@ export async function getAllWork(): Promise<WorkDoc[]> {
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "work",
+    where: { hidden: { not_equals: true } },
     sort: "-sortOrder",
     limit: 100,
     depth: 1,
@@ -36,7 +37,7 @@ export async function getFeaturedWork(): Promise<WorkDoc[]> {
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "work",
-    where: { featured: { equals: true } },
+    where: { featured: { equals: true }, hidden: { not_equals: true } },
     sort: "-sortOrder",
     limit: 100,
     depth: 1,
@@ -71,6 +72,7 @@ export async function getAllProjects(): Promise<ProjectDoc[]> {
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "projects",
+    where: { hidden: { not_equals: true } },
     sort: "-sortOrder",
     limit: 100,
     depth: 1,
@@ -82,7 +84,7 @@ export async function getFeaturedProjects(): Promise<ProjectDoc[]> {
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "projects",
-    where: { featured: { equals: true } },
+    where: { featured: { equals: true }, hidden: { not_equals: true } },
     sort: "-sortOrder",
     limit: 100,
     depth: 1,

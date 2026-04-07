@@ -29,6 +29,7 @@ export interface WorkDoc {
   media?: MediaEmbed[] | null;
   externalLink?: string | null;
   featured?: boolean | null;
+  hidden?: boolean | null;
   sortOrder?: number | null;
   date?: string | null;
 }
@@ -49,6 +50,7 @@ export interface ProjectDoc {
   gallery?: (MediaUpload | string)[] | null;
   media?: MediaEmbed[] | null;
   featured?: boolean | null;
+  hidden?: boolean | null;
   sortOrder?: number | null;
 }
 

@@ -184,6 +184,15 @@ export const Projects: CollectionConfig = {
       },
     },
     {
+      name: "hidden",
+      type: "checkbox",
+      defaultValue: false,
+      admin: {
+        position: "sidebar",
+        description: "Hide this item from the site without deleting it",
+      },
+    },
+    {
       name: "sortOrder",
       type: "number",
       admin: {
