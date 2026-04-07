@@ -306,8 +306,8 @@ export default async function HomePage() {
                       <span className="live-indicator-label font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
                     </div>
                     <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
-                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">{t.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-5">
+                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md line-clamp-2">{t.description}</p>
+                    <div className="flex flex-wrap gap-2 mt-5 max-h-[1.75rem] overflow-hidden">
                       {t.tags.map((tag) => (
                         <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-white/[0.07] rounded px-2.5 py-1">{tag}</span>
                       ))}
