@@ -39,18 +39,6 @@ export const Work: CollectionConfig = {
       },
     },
     {
-      name: "workType",
-      type: "select",
-      options: [
-        { label: "Client Work", value: "client" },
-        { label: "Personal Work", value: "personal" },
-      ],
-      defaultValue: "client",
-      admin: {
-        position: "sidebar",
-      },
-    },
-    {
       // TODO: Refactor to a relationship to the Clients collection for data integrity
       name: "client",
       type: "text",

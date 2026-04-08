@@ -1,73 +1,26 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
-import Link from "next/link";
-import ContentCard from "@/components/content-card";
-import CategoryFilter from "@/components/category-filter";
-import FadeIn from "@/components/fade-in";
+import { Suspense } from "react";
 import { getAllWork } from "@/lib/payload/queries";
+import WorkContent from "./work-content";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: "A selection of work spanning AI production, video, music, and comics — built across 20+ years in Cairo, Italy, and Dubai.",
+  description: "Selected highlights from 20+ years of AI production, video, music, and comics by Omar Kamel.",
 };
 
 interface WorkPageProps {
-  searchParams: Promise<{ category?: string; type?: string }>;
+  searchParams: Promise<{ category?: string }>;
 }
 
 export default async function WorkPage({ searchParams }: WorkPageProps) {
-  const { category, type } = await searchParams;
+  const { category } = await searchParams;
   const allWork = await getAllWork();
-  let filtered = allWork;
-
-  // Filter by work type (client/personal)
-  if (type && type !== "all") {
-    filtered = filtered.filter((w) => w.workType === type);
-  }
-
-  // Filter by category
-  if (category) {
-    filtered = filtered.filter((w) => w.categories?.some((c) => c.toLowerCase() === category.toLowerCase()));
-  }
 
   return (
-    <div className="pt-24 pb-16 animate-fade-in">
-      <div className="max-w-7xl mx-auto px-6">
-        <FadeIn>
-          <div className="mb-12">
-            <span className="section-label">Portfolio</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
-            <p className="text-light-300 mt-3">selected highlights from 20+ years of production.</p>
-          </div>
-        </FadeIn>
-        <CategoryFilter allWork={allWork} />
-        {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filtered.map((work) => {
-              const cover = typeof work.coverImage === "object" ? work.coverImage : null;
-              return (
-                <FadeIn key={work.id}>
-                  <ContentCard
-                    href={`/work/${work.slug}`}
-                    title={work.title}
-                    coverImage={cover}
-                    label={work.workType === "personal" ? work.roleCredits : work.client}
-                    overlayTags={work.categories}
-                  />
-                </FadeIn>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <p className="text-light-300 text-sm mb-4">No work found in this category.</p>
-            <Link href="/work" className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline">
-              Clear filters
-            </Link>
-          </div>
-        )}
-      </div>
-    </div>
+    <Suspense>
+      <WorkContent work={allWork} initialCategory={category} />
+    </Suspense>
   );
 }

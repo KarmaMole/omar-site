@@ -23,7 +23,7 @@ export default async function WorkOg({ params }: { params: Promise<{ slug: strin
   return renderOgCard({
     label: "WORK",
     title: work.title,
-    subtitle: (work.workType === "personal" ? work.roleCredits : work.client) ?? work.categories?.join(" · ") ?? null,
+    subtitle: work.client || work.roleCredits || work.categories?.join(" · ") || null,
     coverUrl: cover?.url ?? null,
   });
 }
