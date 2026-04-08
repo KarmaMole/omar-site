@@ -13,15 +13,23 @@ export const metadata: Metadata = {
 };
 
 interface WorkPageProps {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{ category?: string; type?: string }>;
 }
 
 export default async function WorkPage({ searchParams }: WorkPageProps) {
-  const { category } = await searchParams;
+  const { category, type } = await searchParams;
   const allWork = await getAllWork();
-  const filtered = category
-    ? allWork.filter((w) => w.categories?.some((c) => c.toLowerCase() === category.toLowerCase()))
-    : allWork;
+  let filtered = allWork;
+
+  // Filter by work type (client/personal)
+  if (type && type !== "all") {
+    filtered = filtered.filter((w) => w.workType === type);
+  }
+
+  // Filter by category
+  if (category) {
+    filtered = filtered.filter((w) => w.categories?.some((c) => c.toLowerCase() === category.toLowerCase()));
+  }
 
   return (
     <div className="pt-24 pb-16 animate-fade-in">
@@ -44,7 +52,7 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
                     href={`/work/${work.slug}`}
                     title={work.title}
                     coverImage={cover}
-                    label={work.client}
+                    label={work.workType === "personal" ? work.roleCredits : work.client}
                     overlayTags={work.categories}
                   />
                 </FadeIn>

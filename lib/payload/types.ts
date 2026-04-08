@@ -20,7 +20,9 @@ export interface WorkDoc {
   id: string;
   title: string;
   slug: string;
+  workType?: "client" | "personal" | null;
   client?: string | null;
+  roleCredits?: string | null;
   description?: unknown;
   coverImage: MediaUpload | string;
   categories?: string[] | null;

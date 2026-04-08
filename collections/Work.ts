@@ -39,9 +39,28 @@ export const Work: CollectionConfig = {
       },
     },
     {
+      name: "workType",
+      type: "select",
+      options: [
+        { label: "Client Work", value: "client" },
+        { label: "Personal Work", value: "personal" },
+      ],
+      defaultValue: "client",
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
       // TODO: Refactor to a relationship to the Clients collection for data integrity
       name: "client",
       type: "text",
+    },
+    {
+      name: "roleCredits",
+      type: "text",
+      admin: {
+        description: "Role credits for personal work (e.g. Direction, AI Pipeline Design, Post-Production)",
+      },
     },
     {
       name: "description",
@@ -58,12 +77,12 @@ export const Work: CollectionConfig = {
       hasMany: true,
       options: [
         { label: "Commercial", value: "Commercial" },
-        { label: "Branding", value: "Branding" },
         { label: "Corporate", value: "Corporate" },
         { label: "Documentary", value: "Documentary" },
-        { label: "Awareness", value: "Awareness" },
+        { label: "AI Production", value: "AI Production" },
         { label: "Design", value: "Design" },
         { label: "Digital", value: "Digital" },
+        { label: "Awareness", value: "Awareness" },
       ],
     },
     {
