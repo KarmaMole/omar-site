@@ -6,7 +6,7 @@ export const Projects: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "status", "featured"],
-    group: "Studio",
+    group: "Content",
   },
   labels: {
     singular: "Studio Item",
@@ -52,7 +52,6 @@ export const Projects: CollectionConfig = {
         { label: "Comics", value: "comics" },
         { label: "Film", value: "film" },
         { label: "AI", value: "ai" },
-        { label: "Writing", value: "writing" },
         { label: "Photography", value: "photography" },
         { label: "Research", value: "research" },
       ],

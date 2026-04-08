@@ -6,6 +6,7 @@ export const Work: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "client", "featured", "date"],
+    group: "Content",
   },
   hooks: {
     beforeChange: [

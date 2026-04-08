@@ -41,9 +41,9 @@ const services = [
   {
     label: "Digital Builds",
     description:
-      "I build functional web platforms, dashboards, and internal tools using Replit, Claude Code, and modern frameworks. Not wireframes and Figma decks that sit in a drawer. Working products.",
+      "I build functional web platforms, dashboards, and internal tools using Replit, Claude Code, and modern frameworks. Not wireframes and Figma decks that sit in a drawer. Working products that solve real problems and go live fast.",
     benefit:
-      "Current live builds include an AI-powered news aggregator, a real-time geopolitical monitoring dashboard, a voice-driven training platform, and team collaboration tools. I ship things.",
+      "Current live builds include an AI-powered news aggregator, a real-time geopolitical monitoring dashboard, a voice-driven training platform, and team collaboration tools. Full-stack delivery from database to deployment, no handoffs to a dev team.",
     references: [
       { label: "Human Impact", href: "/studio/human-impact" },
       { label: "Iran War Monitor", href: "/studio/iran-war-monitor" },
@@ -53,9 +53,9 @@ const services = [
   {
     label: "Production & Film",
     description:
-      "I shoot, direct, edit, and post-produce. DSLR cameras. DaVinci Resolve. After Effects for motion graphics. Reaper for audio and sound design. Documentaries, awareness campaigns, PSAs, corporate films, and live event coverage.",
+      "I shoot, direct, edit, and post-produce. DSLR cameras. DaVinci Resolve. After Effects for motion graphics. Reaper for audio and sound design. End-to-end capability across documentaries, awareness campaigns, PSAs, corporate films, and live event coverage.",
     benefit:
-      "200+ projects of hands-on production work with brands like Coca-Cola, Swarovski, the Ford Foundation, and the International Labor Organization. Not theoretical. Battle-tested.",
+      "200+ projects of hands-on production work with brands like Coca-Cola, Swarovski, the Ford Foundation, and the International Labor Organization. Two decades of delivering under real deadlines, not theoretical knowledge.",
     references: [
       { label: "Kolona", href: "/work/kolona" },
       { label: "ILO Working Mothers", href: "/work/ilo-working-mothers" },
@@ -66,9 +66,9 @@ const services = [
   {
     label: "Branding & Design",
     description:
-      "From logo systems and business cards to full identity packages and CSR reports. Photoshop, Illustrator, InDesign. Brand systems that hold up at every scale. No templates. No generic output.",
+      "From logo systems and business cards to full identity packages and CSR reports. Photoshop, Illustrator, InDesign. Brand systems that hold up at every scale, from business cards to building wraps. No templates. No generic output.",
     benefit:
-      "Particular strength in bilingual English/Arabic design, having worked across Cairo, Italy, and Dubai for over two decades. Every asset designed with intent.",
+      "Particular strength in bilingual English/Arabic design, having worked across Cairo, Italy, and Dubai for over two decades. Every asset designed with intent and delivered in production-ready formats for print and digital.",
     references: [
       { label: "7 Black / Lunch Box", href: "/work/7-black-lunch-box" },
       { label: "SAWA Media", href: "/work/sawabusinesscards" },
