@@ -50,11 +50,11 @@ export default function HeroCard({
 }: HeroCardProps) {
   const finalAspect = aspect ?? (size === "lg" ? "21/9" : "4/3");
   const aspectCls = aspectClass[finalAspect];
-  const padding = size === "lg" ? "p-8 lg:p-12" : "p-6 lg:p-8";
+  const padding = size === "lg" ? "p-5 md:p-8 lg:p-12" : "p-4 md:p-6 lg:p-8";
   const titleSize =
     size === "lg"
-      ? "text-3xl md:text-5xl"
-      : "text-xl md:text-2xl";
+      ? "text-2xl md:text-3xl lg:text-5xl"
+      : "text-lg md:text-xl lg:text-2xl";
   const eyebrowSize =
     size === "lg"
       ? "text-xs tracking-[0.2em] mb-2"
@@ -97,7 +97,7 @@ export default function HeroCard({
             {title}
           </h3>
           {bottomMeta && (
-            <p className="font-mono text-xs tracking-[0.15em] uppercase text-light-300 mt-3">
+            <p className="hidden md:block font-mono text-xs tracking-[0.15em] uppercase text-light-300 mt-3">
               {bottomMeta}
             </p>
           )}
