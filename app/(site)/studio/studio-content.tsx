@@ -53,7 +53,7 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
                 Studio
               </h1>
               <p className="text-light-300 mt-3">
-                self-directed projects -- films, music, comics, and tools built.
+                films, music, comics, and tools built.
               </p>
             </div>
           </FadeIn>
