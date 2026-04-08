@@ -20,7 +20,7 @@ interface MoreItemsProps {
   /**
    * Layout variant. "media" (default) shows a 16:9 cover image card.
    * "text" shows a text-only card with date, serif title, and excerpt —
-   * use this for blog/writing where posts typically don't have covers.
+   * use this for dispatch where posts typically don't have covers.
    */
   variant?: "media" | "text";
 }

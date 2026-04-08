@@ -39,7 +39,7 @@ export interface ProjectDoc {
   id: string;
   title: string;
   slug: string;
-  contentType?: "music" | "visual" | "comics" | "film" | "ai" | "writing" | "photography" | "research" | null;
+  contentType?: "music" | "visual" | "comics" | "film" | "ai" | "photography" | "research" | null;
   streamingUrl?: string | null;
   audioFile?: MediaUpload | string | null;
   description?: unknown;

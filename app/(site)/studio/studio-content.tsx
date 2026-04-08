@@ -13,6 +13,8 @@ const ALL_CATEGORIES = [
   { value: "music", label: "Music" },
   { value: "visual", label: "Visual" },
   { value: "comics", label: "Comics" },
+  { value: "film", label: "Film" },
+  { value: "ai", label: "AI" },
   { value: "photography", label: "Photography" },
   { value: "research", label: "Research" },
 ];

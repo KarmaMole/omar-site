@@ -16,7 +16,6 @@ const CONTENT_TYPE_LABELS: Record<string, string> = {
   comics: "Comics",
   film: "Film",
   ai: "AI",
-  writing: "Writing",
   photography: "Photography",
   research: "Research",
 };
