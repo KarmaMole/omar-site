@@ -64,7 +64,7 @@ export default async function HomePage() {
                 title={heroWork.title}
                 coverImage={cover}
                 coverAlt={getCoverAlt(heroWork)}
-                eyebrow={heroWork.client || heroWork.roleCredits || null}
+                eyebrow={heroWork.client || heroWork.categories?.[0] || null}
                 bottomMeta={heroWork.categories && heroWork.categories.length > 0 ? heroWork.categories.join(" / ") : null}
                 size="lg"
                 aspect={heroVideo ? "video" : "21/9"}
@@ -164,7 +164,7 @@ export default async function HomePage() {
                       title={work.title}
                       coverImage={cover}
                       coverAlt={getCoverAlt(work)}
-                      eyebrow={work.client || work.roleCredits || null}
+                      eyebrow={work.client || work.categories?.[0] || null}
                       bottomMeta={work.categories && work.categories.length > 0 ? work.categories.join(" / ") : null}
                       size="sm"
                       aspect={isFullWidth ? "21/9" : "4/3"}
