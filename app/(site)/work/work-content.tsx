@@ -30,7 +30,7 @@ export default function WorkContent({ work, initialCategory }: WorkContentProps)
             <p className="text-light-300 mt-3">selected highlights from 20+ years of production.</p>
           </div>
         </FadeIn>
-        <CategoryFilter />
+        <CategoryFilter work={work} />
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {filtered.map((work) => {

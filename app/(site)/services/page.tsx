@@ -123,14 +123,14 @@ export default async function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-12">
             {services.map((service) => (
               <FadeIn key={service.label}>
-                <div className="py-2">
+                <div className="flex flex-col h-full py-2">
                   <h2 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan mb-4">
                     {service.label}
                   </h2>
                   <p className="text-light-200 leading-relaxed">
                     {service.description}
                   </p>
-                  <p className="text-light-300 text-sm leading-relaxed mt-3">
+                  <p className="text-light-300 text-sm leading-relaxed mt-3 flex-1">
                     {service.benefit}
                   </p>
                   {service.references.length > 0 && (
@@ -189,7 +189,7 @@ export default async function ServicesPage() {
               <span className="section-label mb-8 block">Selected Clients</span>
               {clients.length > 0 && (
                 <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4">
-                  {clients.slice(0, 12).map((client) => (
+                  {clients.slice(0, 18).map((client) => (
                     <span
                       key={client.id}
                       className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/70"

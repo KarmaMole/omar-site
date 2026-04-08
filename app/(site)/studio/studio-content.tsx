@@ -9,8 +9,7 @@ import ScrollFilters from "@/components/scroll-filters";
 import FilterPill from "@/components/filter-pill";
 import type { ProjectDoc } from "@/lib/payload/types";
 
-const categories = [
-  { value: "all", label: "All" },
+const ALL_CATEGORIES = [
   { value: "music", label: "Music" },
   { value: "visual", label: "Visual" },
   { value: "comics", label: "Comics" },
@@ -58,21 +57,24 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
             </div>
           </FadeIn>
 
-          {/* Category filter tabs -- URL-driven */}
+          {/* Category filter tabs -- only show categories with items */}
           <FadeIn>
             <div className="mb-6">
               <ScrollFilters>
-                {categories.map((cat) => {
-                  const href = cat.value === "all" ? "/studio" : `/studio?category=${cat.value}`;
-                  return (
-                    <FilterPill
-                      key={cat.value}
-                      href={href}
-                      label={cat.label}
-                      active={activeCategory === cat.value && !activeTag}
-                    />
-                  );
-                })}
+                <FilterPill href="/studio" label="All" active={activeCategory === "all" && !activeTag} />
+                {ALL_CATEGORIES
+                  .filter((cat) => projects.some((p) => p.contentType === cat.value))
+                  .map((cat) => {
+                    const href = `/studio?category=${cat.value}`;
+                    return (
+                      <FilterPill
+                        key={cat.value}
+                        href={href}
+                        label={cat.label}
+                        active={activeCategory === cat.value && !activeTag}
+                      />
+                    );
+                  })}
               </ScrollFilters>
             </div>
           </FadeIn>

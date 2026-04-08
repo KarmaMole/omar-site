@@ -3,8 +3,9 @@
 import { useSearchParams } from "next/navigation";
 import ScrollFilters from "@/components/scroll-filters";
 import FilterPill from "@/components/filter-pill";
+import type { WorkDoc } from "@/lib/payload/types";
 
-const CATEGORIES = [
+const ALL_CATEGORIES = [
   "Commercial",
   "Corporate",
   "Documentary",
@@ -14,15 +15,24 @@ const CATEGORIES = [
   "Awareness",
 ];
 
-export default function CategoryFilter() {
+interface CategoryFilterProps {
+  work: WorkDoc[];
+}
+
+export default function CategoryFilter({ work }: CategoryFilterProps) {
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get("category") || null;
+
+  // Only show categories that have at least one item
+  const categories = ALL_CATEGORIES.filter((cat) =>
+    work.some((w) => w.categories?.some((c) => c.toLowerCase() === cat.toLowerCase()))
+  );
 
   return (
     <div className="mb-10">
       <ScrollFilters>
         <FilterPill href="/work" label="All" active={!activeCategory} />
-        {CATEGORIES.map((category) => (
+        {categories.map((category) => (
           <FilterPill
             key={category}
             href={`/work?category=${encodeURIComponent(category)}`}
