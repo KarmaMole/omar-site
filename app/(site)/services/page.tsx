@@ -18,7 +18,7 @@ const services = [
     description:
       "I produce video content using generative AI tools alongside traditional post-production. MidJourney for concepting. Stable Diffusion with custom LoRAs for animation. Kling and Veo for AI-generated footage. DaVinci Resolve and Premiere for final assembly.",
     benefit:
-      "The result: high-quality video at a fraction of the time and cost of conventional shoots. Brand films, music videos, social content, promos, explainers, experimental film. From concept to delivery, every frame is intentional and every cut is deliberate.",
+      "The result: high-quality video at a fraction of the time and cost of conventional shoots. Brand films, music videos, social content, promos, explainers, experimental film. From initial concept to final delivery, every frame is intentional and every cut is deliberate.",
     references: [
       { label: "Mycelium (Marze)", href: "/studio/mycelium" },
       { label: "More Fool You", href: "/studio/more-fool-you" },
