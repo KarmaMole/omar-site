@@ -48,7 +48,7 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn>
             <div className="mb-12">
-              <span className="section-label">Studio</span>
+              <span className="section-label">Explore</span>
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Studio
               </h1>

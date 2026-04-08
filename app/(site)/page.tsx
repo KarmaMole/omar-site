@@ -262,7 +262,7 @@ export default async function HomePage() {
               <h2 className="section-label">Selected Clients</h2>
             </FadeIn>
             <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4 mt-8">
-              {clients.slice(0, 12).map((client, i) => (
+              {clients.slice(0, 18).map((client, i) => (
                 <FadeIn key={client.id} delay={i * 40}>
                   <span className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/70">
                     {client.name}

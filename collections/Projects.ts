@@ -6,6 +6,11 @@ export const Projects: CollectionConfig = {
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "status", "featured"],
+    group: "Studio",
+  },
+  labels: {
+    singular: "Studio Item",
+    plural: "Studio",
   },
   hooks: {
     beforeChange: [

@@ -38,10 +38,10 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
           <div className="mb-12">
             <span className="section-label">Portfolio</span>
             <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
-            <p className="text-light-300 mt-3">ai production, video, music, and comics.</p>
+            <p className="text-light-300 mt-3">selected highlights from 20+ years of production.</p>
           </div>
         </FadeIn>
-        <CategoryFilter />
+        <CategoryFilter allWork={allWork} />
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {filtered.map((work) => {

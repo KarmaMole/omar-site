@@ -118,7 +118,7 @@ export default async function DispatchPage({ searchParams }: DispatchPageProps) 
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn>
             <div className="mb-12">
-              <span className="section-label">Dispatch</span>
+              <span className="section-label">Field Notes</span>
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
                 Dispatch
               </h1>
