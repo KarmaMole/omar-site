@@ -101,6 +101,7 @@ export default async function HomePage() {
                 title={heroProject.title}
                 coverImage={heroCover}
                 eyebrow={heroProject.contentType ? getContentTypeLabel(heroProject.contentType) : null}
+                bottomMeta={heroProject.tags || null}
                 size="lg"
                 aspect={heroProjectVideo ? "video" : "21/9"}
                 priority
@@ -121,6 +122,7 @@ export default async function HomePage() {
                         title={project.title}
                         coverImage={cover}
                         eyebrow={project.contentType ? getContentTypeLabel(project.contentType) : null}
+                        bottomMeta={project.tags || null}
                         size="sm"
                         aspect="4/3"
                       />

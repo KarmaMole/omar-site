@@ -27,7 +27,7 @@ export default function WorkContent({ work, initialCategory }: WorkContentProps)
           <div className="mb-12">
             <span className="section-label">Portfolio</span>
             <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
-            <p className="text-light-300 mt-3">selected highlights from 20+ years of production.</p>
+            <p className="text-light-300 mt-3">two decades of production across brands, agencies, and independent work.</p>
           </div>
         </FadeIn>
         <CategoryFilter work={work} />
