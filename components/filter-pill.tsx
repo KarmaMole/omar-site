@@ -7,7 +7,7 @@ interface FilterPillProps {
 }
 
 /**
- * Shared filter pill used on the work, writing, and explore listing pages.
+ * Shared filter pill used on the work, dispatch, and studio listing pages.
  * Always renders a Link so browser behaviors like middle-click,
  * right-click-copy, and hover prefetch work as expected.
  */

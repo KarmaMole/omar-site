@@ -162,7 +162,7 @@ export default async function HomePage() {
                       title={work.title}
                       coverImage={cover}
                       coverAlt={getCoverAlt(work)}
-                      eyebrow={work.client ?? null}
+                      eyebrow={work.workType === "personal" ? (work.roleCredits ?? null) : (work.client ?? null)}
                       size="sm"
                       aspect={isFullWidth ? "21/9" : "4/3"}
                       sizes={isFullWidth ? "100vw" : "50vw"}

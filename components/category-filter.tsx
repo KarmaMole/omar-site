@@ -39,7 +39,7 @@ export default function CategoryFilter() {
               key={wt.value}
               href={href}
               label={wt.label}
-              active={activeType === wt.value && !activeCategory}
+              active={activeType === wt.value}
             />
           );
         })}

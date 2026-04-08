@@ -25,7 +25,7 @@ export default function ReorderLink() {
         }}
       >
         <span style={{ fontSize: "18px" }}>↕</span>
-        <span>Reorder Work & Explore Items</span>
+        <span>Reorder Work & Studio Items</span>
         <span style={{ marginLeft: "auto", opacity: 0.5, fontSize: "12px" }}>
           Drag & drop interface →
         </span>

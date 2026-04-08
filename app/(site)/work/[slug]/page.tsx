@@ -23,12 +23,12 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
       ? work.coverImage
       : null;
   return {
-    title: work.client ? `${work.title} — ${work.client}` : work.title,
-    description: `${work.title}${work.client ? ` for ${work.client}` : ""}. ${work.categories?.join(", ") ?? ""}`,
+    title: work.client ? `${work.title} -- ${work.client}` : work.title,
+    description: `${work.title}${work.client ? ` for ${work.client}` : work.roleCredits ? ` -- ${work.roleCredits}` : ""}. ${work.categories?.join(", ") ?? ""}`,
     openGraph: {
       type: "article",
-      title: work.client ? `${work.title} — ${work.client}` : work.title,
-      description: `${work.title}${work.client ? ` for ${work.client}` : ""}. ${work.categories?.join(", ") ?? ""}`,
+      title: work.client ? `${work.title} -- ${work.client}` : work.title,
+      description: `${work.title}${work.client ? ` for ${work.client}` : work.roleCredits ? ` -- ${work.roleCredits}` : ""}. ${work.categories?.join(", ") ?? ""}`,
       ...(cover?.url
         ? {
             images: [
@@ -93,7 +93,11 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       )}
       <div className={`max-w-3xl mx-auto px-6 ${cover?.url ? "py-12" : "pt-20 pb-12"}`}>
         <Link href="/work" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Work</Link>
-        {work.client && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-2">{work.client}</p>}
+        {(work.workType === "personal" ? work.roleCredits : work.client) && (
+          <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-2">
+            {work.workType === "personal" ? work.roleCredits : work.client}
+          </p>
+        )}
         <h1 className="text-4xl md:text-5xl font-light text-light-100 mb-4">{work.title}</h1>
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
         <div className="mb-8" />
@@ -139,7 +143,7 @@ async function MoreWork({ currentSlug }: { currentSlug: string }) {
         title: w.title,
         coverImage: w.coverImage,
         href: `/work/${w.slug}`,
-        subtitle: w.client || undefined,
+        subtitle: (w.workType === "personal" ? w.roleCredits : w.client) || undefined,
       }))}
       label="More Work"
       viewAllHref="/work"

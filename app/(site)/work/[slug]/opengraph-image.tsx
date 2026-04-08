@@ -6,8 +6,9 @@ export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 export const alt = "Omar Kamel — Work";
 
-export default async function WorkOg({ params }: { params: { slug: string } }) {
-  const work = await getWorkBySlug(params.slug);
+export default async function WorkOg({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const work = await getWorkBySlug(slug);
   if (!work) {
     return renderOgCard({
       label: "WORK",
@@ -22,7 +23,7 @@ export default async function WorkOg({ params }: { params: { slug: string } }) {
   return renderOgCard({
     label: "WORK",
     title: work.title,
-    subtitle: work.client ?? work.categories?.join(" · ") ?? null,
+    subtitle: (work.workType === "personal" ? work.roleCredits : work.client) ?? work.categories?.join(" · ") ?? null,
     coverUrl: cover?.url ?? null,
   });
 }

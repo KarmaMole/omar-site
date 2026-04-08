@@ -108,22 +108,22 @@ function SortableItem({ item, index }: SortableItemProps) {
 
 interface ReorderListProps {
   workItems: Item[];
-  exploreItems: Item[];
+  studioItems: Item[];
 }
 
 export default function ReorderList({
   workItems: initialWork,
-  exploreItems: initialExplore,
+  studioItems: initialStudio,
 }: ReorderListProps) {
-  const [activeTab, setActiveTab] = useState<"work" | "explore">("work");
+  const [activeTab, setActiveTab] = useState<"work" | "studio">("work");
   const [workItems, setWorkItems] = useState(initialWork);
-  const [exploreItems, setExploreItems] = useState(initialExplore);
+  const [studioItems, setStudioItems] = useState(initialStudio);
   const [saving, setSaving] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
   const [hasChanges, setHasChanges] = useState(false);
 
-  const items = activeTab === "work" ? workItems : exploreItems;
-  const setItems = activeTab === "work" ? setWorkItems : setExploreItems;
+  const items = activeTab === "work" ? workItems : studioItems;
+  const setItems = activeTab === "work" ? setWorkItems : setStudioItems;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -187,7 +187,7 @@ export default function ReorderList({
     <div className="max-w-2xl mx-auto">
       {/* Tab switcher */}
       <div className="flex gap-1 mb-6 border-b border-dark-100">
-        {(["work", "explore"] as const).map((tab) => (
+        {(["work", "studio"] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => {
@@ -200,7 +200,7 @@ export default function ReorderList({
                 : "text-light-300/50 hover:text-white"
             }`}
           >
-            {tab} ({tab === "work" ? workItems.length : exploreItems.length})
+            {tab} ({tab === "work" ? workItems.length : studioItems.length})
           </button>
         ))}
       </div>

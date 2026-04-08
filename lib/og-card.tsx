@@ -4,7 +4,7 @@ export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
 
 interface OgCardOptions {
-  label: string; // e.g. "WORK", "WRITING", "EXPLORE"
+  label: string; // e.g. "WORK", "DISPATCH", "STUDIO"
   title: string;
   subtitle?: string | null; // e.g. client name, excerpt, content type
   coverUrl?: string | null; // absolute URL; relative URLs will be prefixed

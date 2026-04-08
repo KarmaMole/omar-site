@@ -15,7 +15,7 @@ interface ContentCardProps {
 }
 
 /**
- * Shared listing card for work and explore items. Dark surface with cyan
+ * Shared listing card for work and studio items. Dark surface with cyan
  * hover border, aspect-video cover image, metadata overlay on hover, and
  * title block below.
  */

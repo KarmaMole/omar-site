@@ -45,7 +45,7 @@ export default async function ReorderPage() {
     category: w.categories?.[0] ?? undefined,
   }));
 
-  const exploreItems = projects.map((p) => ({
+  const studioItems = projects.map((p) => ({
     id: String(p.id),
     title: p.title,
     thumbnail:
@@ -66,7 +66,7 @@ export default async function ReorderPage() {
           Save when done.
         </p>
       </div>
-      <ReorderList workItems={workItems} exploreItems={exploreItems} />
+      <ReorderList workItems={workItems} studioItems={studioItems} />
     </div>
   );
 }
