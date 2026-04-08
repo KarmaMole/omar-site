@@ -6,5 +6,5 @@ interface ProjectDetailPageProps {
 
 export default async function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { slug } = await params;
-  redirect(`/explore/${slug}`);
+  redirect(`/studio/${slug}`);
 }

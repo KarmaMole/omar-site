@@ -14,19 +14,17 @@ const categories = [
   { value: "music", label: "Music" },
   { value: "visual", label: "Visual" },
   { value: "comics", label: "Comics" },
-  { value: "film", label: "Film" },
-  { value: "ai", label: "AI" },
   { value: "writing", label: "Writing" },
   { value: "photography", label: "Photography" },
   { value: "research", label: "Research" },
 ];
 
-interface ExploreContentProps {
+interface StudioContentProps {
   projects: ProjectDoc[];
   initialTag?: string;
 }
 
-export default function ExploreContent({ projects, initialTag }: ExploreContentProps) {
+export default function StudioContent({ projects, initialTag }: StudioContentProps) {
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get("category") || "all";
   const activeTag = initialTag || searchParams.get("tag") || null;
@@ -50,22 +48,22 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn>
             <div className="mb-12">
-              <span className="section-label">Projects</span>
+              <span className="section-label">Studio</span>
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
-                Explore
+                Studio
               </h1>
               <p className="text-light-300 mt-3">
-                personal projects, music, tools, and experiments.
+                Self-directed projects -- films, music, comics, and tools built because production is the craft, not just the job.
               </p>
             </div>
           </FadeIn>
 
-          {/* Category filter tabs — URL-driven */}
+          {/* Category filter tabs -- URL-driven */}
           <FadeIn>
             <div className="mb-6">
               <ScrollFilters>
                 {categories.map((cat) => {
-                  const href = cat.value === "all" ? "/explore" : `/explore?category=${cat.value}`;
+                  const href = cat.value === "all" ? "/studio" : `/studio?category=${cat.value}`;
                   return (
                     <FilterPill
                       key={cat.value}
@@ -90,11 +88,11 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
                   {activeTag}
                 </span>
                 <Link
-                  href="/explore"
+                  href="/studio"
                   className="text-light-300 hover:text-light-100 transition-colors text-sm"
                   title="Clear filter"
                 >
-                  ✕
+                  &#10005;
                 </Link>
               </div>
             </FadeIn>
@@ -113,7 +111,7 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
               return (
                 <FadeIn key={project.id}>
                   <ContentCard
-                    href={`/explore/${project.slug}`}
+                    href={`/studio/${project.slug}`}
                     title={project.title}
                     coverImage={cover}
                     label={project.contentType ? getContentTypeLabel(project.contentType) : null}
@@ -131,7 +129,7 @@ export default function ExploreContent({ projects, initialTag }: ExploreContentP
                 No items found{activeTag ? ` for "${activeTag}"` : " in this category"}.
               </p>
               <Link
-                href="/explore"
+                href="/studio"
                 className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline"
               >
                 Reset

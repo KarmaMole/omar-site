@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Services",
   description:
     "AI production, creative direction, digital builds, and more from Omar Kamel.",
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
 };
 
 const services = [
@@ -20,10 +20,10 @@ const services = [
     benefit:
       "The result: high-quality video at a fraction of the time and cost of conventional shoots. Brand films, music videos, social content, promos, explainers, experimental film.",
     references: [
-      { label: "Mycelium (Marze)", href: "/explore/mycelium" },
-      { label: "More Fool You", href: "/explore/more-fool-you" },
-      { label: "The Strangers", href: "/explore/the-strangers" },
-      { label: "El Wa7sh El Kasir", href: "/explore/el-wahsh-el-kasir" },
+      { label: "Mycelium (Marze)", href: "/studio/mycelium" },
+      { label: "More Fool You", href: "/studio/more-fool-you" },
+      { label: "The Strangers", href: "/studio/the-strangers" },
+      { label: "El Wa7sh El Kasir", href: "/studio/el-wahsh-el-kasir" },
     ],
   },
   {
@@ -34,8 +34,8 @@ const services = [
       "Currently leading AI creative and production at Optix / Publicis Groupe, building AI-powered pipelines for major airlines, automotive brands, and financial institutions. I use Claude, ChatGPT, MidJourney, ComfyUI, Veo, Kling, and Suno daily. I know what works and what's still hype.",
     references: [
       { label: "AI Workshop Program", href: "/contact" },
-      { label: "Optix AI Hub", href: "/explore/optix-ai-hub" },
-      { label: "Mentora", href: "/explore/mentora" },
+      { label: "Optix AI Hub", href: "/studio/optix-ai-hub" },
+      { label: "Mentora", href: "/studio/mentora" },
     ],
   },
   {
@@ -45,9 +45,9 @@ const services = [
     benefit:
       "Current live builds include an AI-powered news aggregator, a real-time geopolitical monitoring dashboard, a voice-driven training platform, and team collaboration tools. I ship things.",
     references: [
-      { label: "Human Impact", href: "/explore/human-impact" },
-      { label: "Iran War Monitor", href: "/explore/iran-war-monitor" },
-      { label: "Mentora", href: "/explore/mentora" },
+      { label: "Human Impact", href: "/studio/human-impact" },
+      { label: "Iran War Monitor", href: "/studio/iran-war-monitor" },
+      { label: "Mentora", href: "/studio/mentora" },
     ],
   },
   {
