@@ -53,8 +53,8 @@ export default function HeroCard({
   const padding = size === "lg" ? "p-5 md:p-8 lg:p-12" : "p-4 md:p-6 lg:p-8";
   const titleSize =
     size === "lg"
-      ? "text-xl md:text-3xl lg:text-5xl"
-      : "text-base md:text-xl lg:text-2xl";
+      ? "text-lg md:text-3xl lg:text-5xl"
+      : "text-sm md:text-xl lg:text-2xl";
   const eyebrowSize =
     size === "lg"
       ? "text-xs tracking-[0.2em] mb-2"
