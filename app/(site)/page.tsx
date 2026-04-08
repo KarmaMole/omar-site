@@ -84,7 +84,7 @@ export default async function HomePage() {
         );
       })()}
 
-      {/* ── Featured Explorations ───────────────────────────── */}
+      {/* ── From the Studio ───────────────────────────── */}
       {featuredProjects.length > 0 && (() => {
         const heroProject = featuredProjects[0];
         const heroCover = typeof heroProject.coverImage === "object" && heroProject.coverImage ? heroProject.coverImage : null;
@@ -92,12 +92,12 @@ export default async function HomePage() {
         return (
           <section className="max-w-7xl mx-auto px-6 lg:px-12 py-section-sm md:py-section border-t border-white/[0.07]">
             <FadeIn>
-              <h2 className="section-label-primary">Featured Explorations</h2>
+              <h2 className="section-label-primary">From the Studio</h2>
             </FadeIn>
-            {/* Hero exploration (first item) */}
+            {/* Hero studio item (first item) */}
             <FadeIn className="mt-8">
               <HeroCard
-                href={`/explore/${heroProject.slug}`}
+                href={`/studio/${heroProject.slug}`}
                 title={heroProject.title}
                 coverImage={heroCover}
                 eyebrow={heroProject.contentType ? getContentTypeLabel(heroProject.contentType) : null}
@@ -108,7 +108,7 @@ export default async function HomePage() {
               />
             </FadeIn>
 
-            {/* Remaining featured explorations */}
+            {/* Remaining featured studio items */}
             {featuredProjects.length > 1 && (
               <FadeIn className="mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
@@ -117,7 +117,7 @@ export default async function HomePage() {
                     return (
                       <HeroCard
                         key={project.id}
-                        href={`/explore/${project.slug}`}
+                        href={`/studio/${project.slug}`}
                         title={project.title}
                         coverImage={cover}
                         eyebrow={project.contentType ? getContentTypeLabel(project.contentType) : null}
@@ -131,10 +131,10 @@ export default async function HomePage() {
             )}
             <FadeIn className="mt-10">
               <Link
-                href="/explore"
+                href="/studio"
                 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
               >
-                View All Explorations &rarr;
+                View All Studio Work &rarr;
               </Link>
             </FadeIn>
           </section>
@@ -183,18 +183,18 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ── Latest from Blog ──────────────────────────────────── */}
+      {/* ── Latest Dispatch ───────────────────────────────────── */}
       {recentPosts.length > 0 && (
         <section className="border-t border-white/[0.07] py-section-sm md:py-section bg-[#0d0d0d]/30">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
-              <h2 className="section-label">Latest Writing</h2>
+              <h2 className="section-label">Latest Dispatch</h2>
             </FadeIn>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7 mt-10">
               {recentPosts.map((post, i) => (
                 <FadeIn key={post.id} delay={i * 100}>
                   <Link
-                    href={`/blog/${post.slug}`}
+                    href={`/dispatch/${post.slug}`}
                     className="group block -mx-3 px-3 py-3 rounded-sm hover:bg-white/[0.02] transition-colors border-b border-white/[0.05] md:border-b-0 border-l-2 border-l-transparent hover:border-l-cyan"
                   >
                     {post.date && (
@@ -216,7 +216,7 @@ export default async function HomePage() {
             </div>
             <FadeIn className="mt-10">
               <Link
-                href="/writing"
+                href="/dispatch"
                 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
               >
                 Read More &rarr;

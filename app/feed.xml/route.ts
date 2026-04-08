@@ -10,7 +10,7 @@ export async function GET() {
   const posts = await getAllBlogPosts();
   const items = posts
     .map((post) => {
-      const link = `${baseUrl}/blog/${post.slug}`;
+      const link = `${baseUrl}/dispatch/${post.slug}`;
       const pubDate = post.date ? new Date(post.date).toUTCString() : "";
       const description = post.excerpt ? escapeXml(post.excerpt) : "";
       const title = escapeXml(post.title);

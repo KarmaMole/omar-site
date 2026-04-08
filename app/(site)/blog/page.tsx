@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function BlogPage() {
-  redirect("/writing");
+  redirect("/dispatch");
 }
