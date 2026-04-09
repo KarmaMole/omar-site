@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     max_tokens: 1024,
     system: `You are a writing assistant for Omar Kamel's editorial blog "Dispatches". Generate metadata for a blog post. Return ONLY valid JSON with these fields:
 - "excerpt": 1-2 punchy sentences summarizing the post, suitable for a card layout
-- "tags": comma-separated tags (e.g. "AEgypt, Technology, Culture"). Use existing tag conventions: short, capitalized topic words
+- "tags": comma-separated tags. MUST include at least one of these categories: "AI Production", "Workflows", "Industry", "Tools", "Case Studies". You may add additional specific topic tags after the category (e.g. "AI Production, ComfyUI, Image Generation")
 - "description": SEO meta description, max 155 characters, compelling for search results
 - "subject": a short description of the main visual subject/scene from the article (for an illustration)
 - "action": what the subject is doing, visually clear and specific
