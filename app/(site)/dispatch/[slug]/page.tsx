@@ -4,7 +4,8 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
 import TagBadge from "@/components/tag-badge";
-import { RichText } from "@/components/rich-text";
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from "@/lib/payload/queries";
 import MoreItems from "@/components/more-items";
 import { formatDate } from "@/lib/utils";
@@ -116,7 +117,11 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
             {tags.map((tag) => (<TagBadge key={tag} label={tag} href={`/dispatch?tag=${encodeURIComponent(tag)}`} />))}
           </div>
         )}
-        {post.body ? <RichText data={post.body} className={`${sourceSerif.className} prose prose-lg prose-invert max-w-none text-light-200 leading-relaxed font-light`} /> : null}
+        {post.body ? (
+          <div className={`${sourceSerif.className} prose prose-lg prose-invert max-w-none text-light-200 leading-relaxed font-light`}>
+            <Markdown remarkPlugins={[remarkGfm]}>{post.body}</Markdown>
+          </div>
+        ) : null}
         <MoreDispatch currentSlug={slug} />
       </div>
     </article>

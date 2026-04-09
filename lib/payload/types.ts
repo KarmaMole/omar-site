@@ -68,7 +68,7 @@ export interface BlogPostDoc {
   title: string;
   slug: string;
   coverImage?: MediaUpload | string | null;
-  body?: unknown;
+  body?: string | null;
   excerpt?: string | null;
   date?: string | null;
   updatedAt?: string | null;

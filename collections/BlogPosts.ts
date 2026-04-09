@@ -2,9 +2,14 @@ import type { CollectionConfig } from "payload";
 
 export const BlogPosts: CollectionConfig = {
   slug: "blog-posts",
+  labels: {
+    singular: "Dispatch",
+    plural: "Dispatches",
+  },
   admin: {
     useAsTitle: "title",
     defaultColumns: ["title", "date", "tags"],
+    group: "Content",
   },
   access: {
     read: () => true,
@@ -36,7 +41,10 @@ export const BlogPosts: CollectionConfig = {
     },
     {
       name: "body",
-      type: "richText",
+      type: "textarea",
+      admin: {
+        description: "Paste markdown here. Supports headings, bold, italic, links, lists, images, and code blocks.",
+      },
     },
     {
       name: "excerpt",
