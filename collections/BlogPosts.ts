@@ -47,6 +47,29 @@ export const BlogPosts: CollectionConfig = {
       },
     },
     {
+      name: "images",
+      type: "array",
+      label: "Inline Images",
+      admin: {
+        description: 'Upload images here, then reference them in the body with ![alt](image-1), ![alt](image-2), etc.',
+      },
+      fields: [
+        {
+          name: "image",
+          type: "upload",
+          relationTo: "media",
+          required: true,
+        },
+        {
+          name: "alt",
+          type: "text",
+          admin: {
+            description: "Optional alt text for accessibility",
+          },
+        },
+      ],
+    },
+    {
       name: "excerpt",
       type: "textarea",
     },

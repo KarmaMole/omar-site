@@ -71,6 +71,17 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
   const cover = typeof post.coverImage === "object" && post.coverImage ? post.coverImage : null;
   const tags = post.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
 
+  // Resolve image-N references in markdown body
+  let body = post.body ?? "";
+  if (body && post.images?.length) {
+    post.images.forEach((entry, i) => {
+      const img = typeof entry.image === "object" && entry.image ? entry.image : null;
+      if (!img?.url) return;
+      const url = img.sizes?.hero?.url ?? img.url;
+      body = body.replaceAll(`(image-${i + 1})`, `(${url})`);
+    });
+  }
+
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -119,7 +130,7 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
         )}
         {post.body ? (
           <div className={`${sourceSerif.className} prose prose-lg prose-invert max-w-none text-light-200 leading-relaxed font-light`}>
-            <Markdown remarkPlugins={[remarkGfm]}>{post.body}</Markdown>
+            <Markdown remarkPlugins={[remarkGfm]}>{body}</Markdown>
           </div>
         ) : null}
         <MoreDispatch currentSlug={slug} />
