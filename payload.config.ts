@@ -79,6 +79,7 @@ export default buildConfig({
   },
   sharp,
   admin: {
+    avatar: "default",
     importMap: {
       baseDir: path.resolve(dirname),
     },
