@@ -17,6 +17,19 @@ export const BlogPosts: CollectionConfig = {
     update: ({ req: { user } }) => !!user,
     delete: ({ req: { user } }) => !!user,
   },
+  hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (data?.title && !data.slug) {
+          data.slug = data.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/(^-|-$)/g, "");
+        }
+        return data;
+      },
+    ],
+  },
   fields: [
     {
       name: "title",
@@ -32,6 +45,7 @@ export const BlogPosts: CollectionConfig = {
       unique: true,
       admin: {
         position: "sidebar",
+        description: "Auto-generated from title if left empty",
       },
     },
     {
