@@ -34,7 +34,13 @@ export default buildConfig({
       slug: "users",
       auth: true,
       admin: { useAsTitle: "email" },
-      fields: [],
+      fields: [
+        {
+          name: "avatar",
+          type: "upload",
+          relationTo: "media",
+        },
+      ],
     },
     Media,
     Work,
@@ -79,7 +85,9 @@ export default buildConfig({
   },
   sharp,
   admin: {
-    avatar: "default",
+    avatar: {
+      Component: "@/components/admin/avatar#default",
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },
