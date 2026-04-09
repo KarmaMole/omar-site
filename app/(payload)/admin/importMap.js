@@ -31,6 +31,7 @@ import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 }
 import { default as default_bd8a37e8ac419c0b2ccb6ef2e225a54c } from '@/components/admin/reorder-nav-link'
 import { default as default_211cec84292c325c71f58f5fc273dfc2 } from '@/components/admin/reorder-link'
 import { default as default_copy_image_ref } from '@/components/admin/copy-image-ref'
+import { default as default_generate_all_button } from '@/components/admin/generate-all-button'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -67,5 +68,6 @@ export const importMap = {
   "@/components/admin/reorder-nav-link#default": default_bd8a37e8ac419c0b2ccb6ef2e225a54c,
   "@/components/admin/reorder-link#default": default_211cec84292c325c71f58f5fc273dfc2,
   "@/components/admin/copy-image-ref#default": default_copy_image_ref,
+  "@/components/admin/generate-all-button#default": default_generate_all_button,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

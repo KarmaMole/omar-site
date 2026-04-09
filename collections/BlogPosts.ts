@@ -91,6 +91,16 @@ export const BlogPosts: CollectionConfig = {
       },
     },
     {
+      name: "generateAll",
+      type: "ui",
+      admin: {
+        position: "sidebar",
+        components: {
+          Field: "@/components/admin/generate-all-button#default",
+        },
+      },
+    },
+    {
       name: "isExternal",
       type: "checkbox",
       defaultValue: false,
