@@ -124,9 +124,8 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
         <Link href="/dispatch" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Dispatch</Link>
         {post.date && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-4">{formatDate(post.date)}</p>}
         <h1 className={`${sourceSerif.className} text-4xl md:text-6xl font-light text-light-100 leading-tight mb-6`}>{post.title}</h1>
-        {(categories.length > 0 || tags.length > 0) && (
+        {tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-10">
-            {categories.map((cat) => (<TagBadge key={cat} label={cat} variant="category" href={`/dispatch?category=${encodeURIComponent(cat)}`} />))}
             {tags.map((tag) => (<TagBadge key={tag} label={tag} href={`/dispatch?tag=${encodeURIComponent(tag)}`} />))}
           </div>
         )}
