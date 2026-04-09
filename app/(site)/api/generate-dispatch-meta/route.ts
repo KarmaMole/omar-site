@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import * as fal from '@fal-ai/client'
+import { fal } from '@fal-ai/client'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 
