@@ -67,6 +67,15 @@ export const BlogPosts: CollectionConfig = {
             description: "Optional alt text for accessibility",
           },
         },
+        {
+          name: "copyRef",
+          type: "ui",
+          admin: {
+            components: {
+              Field: "@/components/admin/copy-image-ref#default",
+            },
+          },
+        },
       ],
     },
     {
