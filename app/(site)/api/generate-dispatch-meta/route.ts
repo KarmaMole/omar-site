@@ -18,7 +18,7 @@ Style: Minimalist pen-and-ink editorial illustration with fine cross-hatching, d
 
 Fidelity: Clean anatomy, accurate perspective, balanced spacing, clear silhouette hierarchy, controlled detail, and strong visual clarity.
 
-Negative prompt: photographic realism, painterly rendering, extra figures, cluttered background, chaotic composition, distorted anatomy, warped objects, text, labels, captions, titles, words, lettering, heavy shading, excessive detail, bright colors, dramatic action.`
+Negative prompt: photographic realism, painterly rendering, extra figures, cluttered background, chaotic composition, distorted anatomy, warped objects, unreadable text, heavy shading, excessive detail, bright colors, dramatic action.`
 
 export async function POST(req: NextRequest) {
   // Auth check: verify Payload user
