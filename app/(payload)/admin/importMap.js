@@ -24,7 +24,6 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_9d13a0cb80050f4a6de63507a432e483 } from '@/components/admin/gallery-upload'
 import { default as default_499b787cbfd953fe31fd75ce1898156f } from '@/components/admin/copy-image-ref'
 import { default as default_e15e987645240d06cfe6d75e93fc628a } from '@/components/admin/generate-all-button'
-import { default as default_admin_avatar } from '@/components/admin/avatar'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
@@ -70,6 +69,5 @@ export const importMap = {
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@/components/admin/reorder-nav-link#default": default_bd8a37e8ac419c0b2ccb6ef2e225a54c,
   "@/components/admin/reorder-link#default": default_211cec84292c325c71f58f5fc273dfc2,
-  "@/components/admin/avatar#default": default_admin_avatar,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
