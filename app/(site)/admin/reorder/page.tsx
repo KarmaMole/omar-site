@@ -52,7 +52,7 @@ export default async function ReorderPage() {
       typeof p.coverImage === "object" && p.coverImage
         ? p.coverImage.sizes?.thumbnail?.url || p.coverImage.url
         : null,
-    category: p.contentType ?? undefined,
+    category: p.categories?.[0] ?? undefined,
   }));
 
   return (

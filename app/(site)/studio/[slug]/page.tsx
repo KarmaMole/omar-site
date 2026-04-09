@@ -23,11 +23,11 @@ export async function generateMetadata({ params }: StudioDetailPageProps): Promi
       : null;
   return {
     title: project.title,
-    description: `${project.title} - ${project.contentType ?? "project"} by Omar Kamel.`,
+    description: `${project.title} - ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`,
     openGraph: {
       type: "article",
       title: project.title,
-      description: `${project.title} - ${project.contentType ?? "project"} by Omar Kamel.`,
+      description: `${project.title} - ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`,
       ...(cover?.url
         ? {
             images: [
@@ -67,7 +67,7 @@ export default async function StudioDetailPage({ params }: StudioDetailPageProps
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.title,
-    description: `${project.title} - ${project.contentType ?? "project"} by Omar Kamel.`,
+    description: `${project.title} - ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`,
     ...(cover?.url ? { image: cover.url } : {}),
     author: {
       "@type": "Person",
