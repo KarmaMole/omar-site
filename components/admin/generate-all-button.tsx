@@ -5,6 +5,7 @@ import { useAllFormFields } from '@payloadcms/ui'
 
 type GenerateResponse = {
   excerpt: string
+  categories: string[]
   tags: string
   description: string
   coverImageId: string
@@ -13,13 +14,14 @@ type GenerateResponse = {
 
 type Snapshot = {
   excerpt: unknown
+  categories: unknown
   tags: unknown
   'meta.description': unknown
   coverImage: unknown
   'meta.image': unknown
 }
 
-const FIELDS_TO_POPULATE = ['excerpt', 'tags', 'meta.description', 'coverImage', 'meta.image'] as const
+const FIELDS_TO_POPULATE = ['excerpt', 'categories', 'tags', 'meta.description', 'coverImage', 'meta.image'] as const
 
 export default function GenerateAllButton() {
   const [fields, dispatchFields] = useAllFormFields()
@@ -60,6 +62,7 @@ export default function GenerateAllButton() {
     // Snapshot current values for undo
     snapshotRef.current = {
       excerpt: getFieldValue('excerpt'),
+      categories: getFieldValue('categories'),
       tags: getFieldValue('tags'),
       'meta.description': getFieldValue('meta.description'),
       coverImage: getFieldValue('coverImage'),
@@ -86,6 +89,7 @@ export default function GenerateAllButton() {
 
       // Populate fields
       setFieldValue('excerpt', data.excerpt)
+      setFieldValue('categories', data.categories)
       setFieldValue('tags', data.tags)
       setFieldValue('meta.description', data.description)
       setFieldValue('coverImage', data.coverImageId)

@@ -4,19 +4,18 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import ContentCard from "@/components/content-card";
 import FadeIn from "@/components/fade-in";
-import { getContentTypeLabel } from "@/lib/utils";
 import ScrollFilters from "@/components/scroll-filters";
 import FilterPill from "@/components/filter-pill";
 import type { ProjectDoc } from "@/lib/payload/types";
 
 const ALL_CATEGORIES = [
-  { value: "music", label: "Music" },
-  { value: "visual", label: "Visual" },
-  { value: "comics", label: "Comics" },
-  { value: "film", label: "Film" },
-  { value: "ai", label: "AI" },
-  { value: "photography", label: "Photography" },
-  { value: "research", label: "Research" },
+  "Music",
+  "Visual",
+  "Comics",
+  "Film",
+  "AI",
+  "Photography",
+  "Research",
 ];
 
 interface StudioContentProps {
@@ -32,7 +31,7 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
   const filtered = (() => {
     let result = activeCategory === "all"
       ? projects
-      : projects.filter((p) => p.contentType === activeCategory);
+      : projects.filter((p) => p.categories?.some((c) => c.toLowerCase() === activeCategory.toLowerCase()));
 
     if (activeTag) {
       result = result.filter((p) =>
@@ -64,18 +63,15 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
               <ScrollFilters>
                 <FilterPill href="/studio" label="All" active={activeCategory === "all" && !activeTag} />
                 {ALL_CATEGORIES
-                  .filter((cat) => projects.some((p) => p.contentType === cat.value))
-                  .map((cat) => {
-                    const href = `/studio?category=${cat.value}`;
-                    return (
-                      <FilterPill
-                        key={cat.value}
-                        href={href}
-                        label={cat.label}
-                        active={activeCategory === cat.value && !activeTag}
-                      />
-                    );
-                  })}
+                  .filter((cat) => projects.some((p) => p.categories?.some((c) => c === cat)))
+                  .map((cat) => (
+                    <FilterPill
+                      key={cat}
+                      href={`/studio?category=${encodeURIComponent(cat)}`}
+                      label={cat}
+                      active={activeCategory.toLowerCase() === cat.toLowerCase() && !activeTag}
+                    />
+                  ))}
               </ScrollFilters>
             </div>
           </FadeIn>
@@ -117,7 +113,7 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
                     href={`/studio/${project.slug}`}
                     title={project.title}
                     coverImage={cover}
-                    label={project.contentType ? getContentTypeLabel(project.contentType) : null}
+                    label={project.categories?.length ? project.categories.join(", ") : null}
                     overlayTags={tags}
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />

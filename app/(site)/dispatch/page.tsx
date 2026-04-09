@@ -11,7 +11,7 @@ import { getAllBlogPosts } from "@/lib/payload/queries";
 import { sourceSerif } from "@/lib/fonts";
 import type { BlogPostDoc, MediaUpload } from "@/lib/payload/types";
 
-const CATEGORIES = [
+const ALL_CATEGORIES = [
   "AI Production",
   "Workflows",
   "Industry",
@@ -102,16 +102,14 @@ export default async function DispatchPage({ searchParams }: DispatchPageProps) 
   const { tag, category } = await searchParams;
   const posts = await getAllBlogPosts();
 
-  // Both "tag" (from tag links) and "category" (from filter pills) match against the tags field
-  const activeTag = tag || category || null;
+  const activeCategory = category || null;
+  const activeTag = tag || null;
 
-  const filtered = activeTag
-    ? posts.filter((p) =>
-        p.tags?.split(",").some(
-          (t) => t.trim().toLowerCase() === activeTag.toLowerCase()
-        )
-      )
-    : posts;
+  const filtered = posts.filter((p) => {
+    if (activeCategory && !p.categories?.some((c) => c.toLowerCase() === activeCategory.toLowerCase())) return false;
+    if (activeTag && !p.tags?.split(",").some((t) => t.trim().toLowerCase() === activeTag.toLowerCase())) return false;
+    return true;
+  });
 
   return (
     <div className="pt-24 pb-16 animate-fade-in">
@@ -132,15 +130,17 @@ export default async function DispatchPage({ searchParams }: DispatchPageProps) 
           <FadeIn>
             <div className="mb-10">
               <ScrollFilters>
-                <FilterPill href="/dispatch" label="All" active={!activeTag} />
-                {CATEGORIES.map((cat) => (
-                  <FilterPill
-                    key={cat}
-                    href={`/dispatch?category=${encodeURIComponent(cat)}`}
-                    label={cat}
-                    active={activeTag?.toLowerCase() === cat.toLowerCase()}
-                  />
-                ))}
+                <FilterPill href="/dispatch" label="All" active={!activeCategory && !activeTag} />
+                {ALL_CATEGORIES
+                  .filter((cat) => posts.some((p) => p.categories?.some((c) => c === cat)))
+                  .map((cat) => (
+                    <FilterPill
+                      key={cat}
+                      href={`/dispatch?category=${encodeURIComponent(cat)}`}
+                      label={cat}
+                      active={activeCategory?.toLowerCase() === cat.toLowerCase()}
+                    />
+                  ))}
               </ScrollFilters>
             </div>
           </FadeIn>
@@ -177,7 +177,7 @@ export default async function DispatchPage({ searchParams }: DispatchPageProps) 
           ) : (
             <div className="text-center py-12">
               <p className="text-light-300 font-mono text-sm mb-4">
-                No posts found{activeTag ? ` for "${activeTag}"` : ""}.
+                No posts found{activeCategory ? ` in "${activeCategory}"` : activeTag ? ` for "${activeTag}"` : ""}.
               </p>
               <Link href="/dispatch" className="font-mono text-xs uppercase tracking-widest text-cyan hover:text-white transition-colors link-underline">
                 Clear filters

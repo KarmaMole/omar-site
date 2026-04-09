@@ -6,7 +6,7 @@ import { sourceSerif } from "@/lib/fonts";
 import Hero from "@/components/hero";
 import FadeIn from "@/components/fade-in";
 import HeroCard from "@/components/hero-card";
-import { formatDate, getContentTypeLabel } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import {
   getSiteSettings,
   getFeaturedWork,
@@ -100,7 +100,7 @@ export default async function HomePage() {
                 href={`/studio/${heroProject.slug}`}
                 title={heroProject.title}
                 coverImage={heroCover}
-                eyebrow={heroProject.contentType ? getContentTypeLabel(heroProject.contentType) : null}
+                eyebrow={heroProject.categories?.length ? heroProject.categories.join(", ") : null}
                 bottomMeta={heroProject.tags || null}
                 size="lg"
                 aspect={heroProjectVideo ? "video" : "21/9"}
@@ -121,7 +121,7 @@ export default async function HomePage() {
                         href={`/studio/${project.slug}`}
                         title={project.title}
                         coverImage={cover}
-                        eyebrow={project.contentType ? getContentTypeLabel(project.contentType) : null}
+                        eyebrow={project.categories?.length ? project.categories.join(", ") : null}
                         bottomMeta={project.tags || null}
                         size="sm"
                         aspect="4/3"

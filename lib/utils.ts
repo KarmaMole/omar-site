@@ -10,16 +10,3 @@ export function formatDate(dateString: string): string {
   });
 }
 
-const CONTENT_TYPE_LABELS: Record<string, string> = {
-  music: "Music",
-  visual: "Visual",
-  comics: "Comics",
-  film: "Film",
-  ai: "AI",
-  photography: "Photography",
-  research: "Research",
-};
-
-export function getContentTypeLabel(type: string): string {
-  return CONTENT_TYPE_LABELS[type] ?? type;
-}
