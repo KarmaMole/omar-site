@@ -1,33 +1,9 @@
 import React from 'react'
 
-type AvatarMedia = {
-  url?: string
-  sizes?: { thumbnail?: { url?: string } }
-}
-
-export default function AdminAvatar({ user }: { user?: { email?: string; avatar?: AvatarMedia | number | null } | null }) {
-  const avatarField = user?.avatar
-  const src =
-    typeof avatarField === 'object' && avatarField
-      ? avatarField.sizes?.thumbnail?.url ?? avatarField.url
-      : undefined
-
-  if (src) {
-    return (
-      <img
-        src={src}
-        alt=""
-        style={{
-          width: 25,
-          height: 25,
-          borderRadius: '50%',
-          objectFit: 'cover',
-        }}
-      />
-    )
-  }
-
+export default function AdminAvatar(props: Record<string, unknown>) {
+  const user = props?.user as { email?: string; avatar?: unknown } | null | undefined
   const initial = (user?.email ?? 'U').charAt(0).toUpperCase()
+
   return (
     <div
       style={{
