@@ -44,18 +44,18 @@ export const Projects: CollectionConfig = {
       },
     },
     {
-      name: "contentType",
+      name: "categories",
       type: "select",
+      hasMany: true,
       options: [
-        { label: "Music", value: "music" },
-        { label: "Visual", value: "visual" },
-        { label: "Comics", value: "comics" },
-        { label: "Film", value: "film" },
-        { label: "AI", value: "ai" },
-        { label: "Photography", value: "photography" },
-        { label: "Research", value: "research" },
+        { label: "Music", value: "Music" },
+        { label: "Visual", value: "Visual" },
+        { label: "Comics", value: "Comics" },
+        { label: "Film", value: "Film" },
+        { label: "AI", value: "AI" },
+        { label: "Photography", value: "Photography" },
+        { label: "Research", value: "Research" },
       ],
-      defaultValue: "visual",
       admin: {
         position: "sidebar",
       },
@@ -65,7 +65,7 @@ export const Projects: CollectionConfig = {
       type: "text",
       label: "Streaming URL",
       admin: {
-        condition: (_data, siblingData) => siblingData?.contentType === "music",
+        condition: (_data, siblingData) => (siblingData?.categories as string[] | undefined)?.includes("Music") ?? false,
       },
     },
     {
@@ -74,7 +74,7 @@ export const Projects: CollectionConfig = {
       relationTo: "media",
       label: "Audio File",
       admin: {
-        condition: (_data, siblingData) => siblingData?.contentType === "music",
+        condition: (_data, siblingData) => (siblingData?.categories as string[] | undefined)?.includes("Music") ?? false,
       },
     },
     {
@@ -88,12 +88,9 @@ export const Projects: CollectionConfig = {
           Field: "@/components/admin/gallery-upload",
         },
         condition: (_data, siblingData) => {
-          const type = siblingData?.contentType;
-          return type === "photography" ||
-            type === "visual" ||
-            type === "comics" ||
-            type === "ai" ||
-            type === "film";
+          const cats = siblingData?.categories as string[] | undefined;
+          if (!cats?.length) return true; // show gallery by default
+          return cats.some((c) => ["Photography", "Visual", "Comics", "AI", "Film"].includes(c));
         },
       },
     },

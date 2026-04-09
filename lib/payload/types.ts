@@ -39,7 +39,7 @@ export interface ProjectDoc {
   id: string;
   title: string;
   slug: string;
-  contentType?: "music" | "visual" | "comics" | "film" | "ai" | "photography" | "research" | null;
+  categories?: string[] | null;
   streamingUrl?: string | null;
   audioFile?: MediaUpload | string | null;
   description?: unknown;
@@ -76,6 +76,7 @@ export interface BlogPostDoc {
   isExternal?: boolean | null;
   publicationUrl?: string | null;
   publicationName?: string | null;
+  categories?: string[] | null;
   tags?: string | null;
   meta?: {
     title?: string | null;

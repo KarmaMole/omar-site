@@ -123,10 +123,25 @@ export const BlogPosts: CollectionConfig = {
       },
     },
     {
+      name: "categories",
+      type: "select",
+      hasMany: true,
+      options: [
+        { label: "AI Production", value: "AI Production" },
+        { label: "Workflows", value: "Workflows" },
+        { label: "Industry", value: "Industry" },
+        { label: "Tools", value: "Tools" },
+        { label: "Case Studies", value: "Case Studies" },
+      ],
+      admin: {
+        position: "sidebar",
+      },
+    },
+    {
       name: "tags",
       type: "text",
       admin: {
-        description: "Comma-separated tags (e.g. AEgypt, Amerika, Media)",
+        description: "Comma-separated tags for additional topics (e.g. ComfyUI, Image Generation, Egypt)",
       },
     },
   ],
