@@ -1,11 +1,16 @@
-'use client'
+import React from 'react'
 
-import { useAuth } from '@payloadcms/ui'
+type AvatarMedia = {
+  url?: string
+  sizes?: { thumbnail?: { url?: string } }
+}
 
-export default function AdminAvatar() {
-  const { user } = useAuth()
-  const avatar = user?.avatar as { url?: string; sizes?: { thumbnail?: { url?: string } } } | undefined
-  const src = avatar?.sizes?.thumbnail?.url ?? avatar?.url
+export default function AdminAvatar({ user }: { user?: { email?: string; avatar?: AvatarMedia | number | null } | null }) {
+  const avatarField = user?.avatar
+  const src =
+    typeof avatarField === 'object' && avatarField
+      ? avatarField.sizes?.thumbnail?.url ?? avatarField.url
+      : undefined
 
   if (src) {
     return (
@@ -22,7 +27,6 @@ export default function AdminAvatar() {
     )
   }
 
-  // Fallback: first letter of email
   const initial = (user?.email ?? 'U').charAt(0).toUpperCase()
   return (
     <div
