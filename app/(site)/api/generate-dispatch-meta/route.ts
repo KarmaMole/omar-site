@@ -56,7 +56,10 @@ Return ONLY the JSON object, no markdown fences.`,
     ],
   })
 
-  const claudeText = claudeResponse.content[0].type === 'text' ? claudeResponse.content[0].text : ''
+  let claudeText = claudeResponse.content[0].type === 'text' ? claudeResponse.content[0].text : ''
+  // Strip markdown fences if present
+  claudeText = claudeText.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '').trim()
+
   let generated: {
     excerpt: string
     tags: string
