@@ -8,7 +8,7 @@ fal.config({ credentials: process.env.FAL_KEY })
 
 const IMAGE_PROMPT_TEMPLATE = `A New Yorker-style black-and-white ink illustration. In the center of the frame, SUBJECT is shown ACTION. The image should express METAPHOR in a quiet, understated way.
 
-Composition: The entire composition is compact and self-contained in the middle of the frame, with generous empty negative space surrounding it. No important element should touch the edges or rise too high in the frame unless explicitly intended.
+Composition: The entire composition is compact and self-contained in the center of the frame, with generous empty negative space on ALL sides — top, bottom, left, and right. No element (including text, labels, captions, or any detail) should touch or extend beyond any edge of the frame. Leave at least 15% padding on every side.
 
 Lighting: Soft, flat editorial lighting with subtle cross-hatched shadows and restrained tonal contrast. The image should feel calm, observational, and slightly austere rather than dramatic.
 
@@ -18,7 +18,7 @@ Style: Minimalist pen-and-ink editorial illustration with fine cross-hatching, d
 
 Fidelity: Clean anatomy, accurate perspective, balanced spacing, clear silhouette hierarchy, controlled detail, and strong visual clarity.
 
-Negative prompt: photographic realism, painterly rendering, extra figures, cluttered background, chaotic composition, distorted anatomy, warped objects, unreadable text, heavy shading, excessive detail, bright colors, dramatic action.`
+Negative prompt: photographic realism, painterly rendering, extra figures, cluttered background, chaotic composition, distorted anatomy, warped objects, text, labels, captions, titles, words, lettering, heavy shading, excessive detail, bright colors, dramatic action.`
 
 export async function POST(req: NextRequest) {
   // Auth check: verify Payload user
