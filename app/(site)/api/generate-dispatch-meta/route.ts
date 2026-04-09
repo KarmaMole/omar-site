@@ -43,7 +43,8 @@ export async function POST(req: NextRequest) {
 - "excerpt": 1-2 punchy sentences summarizing the post, suitable for a card layout
 - "categories": an array of 1-3 categories from ONLY these options: "AI Production", "Workflows", "Industry", "Tools", "Case Studies". Pick the most relevant ones.
 - "tags": comma-separated additional topic tags beyond the categories (e.g. "ComfyUI, Image Generation, Egypt"). Do NOT repeat category names here.
-- "description": SEO meta description, max 155 characters, compelling for search results
+- "seoTitle": SEO title, max 46 characters (will have " | Omar Kamel" appended). Shorten/rephrase the article title to fit. Must be under 46 characters.
+- "description": SEO meta description, STRICTLY max 150 characters. Count carefully. Compelling for search results.
 - "subject": a short description of the main visual subject/scene from the article (for an illustration)
 - "action": what the subject is doing, visually clear and specific
 - "metaphor": the core metaphor, contradiction, or irony of the article
@@ -65,6 +66,7 @@ Return ONLY the JSON object, no markdown fences.`,
     excerpt: string
     categories: string[]
     tags: string
+    seoTitle: string
     description: string
     subject: string
     action: string
@@ -126,11 +128,16 @@ Return ONLY the JSON object, no markdown fences.`,
     },
   })
 
+  // Enforce limits server-side as a safety net
+  const seoTitle = `${generated.seoTitle.slice(0, 46)} | Omar Kamel`.slice(0, 60)
+  const description = generated.description.slice(0, 150)
+
   return NextResponse.json({
     excerpt: generated.excerpt,
     categories: generated.categories,
     tags: generated.tags,
-    description: generated.description,
+    seoTitle,
+    description,
     coverImageId: mediaDoc.id,
     imagePrompt,
   })

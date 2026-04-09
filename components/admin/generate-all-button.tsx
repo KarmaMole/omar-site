@@ -7,6 +7,7 @@ type GenerateResponse = {
   excerpt: string
   categories: string[]
   tags: string
+  seoTitle: string
   description: string
   coverImageId: string
   imagePrompt: string
@@ -16,12 +17,13 @@ type Snapshot = {
   excerpt: unknown
   categories: unknown
   tags: unknown
+  'meta.title': unknown
   'meta.description': unknown
   coverImage: unknown
   'meta.image': unknown
 }
 
-const FIELDS_TO_POPULATE = ['excerpt', 'categories', 'tags', 'meta.description', 'coverImage', 'meta.image'] as const
+const FIELDS_TO_POPULATE = ['excerpt', 'categories', 'tags', 'meta.title', 'meta.description', 'coverImage', 'meta.image'] as const
 
 export default function GenerateAllButton() {
   const [fields, dispatchFields] = useAllFormFields()
@@ -64,6 +66,7 @@ export default function GenerateAllButton() {
       excerpt: getFieldValue('excerpt'),
       categories: getFieldValue('categories'),
       tags: getFieldValue('tags'),
+      'meta.title': getFieldValue('meta.title'),
       'meta.description': getFieldValue('meta.description'),
       coverImage: getFieldValue('coverImage'),
       'meta.image': getFieldValue('meta.image'),
@@ -91,6 +94,7 @@ export default function GenerateAllButton() {
       setFieldValue('excerpt', data.excerpt)
       setFieldValue('categories', data.categories)
       setFieldValue('tags', data.tags)
+      setFieldValue('meta.title', data.seoTitle)
       setFieldValue('meta.description', data.description)
       setFieldValue('coverImage', data.coverImageId)
       setFieldValue('meta.image', data.coverImageId)
