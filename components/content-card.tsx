@@ -12,6 +12,8 @@ interface ContentCardProps {
   overlayTags?: string[] | null;
   /** Image sizes attribute for responsive loading */
   sizes?: string;
+  /** Set true for the first visible card to improve LCP */
+  priority?: boolean;
 }
 
 /**
@@ -26,6 +28,7 @@ export default function ContentCard({
   label,
   overlayTags,
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
+  priority = false,
 }: ContentCardProps) {
   const cover = coverImage;
   const tags = overlayTags?.filter(Boolean) ?? [];
@@ -41,7 +44,8 @@ export default function ContentCard({
             src={cover.sizes?.card?.url ?? cover.url}
             alt={cover.alt ?? title}
             fill
-            loading="lazy"
+            priority={priority}
+            loading={priority ? undefined : "lazy"}
             sizes={sizes}
             className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
           />

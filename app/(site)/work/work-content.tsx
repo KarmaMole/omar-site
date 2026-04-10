@@ -33,7 +33,7 @@ export default function WorkContent({ work, initialCategory }: WorkContentProps)
         <CategoryFilter work={work} />
         {filtered.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {filtered.map((work) => {
+            {filtered.map((work, index) => {
               const cover = typeof work.coverImage === "object" ? work.coverImage : null;
               return (
                 <FadeIn key={work.id}>
@@ -43,6 +43,7 @@ export default function WorkContent({ work, initialCategory }: WorkContentProps)
                     coverImage={cover}
                     label={work.client || work.roleCredits}
                     overlayTags={work.categories}
+                    priority={index === 0}
                   />
                 </FadeIn>
               );

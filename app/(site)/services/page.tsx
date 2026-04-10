@@ -10,6 +10,20 @@ export const metadata: Metadata = {
   description:
     "AI production, creative direction, digital builds, and more from Omar Kamel.",
   robots: { index: true, follow: true },
+  alternates: {
+    canonical: "/services",
+  },
+  openGraph: {
+    title: "Services: Omar Kamel",
+    description: "AI production, creative direction, digital builds, and more from Omar Kamel.",
+    url: "/services",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Services: Omar Kamel",
+    description: "AI production, creative direction, digital builds, and more from Omar Kamel.",
+  },
 };
 
 const services = [

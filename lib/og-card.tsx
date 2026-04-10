@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { SITE_URL } from "@/lib/constants";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -17,7 +18,7 @@ interface OgCardOptions {
 function absoluteUrl(url: string | null | undefined): string | null {
   if (!url) return null;
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  return `https://omarkamel.com${url.startsWith("/") ? url : `/${url}`}`;
+  return `${SITE_URL}${url.startsWith("/") ? url : `/${url}`}`;
 }
 
 /**
@@ -172,7 +173,7 @@ export function renderOgCard({ label, title, subtitle, coverUrl }: OgCardOptions
             fontFamily: "monospace",
           }}
         >
-          omarkamel.com
+          {SITE_URL.replace("https://", "")}
         </div>
       </div>
     ),

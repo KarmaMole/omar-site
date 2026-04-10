@@ -9,6 +9,7 @@ import { getWorkBySlug, getAllWorkSlugs, getAllWork } from "@/lib/payload/querie
 import MoreItems from "@/components/more-items";
 import GalleryGrid from "@/components/gallery-grid";
 import { formatDate } from "@/lib/utils";
+import { SITE_URL } from "@/lib/constants";
 
 interface WorkDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -22,25 +23,41 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
     typeof work.coverImage === "object" && work.coverImage
       ? work.coverImage
       : null;
+  const title = work.client ? `${work.title}: ${work.client}` : work.title;
+  const descriptionParts = [
+    work.client ? `${work.title} for ${work.client}` : work.title,
+    work.roleCredits,
+    work.categories?.join(", "),
+  ].filter((part): part is string => Boolean(part && part.length > 0));
+  const description = descriptionParts.join(". ");
+  const images = cover?.url
+    ? [
+        {
+          url: cover.url,
+          width: cover.width ?? undefined,
+          height: cover.height ?? undefined,
+          alt: cover.alt ?? work.title,
+        },
+      ]
+    : [];
   return {
-    title: work.client ? `${work.title} -- ${work.client}` : work.title,
-    description: `${work.title}${work.client ? ` for ${work.client}` : work.roleCredits ? ` - ${work.roleCredits}` : ""}. ${work.categories?.join(", ") ?? ""}`,
+    title,
+    description,
+    alternates: {
+      canonical: `/work/${slug}`,
+    },
     openGraph: {
       type: "article",
-      title: work.client ? `${work.title} - ${work.client}` : work.title,
-      description: `${work.title}${work.client ? ` for ${work.client}` : work.roleCredits ? ` - ${work.roleCredits}` : ""}. ${work.categories?.join(", ") ?? ""}`,
-      ...(cover?.url
-        ? {
-            images: [
-              {
-                url: cover.url,
-                width: cover.width ?? undefined,
-                height: cover.height ?? undefined,
-                alt: cover.alt ?? work.title,
-              },
-            ],
-          }
-        : {}),
+      title,
+      description,
+      url: `/work/${slug}`,
+      ...(images.length ? { images } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(images.length ? { images: [images[0].url] } : {}),
     },
   };
 }
@@ -69,15 +86,26 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
     author: {
       "@type": "Person",
       name: "Omar Kamel",
-      url: "https://omarkamel.com",
+      url: SITE_URL,
     },
     ...(work.categories?.length ? { keywords: work.categories } : {}),
-    url: `https://omarkamel.com/work/${slug}`,
+    url: `${SITE_URL}/work/${slug}`,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Work", item: `${SITE_URL}/work` },
+      { "@type": "ListItem", position: 3, name: work.title, item: `${SITE_URL}/work/${slug}` },
+    ],
   };
 
   return (
     <>
     <JsonLd data={workJsonLd} />
+    <JsonLd data={breadcrumbJsonLd} />
     <div className="pt-24 pb-16 animate-fade-in">
       {cover?.url && (
         <div className="relative aspect-[21/9] w-full bg-dark-200">

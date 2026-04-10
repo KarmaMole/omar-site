@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
 import { getAllWorkSlugs, getAllProjectSlugs, getAllBlogSlugs } from "@/lib/payload/queries";
+import { SITE_URL } from "@/lib/constants";
 
-const baseUrl = "https://omarkamel.com";
+const baseUrl = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [workSlugs, projectSlugs, blogSlugs] = await Promise.all([

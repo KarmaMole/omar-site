@@ -9,6 +9,20 @@ export const metadata: Metadata = {
   title: "Studio",
   description:
     "Self-directed projects, music, photography, and experiments by Omar Kamel.",
+  alternates: {
+    canonical: "/studio",
+  },
+  openGraph: {
+    title: "Studio: Omar Kamel",
+    description: "Self-directed projects, music, photography, and experiments by Omar Kamel.",
+    url: "/studio",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Studio: Omar Kamel",
+    description: "Self-directed projects, music, photography, and experiments by Omar Kamel.",
+  },
 };
 
 interface StudioPageProps {

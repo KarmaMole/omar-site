@@ -98,7 +98,7 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filtered.map((project) => {
+            {filtered.map((project, index) => {
               const cover =
                 typeof project.coverImage === "object" && project.coverImage
                   ? project.coverImage
@@ -116,6 +116,7 @@ export default function StudioContent({ projects, initialTag }: StudioContentPro
                     label={project.categories?.length ? project.categories.join(", ") : null}
                     overlayTags={tags}
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={index === 0}
                   />
                 </FadeIn>
               );

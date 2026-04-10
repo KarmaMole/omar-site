@@ -9,7 +9,21 @@ import { getSiteSettings } from "@/lib/payload/queries";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Get in touch with Omar Kamel — for production enquiries, collaborations, or anything in between.",
+    "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",
+  alternates: {
+    canonical: "/contact",
+  },
+  openGraph: {
+    title: "Contact Omar Kamel",
+    description: "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",
+    url: "/contact",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Omar Kamel",
+    description: "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",
+  },
 };
 
 export default async function ContactPage() {

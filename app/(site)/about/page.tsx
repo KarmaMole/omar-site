@@ -7,10 +7,28 @@ import JsonLd from "@/components/json-ld";
 import FadeIn from "@/components/fade-in";
 import { RichText } from "@/components/rich-text";
 import { getSiteSettings } from "@/lib/payload/queries";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "Omar Kamel — AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
+  description:
+    "Omar Kamel: AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About Omar Kamel",
+    description:
+      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
+    url: "/about",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Omar Kamel",
+    description:
+      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
+  },
 };
 
 // TODO: Move skills to SiteSettings CMS global (add a "skills" array field with category + items)
@@ -30,7 +48,7 @@ export default async function AboutPage() {
     "@type": "Person",
     name: "Omar Kamel",
     jobTitle: "AI Creative & Production Lead",
-    url: "https://omarkamel.com",
+    url: SITE_URL,
     description:
       "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai.",
     knowsAbout: [
@@ -39,6 +57,7 @@ export default async function AboutPage() {
       "Creative Production",
       "Digital Content",
     ],
+    sameAs: (settings.socialLinks ?? []).map((s: { url: string }) => s.url),
     ...(photo?.url ? { image: photo.url } : {}),
   };
 
@@ -98,6 +117,20 @@ export default async function AboutPage() {
                   </div>
                 ))}
               </div>
+            </div>
+          </FadeIn>
+
+          <FadeIn>
+            <div className="border-t border-white/[0.07] pt-12 mt-4 flex flex-wrap gap-6">
+              <Link href="/work" className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline">
+                View Work &rarr;
+              </Link>
+              <Link href="/studio" className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline">
+                Explore Studio &rarr;
+              </Link>
+              <Link href="/dispatch" className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline">
+                Read Dispatch &rarr;
+              </Link>
             </div>
           </FadeIn>
         </div>

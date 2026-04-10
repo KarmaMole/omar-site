@@ -10,6 +10,7 @@ import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from "@/lib/pa
 import MoreItems from "@/components/more-items";
 import { formatDate } from "@/lib/utils";
 import { sourceSerif } from "@/lib/fonts";
+import { SITE_URL } from "@/lib/constants";
 
 interface DispatchPostPageProps {
   params: Promise<{ slug: string }>;
@@ -25,9 +26,9 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
       : null;
   return {
     title: post.meta?.title ?? post.title,
-    description: post.meta?.description ?? post.excerpt,
+    description: post.meta?.description ?? post.excerpt ?? undefined,
     alternates: {
-      canonical: `https://omarkamel.com/dispatch/${slug}`,
+      canonical: `/dispatch/${slug}`,
     },
     openGraph: {
       type: "article",
@@ -94,19 +95,33 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
     author: {
       "@type": "Person",
       name: "Omar Kamel",
-      url: "https://omarkamel.com",
+      url: SITE_URL,
     },
     publisher: {
-      "@type": "Person",
+      "@type": "Organization",
       name: "Omar Kamel",
-      url: "https://omarkamel.com",
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/icon.svg`,
+      },
     },
-    url: `https://omarkamel.com/dispatch/${slug}`,
+    url: `${SITE_URL}/dispatch/${slug}`,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Dispatch", item: `${SITE_URL}/dispatch` },
+      { "@type": "ListItem", position: 3, name: post.title, item: `${SITE_URL}/dispatch/${slug}` },
+    ],
   };
 
   return (
     <>
       <JsonLd data={articleJsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       <article className="pt-24 pb-16 animate-fade-in">
       {cover?.url && (
         <div className="relative aspect-[21/9] w-full bg-dark-200">

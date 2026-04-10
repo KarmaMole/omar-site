@@ -93,7 +93,7 @@ export function ContactForm() {
         <div className="w-12 h-[1px] bg-cyan mb-6" />
         <h3 className="text-2xl font-light text-light-100 mb-3">Message Sent</h3>
         <p className="text-light-300 mb-6">
-          Thanks for reaching out — I&apos;ll get back to you soon.
+          Thanks for reaching out. I&apos;ll get back to you soon.
         </p>
         <button
           onClick={handleReset}

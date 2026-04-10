@@ -179,7 +179,7 @@ export default function GalleryLightbox({
         >
           <Image
             src={imgSrc}
-            alt={current.alt || `${title} — image ${index + 1}`}
+            alt={current.alt || `${title}, image ${index + 1}`}
             width={current.width ?? 1200}
             height={current.height ?? 800}
             className="max-w-full max-h-[85vh] w-auto h-auto object-contain"

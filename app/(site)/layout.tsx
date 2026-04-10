@@ -4,6 +4,7 @@ import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import CustomCursor from "@/components/custom-cursor";
 import CookieConsent from "@/components/cookie-consent";
+import { SITE_URL } from "@/lib/constants";
 import "../globals.css";
 
 const inter = Inter({
@@ -26,12 +27,12 @@ const sourceSerif = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: {
-    default: "Omar Kamel — AI Creative & Production Lead",
-    template: "%s — Omar Kamel",
+    default: "Omar Kamel: AI Creative & Production Lead",
+    template: "%s: Omar Kamel",
   },
   description:
     "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
-  metadataBase: new URL("https://omarkamel.com"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -42,7 +43,6 @@ export const metadata: Metadata = {
     creator: "@omarkamel",
   },
   alternates: {
-    canonical: "/",
     types: {
       "application/rss+xml": "/feed.xml",
     },

@@ -23,6 +23,20 @@ export const metadata: Metadata = {
   title: "Dispatch",
   description:
     "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",
+  alternates: {
+    canonical: "/dispatch",
+  },
+  openGraph: {
+    title: "Dispatch: Omar Kamel",
+    description: "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",
+    url: "/dispatch",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dispatch: Omar Kamel",
+    description: "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",
+  },
 };
 
 function WritingCard({ post }: { post: BlogPostDoc }) {

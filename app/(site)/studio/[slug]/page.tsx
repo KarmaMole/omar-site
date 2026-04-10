@@ -8,6 +8,7 @@ import MediaEmbedComponent from "@/components/media-embed";
 import GalleryGrid from "@/components/gallery-grid";
 import { getProjectBySlug, getAllProjectSlugs, getAllProjects } from "@/lib/payload/queries";
 import MoreItems from "@/components/more-items";
+import { SITE_URL } from "@/lib/constants";
 
 interface StudioDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -21,25 +22,35 @@ export async function generateMetadata({ params }: StudioDetailPageProps): Promi
     typeof project.coverImage === "object" && project.coverImage
       ? project.coverImage
       : null;
+  const description = `${project.title}: ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`;
+  const images = cover?.url
+    ? [
+        {
+          url: cover.url,
+          width: cover.width ?? undefined,
+          height: cover.height ?? undefined,
+          alt: cover.alt ?? project.title,
+        },
+      ]
+    : [];
   return {
     title: project.title,
-    description: `${project.title} - ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`,
+    description,
+    alternates: {
+      canonical: `/studio/${slug}`,
+    },
     openGraph: {
       type: "article",
       title: project.title,
-      description: `${project.title} - ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`,
-      ...(cover?.url
-        ? {
-            images: [
-              {
-                url: cover.url,
-                width: cover.width ?? undefined,
-                height: cover.height ?? undefined,
-                alt: cover.alt ?? project.title,
-              },
-            ],
-          }
-        : {}),
+      description,
+      url: `/studio/${slug}`,
+      ...(images.length ? { images } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description,
+      ...(images.length ? { images: [images[0].url] } : {}),
     },
   };
 }
@@ -72,14 +83,25 @@ export default async function StudioDetailPage({ params }: StudioDetailPageProps
     author: {
       "@type": "Person",
       name: "Omar Kamel",
-      url: "https://omarkamel.com",
+      url: SITE_URL,
     },
-    url: `https://omarkamel.com/studio/${slug}`,
+    url: `${SITE_URL}/studio/${slug}`,
+  };
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Studio", item: `${SITE_URL}/studio` },
+      { "@type": "ListItem", position: 3, name: project.title, item: `${SITE_URL}/studio/${slug}` },
+    ],
   };
 
   return (
     <>
     <JsonLd data={projectJsonLd} />
+    <JsonLd data={breadcrumbJsonLd} />
     <div className="pt-24 pb-16 animate-fade-in">
       {cover?.url ? (
         <div className="relative aspect-[21/9] w-full bg-dark-200">

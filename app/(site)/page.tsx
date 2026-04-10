@@ -1,5 +1,6 @@
 export const revalidate = 60;
 
+import type { Metadata } from "next";
 import Link from "next/link";
 import JsonLd from "@/components/json-ld";
 import { sourceSerif } from "@/lib/fonts";
@@ -15,6 +16,32 @@ import {
   getAllClients,
 } from "@/lib/payload/queries";
 import type { WorkDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
+import { SITE_URL } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: { absolute: "Omar Kamel: AI Creative & Production Lead" },
+  description:
+    "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Omar Kamel: AI Creative & Production Lead",
+    description:
+      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
+    url: "/",
+    type: "website",
+    siteName: "Omar Kamel",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Omar Kamel: AI Creative & Production Lead",
+    description:
+      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
+    creator: "@omarkamel",
+  },
+};
 
 function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
   const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
@@ -35,8 +62,20 @@ export default async function HomePage() {
     "@type": "Person",
     name: "Omar Kamel",
     jobTitle: "AI Creative & Production Lead",
-    url: "https://omarkamel.com",
+    url: SITE_URL,
     sameAs: (settings.socialLinks ?? []).map((s: { url: string }) => s.url),
+  };
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: SITE_URL,
+    name: "Omar Kamel",
+    publisher: {
+      "@type": "Person",
+      name: "Omar Kamel",
+      url: SITE_URL,
+    },
   };
 
   const heroWork = featuredWork.length > 0 ? featuredWork[0] : null;
@@ -45,6 +84,7 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={personJsonLd} />
+      <JsonLd data={websiteJsonLd} />
 
       {/* ── Hero ──────────────────────────────────────────────── */}
       <Hero />

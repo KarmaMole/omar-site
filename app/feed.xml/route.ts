@@ -1,6 +1,7 @@
 import { getAllBlogPosts } from "@/lib/payload/queries";
+import { SITE_URL } from "@/lib/constants";
 
-const baseUrl = "https://omarkamel.com";
+const baseUrl = SITE_URL;
 
 function escapeXml(str: string): string {
   return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
@@ -40,7 +41,7 @@ export async function GET() {
   <channel>
     <title>Omar Kamel</title>
     <link>${baseUrl}</link>
-    <description>AI Creative &amp; Production Lead — 20+ years crafting stories across film, music, brand, and emerging media.</description>
+    <description>AI Creative &amp; Production Lead. 20+ years crafting stories across film, music, brand, and emerging media.</description>
     <language>en</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
     <atom:link href="${baseUrl}/feed.xml" rel="self" type="application/rss+xml" />

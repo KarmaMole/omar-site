@@ -60,6 +60,7 @@ export async function getAllWorkSlugs(): Promise<string[]> {
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "work",
+    where: { hidden: { not_equals: true } },
     limit: 1000,
     depth: 0,
   });
@@ -109,6 +110,7 @@ export async function getAllProjectSlugs(): Promise<string[]> {
   const payload = await getPayloadClient();
   const result = await payload.find({
     collection: "projects",
+    where: { hidden: { not_equals: true } },
     limit: 1000,
     depth: 0,
   });
