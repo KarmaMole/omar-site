@@ -27,7 +27,10 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
     ? { absolute: post.meta.title }
     : post.title;
   const ogTitle = post.meta?.title ?? post.title;
-  const description = post.meta?.description ?? post.excerpt ?? undefined;
+  // Defensive trim: catches trailing whitespace on older posts whose
+  // descriptions were sliced mid-word before the word-boundary fix.
+  const rawDescription = post.meta?.description ?? post.excerpt ?? undefined;
+  const description = rawDescription?.trimEnd();
   return {
     title,
     description,
