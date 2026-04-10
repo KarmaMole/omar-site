@@ -20,7 +20,7 @@
 - [ ] **Step 1: Install Anthropic SDK and fal.ai client**
 
 ```bash
-cd C:/Users/user/Desktop/omar-site
+cd "C:/Users/user/Desktop/Claude Projects/omar-site"
 npm install @anthropic-ai/sdk @fal-ai/client
 ```
 
@@ -537,7 +537,7 @@ git commit -m "feat: wire GenerateAllButton into dispatch sidebar and import map
 - [ ] **Step 1: Start the dev server**
 
 ```bash
-cd C:/Users/user/Desktop/omar-site
+cd "C:/Users/user/Desktop/Claude Projects/omar-site"
 npm run dev
 ```
 
