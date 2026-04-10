@@ -19,10 +19,6 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
   const { slug } = await params;
   const work = await getWorkBySlug(slug);
   if (!work) return {};
-  const cover =
-    typeof work.coverImage === "object" && work.coverImage
-      ? work.coverImage
-      : null;
   const title = work.client ? `${work.title}: ${work.client}` : work.title;
   const descriptionParts = [
     work.client ? `${work.title} for ${work.client}` : work.title,
@@ -30,16 +26,6 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
     work.categories?.join(", "),
   ].filter((part): part is string => Boolean(part && part.length > 0));
   const description = descriptionParts.join(". ");
-  const images = cover?.url
-    ? [
-        {
-          url: cover.url,
-          width: cover.width ?? undefined,
-          height: cover.height ?? undefined,
-          alt: cover.alt ?? work.title,
-        },
-      ]
-    : [];
   return {
     title,
     description,
@@ -51,13 +37,11 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
       title,
       description,
       url: `/work/${slug}`,
-      ...(images.length ? { images } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(images.length ? { images: [images[0].url] } : {}),
     },
   };
 }

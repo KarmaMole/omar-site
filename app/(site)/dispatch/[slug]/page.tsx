@@ -20,39 +20,31 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
   if (!post) return {};
-  const cover =
-    typeof post.coverImage === "object" && post.coverImage
-      ? post.coverImage
-      : null;
+  // CMS meta.title often already contains brand suffix, so bypass the layout
+  // template with `absolute` when it's set. Otherwise fall back to post.title
+  // and let the template add the brand.
+  const title = post.meta?.title
+    ? { absolute: post.meta.title }
+    : post.title;
+  const ogTitle = post.meta?.title ?? post.title;
+  const description = post.meta?.description ?? post.excerpt ?? undefined;
   return {
-    title: post.meta?.title ?? post.title,
-    description: post.meta?.description ?? post.excerpt ?? undefined,
+    title,
+    description,
     alternates: {
       canonical: `/dispatch/${slug}`,
     },
     openGraph: {
       type: "article",
-      title: post.meta?.title ?? post.title,
-      description: post.meta?.description ?? post.excerpt ?? undefined,
+      title: ogTitle,
+      description,
+      url: `/dispatch/${slug}`,
       publishedTime: post.date ?? undefined,
-      ...(cover?.url
-        ? {
-            images: [
-              {
-                url: cover.url,
-                width: cover.width ?? undefined,
-                height: cover.height ?? undefined,
-                alt: cover.alt ?? post.title,
-              },
-            ],
-          }
-        : {}),
     },
     twitter: {
       card: "summary_large_image",
-      title: post.meta?.title ?? post.title,
-      description: post.meta?.description ?? post.excerpt ?? undefined,
-      ...(cover?.url ? { images: [cover.url] } : {}),
+      title: ogTitle,
+      description,
     },
   };
 }

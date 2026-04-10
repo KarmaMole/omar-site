@@ -18,21 +18,7 @@ export async function generateMetadata({ params }: StudioDetailPageProps): Promi
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) return {};
-  const cover =
-    typeof project.coverImage === "object" && project.coverImage
-      ? project.coverImage
-      : null;
   const description = `${project.title}: ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`;
-  const images = cover?.url
-    ? [
-        {
-          url: cover.url,
-          width: cover.width ?? undefined,
-          height: cover.height ?? undefined,
-          alt: cover.alt ?? project.title,
-        },
-      ]
-    : [];
   return {
     title: project.title,
     description,
@@ -44,13 +30,11 @@ export async function generateMetadata({ params }: StudioDetailPageProps): Promi
       title: project.title,
       description,
       url: `/studio/${slug}`,
-      ...(images.length ? { images } : {}),
     },
     twitter: {
       card: "summary_large_image",
       title: project.title,
       description,
-      ...(images.length ? { images: [images[0].url] } : {}),
     },
   };
 }
