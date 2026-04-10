@@ -4,11 +4,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import FadeIn from "@/components/fade-in";
+import JsonLd from "@/components/json-ld";
 import ScrollFilters from "@/components/scroll-filters";
 import FilterPill from "@/components/filter-pill";
 import { formatDate } from "@/lib/utils";
 import { getAllBlogPosts } from "@/lib/payload/queries";
 import { sourceSerif } from "@/lib/fonts";
+import { SITE_URL } from "@/lib/constants";
 import type { BlogPostDoc, MediaUpload } from "@/lib/payload/types";
 
 const ALL_CATEGORIES = [
@@ -125,8 +127,32 @@ export default async function DispatchPage({ searchParams }: DispatchPageProps) 
     return true;
   });
 
+  // Only include internal posts in the ItemList (externals live on other
+  // domains and shouldn't be claimed as mainEntity on this page).
+  const internalPosts = posts.filter((p) => !p.isExternal);
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Dispatch: Omar Kamel",
+    description:
+      "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",
+    url: `${SITE_URL}/dispatch`,
+    isPartOf: { "@type": "WebSite", url: `${SITE_URL}/` },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: internalPosts.length,
+      itemListElement: internalPosts.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${SITE_URL}/dispatch/${p.slug}`,
+        name: p.title,
+      })),
+    },
+  };
+
   return (
     <div className="pt-24 pb-16 animate-fade-in">
+        <JsonLd data={collectionJsonLd} />
         <div className="max-w-7xl mx-auto px-6">
           <FadeIn>
             <div className="mb-12">

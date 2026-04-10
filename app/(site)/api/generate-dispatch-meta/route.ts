@@ -128,9 +128,16 @@ Return ONLY the JSON object, no markdown fences.`,
     },
   })
 
-  // Enforce limits server-side as a safety net
-  const seoTitle = `${generated.seoTitle.slice(0, 46)} | Omar Kamel`.slice(0, 60)
-  const description = generated.description.slice(0, 150)
+  // Enforce limits server-side as a safety net. Cut at word boundaries
+  // so descriptions never end mid-word (e.g. "sustainable AI ").
+  const truncateAtWord = (text: string, maxLen: number): string => {
+    if (text.length <= maxLen) return text
+    const slice = text.slice(0, maxLen)
+    const lastSpace = slice.lastIndexOf(' ')
+    return (lastSpace > 0 ? slice.slice(0, lastSpace) : slice).trimEnd()
+  }
+  const seoTitle = `${truncateAtWord(generated.seoTitle, 46)} | Omar Kamel`
+  const description = truncateAtWord(generated.description, 150)
 
   return NextResponse.json({
     excerpt: generated.excerpt,

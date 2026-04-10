@@ -14,14 +14,14 @@ export const metadata: Metadata = {
     canonical: "/contact",
   },
   openGraph: {
-    title: "Contact Omar Kamel",
+    title: "Contact: Omar Kamel",
     description: "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",
     url: "/contact",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact Omar Kamel",
+    title: "Contact: Omar Kamel",
     description: "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",
   },
 };

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     canonical: "/about",
   },
   openGraph: {
-    title: "About Omar Kamel",
+    title: "About: Omar Kamel",
     description:
       "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
     url: "/about",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About Omar Kamel",
+    title: "About: Omar Kamel",
     description:
       "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
   },
