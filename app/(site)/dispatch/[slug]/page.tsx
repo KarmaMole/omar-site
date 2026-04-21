@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
+import ShareRow from "@/components/share-row";
 import TagBadge from "@/components/tag-badge";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -144,6 +145,7 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
             <Markdown remarkPlugins={[remarkGfm]}>{body}</Markdown>
           </div>
         ) : null}
+        <ShareRow title={post.title} url={`${SITE_URL}/dispatch/${slug}`} />
         <MoreDispatch currentSlug={slug} />
       </div>
     </article>

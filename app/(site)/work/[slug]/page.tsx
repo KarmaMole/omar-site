@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
+import ShareRow from "@/components/share-row";
 import MediaEmbedComponent from "@/components/media-embed";
 import { RichText } from "@/components/rich-text";
 import { getWorkBySlug, getAllWorkSlugs, getAllWork } from "@/lib/payload/queries";
@@ -133,6 +134,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
             View Project &rarr;
           </a>
         )}
+        <ShareRow title={work.client ? `${work.title}: ${work.client}` : work.title} url={`${SITE_URL}/work/${slug}`} />
         <MoreWork currentSlug={slug} />
       </div>
     </div>

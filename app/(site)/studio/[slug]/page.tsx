@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
+import ShareRow from "@/components/share-row";
 import { RichText } from "@/components/rich-text";
 import MediaEmbedComponent from "@/components/media-embed";
 import GalleryGrid from "@/components/gallery-grid";
@@ -160,6 +161,7 @@ export default async function StudioDetailPage({ params }: StudioDetailPageProps
             ))}
           </div>
         )}
+        <ShareRow title={project.title} url={`${SITE_URL}/studio/${slug}`} />
         <MoreStudio currentSlug={slug} />
       </div>
     </div>
