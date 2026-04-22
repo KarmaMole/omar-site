@@ -7,6 +7,8 @@ import ShareRow from "@/components/share-row";
 import TagBadge from "@/components/tag-badge";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import MediaEmbedComponent from "@/components/media-embed";
+import { splitBodyByEmbeds } from "@/lib/parse-embeds";
 import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from "@/lib/payload/queries";
 import MoreItems from "@/components/more-items";
 import { formatDate } from "@/lib/utils";
@@ -141,8 +143,18 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
           </div>
         )}
         {post.body ? (
-          <div className={`${sourceSerif.className} prose prose-lg prose-invert max-w-none text-light-200 leading-relaxed font-light`}>
-            <Markdown remarkPlugins={[remarkGfm]}>{body}</Markdown>
+          <div className={`${sourceSerif.className} text-light-200`}>
+            {splitBodyByEmbeds(body).map((seg, i) =>
+              seg.kind === "text" ? (
+                <div key={i} className="prose prose-lg prose-invert max-w-none leading-relaxed font-light">
+                  <Markdown remarkPlugins={[remarkGfm]}>{seg.content}</Markdown>
+                </div>
+              ) : (
+                <div key={i} className="my-8">
+                  <MediaEmbedComponent embed={seg.embed} />
+                </div>
+              ),
+            )}
           </div>
         ) : null}
         <ShareRow title={post.title} url={`${SITE_URL}/dispatch/${slug}`} />

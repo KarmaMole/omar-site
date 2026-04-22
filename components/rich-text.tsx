@@ -4,22 +4,50 @@ import {
   RichText as PayloadRichText,
 } from "@payloadcms/richtext-lexical/react";
 import sanitizeHtml from "sanitize-html";
+import MediaEmbedComponent from "@/components/media-embed";
+import { matchEmbedUrl } from "@/lib/parse-embeds";
+
+// Flatten a lexical node subtree to its concatenated text content.
+// Walks children recursively so a link node wrapping the URL is still picked up.
+function flattenText(nodes: unknown[]): string {
+  let out = "";
+  for (const n of nodes) {
+    if (!n || typeof n !== "object") continue;
+    const node = n as { text?: unknown; children?: unknown };
+    if (typeof node.text === "string") out += node.text;
+    if (Array.isArray(node.children)) out += flattenText(node.children);
+  }
+  return out;
+}
+
+const EMBED_PARAGRAPH_RE = /^\[(https?:\/\/[^\s\]]+)\]$/;
 
 const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
   ...defaultConverters,
   paragraph: ({ node, nodesToJSX }) => {
     const children = node.children ?? [];
-    if (
-      children.length === 1 &&
-      children[0].type === "text" &&
-      (children[0] as { text?: string }).text?.trim() === "---"
-    ) {
+    const flat = flattenText(children as unknown[]).trim();
+
+    if (flat === "---") {
       return (
         <p className="text-center text-light-300 tracking-[0.5em] my-8 select-none" aria-hidden="true">
           · · ·
         </p>
       );
     }
+
+    const embedMatch = flat.match(EMBED_PARAGRAPH_RE);
+    if (embedMatch) {
+      const embed = matchEmbedUrl(embedMatch[1]);
+      if (embed) {
+        return (
+          <div className="not-prose my-8">
+            <MediaEmbedComponent embed={embed} />
+          </div>
+        );
+      }
+    }
+
     return <p>{nodesToJSX({ nodes: children })}</p>;
   },
 });

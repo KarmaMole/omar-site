@@ -97,6 +97,10 @@ export const Projects: CollectionConfig = {
     {
       name: "description",
       type: "richText",
+      admin: {
+        description:
+          "To embed a video inline, put its URL in [brackets] on its own paragraph, e.g. [https://youtu.be/abc123]. Works for YouTube, Vimeo, SoundCloud, and Spotify. Normal links work as usual.",
+      },
     },
     {
       name: "coverImage",

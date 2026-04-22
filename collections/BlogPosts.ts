@@ -57,7 +57,8 @@ export const BlogPosts: CollectionConfig = {
       name: "body",
       type: "textarea",
       admin: {
-        description: "Paste markdown here. Supports headings, bold, italic, links, lists, images, and code blocks.",
+        description:
+          "Paste markdown here. Supports headings, bold, italic, links, lists, images, and code blocks. To embed a video, put the URL in [brackets] on its own line, e.g. [https://youtu.be/abc123]. Works for YouTube, Vimeo, SoundCloud, and Spotify. Regular links still use [label](url).",
       },
     },
     {
