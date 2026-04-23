@@ -2,6 +2,8 @@ import { MetadataRoute } from "next";
 import { getAllWorkSlugs, getAllProjectSlugs, getAllBlogSlugs } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
 
+export const revalidate = 3600;
+
 const baseUrl = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
