@@ -20,13 +20,12 @@ const ALL_CATEGORIES = [
 
 interface StudioContentProps {
   projects: ProjectDoc[];
-  initialTag?: string;
 }
 
-export default function StudioContent({ projects, initialTag }: StudioContentProps) {
+export default function StudioContent({ projects }: StudioContentProps) {
   const searchParams = useSearchParams();
   const activeCategory = searchParams.get("category") || "all";
-  const activeTag = initialTag || searchParams.get("tag") || null;
+  const activeTag = searchParams.get("tag") || null;
 
   const filtered = (() => {
     let result = activeCategory === "all"

@@ -9,12 +9,11 @@ import type { WorkDoc } from "@/lib/payload/types";
 
 interface WorkContentProps {
   work: WorkDoc[];
-  initialCategory?: string;
 }
 
-export default function WorkContent({ work, initialCategory }: WorkContentProps) {
+export default function WorkContent({ work }: WorkContentProps) {
   const searchParams = useSearchParams();
-  const category = searchParams.get("category") || initialCategory || null;
+  const category = searchParams.get("category") || null;
 
   const filtered = category
     ? work.filter((w) => w.categories?.some((c) => c.toLowerCase() === category.toLowerCase()))

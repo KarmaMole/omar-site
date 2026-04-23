@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 300;
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -27,12 +27,7 @@ export const metadata: Metadata = {
   },
 };
 
-interface StudioPageProps {
-  searchParams: Promise<{ tag?: string; category?: string }>;
-}
-
-export default async function StudioPage({ searchParams }: StudioPageProps) {
-  const { tag } = await searchParams;
+export default async function StudioPage() {
   const projects = await getAllProjects();
 
   const collectionJsonLd = {
@@ -58,7 +53,7 @@ export default async function StudioPage({ searchParams }: StudioPageProps) {
   return (
     <Suspense>
       <JsonLd data={collectionJsonLd} />
-      <StudioContent projects={projects} initialTag={tag} />
+      <StudioContent projects={projects} />
     </Suspense>
   );
 }

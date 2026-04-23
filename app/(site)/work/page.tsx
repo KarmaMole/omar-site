@@ -1,4 +1,4 @@
-export const revalidate = 60;
+export const revalidate = 300;
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -26,12 +26,7 @@ export const metadata: Metadata = {
   },
 };
 
-interface WorkPageProps {
-  searchParams: Promise<{ category?: string }>;
-}
-
-export default async function WorkPage({ searchParams }: WorkPageProps) {
-  const { category } = await searchParams;
+export default async function WorkPage() {
   const allWork = await getAllWork();
 
   const collectionJsonLd = {
@@ -57,7 +52,7 @@ export default async function WorkPage({ searchParams }: WorkPageProps) {
   return (
     <Suspense>
       <JsonLd data={collectionJsonLd} />
-      <WorkContent work={allWork} initialCategory={category} />
+      <WorkContent work={allWork} />
     </Suspense>
   );
 }
