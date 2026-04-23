@@ -1,10 +1,18 @@
 import type { GlobalConfig } from "payload";
+import { revalidateTag } from "next/cache";
 
 export const SiteSettings: GlobalConfig = {
   slug: "site-settings",
   access: {
     read: () => true,
     update: ({ req: { user } }) => !!user,
+  },
+  hooks: {
+    afterChange: [
+      () => {
+        revalidateTag("settings");
+      },
+    ],
   },
   fields: [
     {

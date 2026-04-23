@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { revalidateTag } from "next/cache";
 
 export const Clients: CollectionConfig = {
   slug: "clients",
@@ -10,6 +11,18 @@ export const Clients: CollectionConfig = {
     create: ({ req: { user } }) => !!user,
     update: ({ req: { user } }) => !!user,
     delete: ({ req: { user } }) => !!user,
+  },
+  hooks: {
+    afterChange: [
+      () => {
+        revalidateTag("clients");
+      },
+    ],
+    afterDelete: [
+      () => {
+        revalidateTag("clients");
+      },
+    ],
   },
   fields: [
     {

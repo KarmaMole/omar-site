@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { revalidateTag } from "next/cache";
 
 export const BlogPosts: CollectionConfig = {
   slug: "blog-posts",
@@ -27,6 +28,16 @@ export const BlogPosts: CollectionConfig = {
             .replace(/(^-|-$)/g, "");
         }
         return data;
+      },
+    ],
+    afterChange: [
+      () => {
+        revalidateTag("dispatch");
+      },
+    ],
+    afterDelete: [
+      () => {
+        revalidateTag("dispatch");
       },
     ],
   },

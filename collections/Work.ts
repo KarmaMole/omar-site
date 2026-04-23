@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { revalidateTag } from "next/cache";
 import { resolveVimeoUrls } from "@/lib/resolve-vimeo";
 
 export const Work: CollectionConfig = {
@@ -15,6 +16,16 @@ export const Work: CollectionConfig = {
           data.media = await resolveVimeoUrls(data.media);
         }
         return data;
+      },
+    ],
+    afterChange: [
+      () => {
+        revalidateTag("work");
+      },
+    ],
+    afterDelete: [
+      () => {
+        revalidateTag("work");
       },
     ],
   },

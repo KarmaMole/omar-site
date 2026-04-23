@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
+import { unstable_cache } from "next/cache";
 import type {
   WorkDoc,
   ProjectDoc,
@@ -14,167 +15,217 @@ async function getPayloadClient() {
 
 // ─── Site Settings ──────────────────────────────────────────────
 
-export async function getSiteSettings(): Promise<SiteSettingsDoc> {
-  const payload = await getPayloadClient();
-  return payload.findGlobal({ slug: "site-settings" }) as Promise<SiteSettingsDoc>;
-}
+export const getSiteSettings: () => Promise<SiteSettingsDoc> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    return payload.findGlobal({ slug: "site-settings" }) as Promise<SiteSettingsDoc>;
+  },
+  ["getSiteSettings"],
+  { tags: ["settings"], revalidate: 3600 }
+);
 
 // ─── Work ───────────────────────────────────────────────────────
 
-export async function getAllWork(): Promise<WorkDoc[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "work",
-    where: { hidden: { not_equals: true } },
-    sort: "-sortOrder",
-    limit: 100,
-    depth: 1,
-  });
-  return result.docs as unknown as WorkDoc[];
-}
+export const getAllWork: () => Promise<WorkDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "work",
+      where: { hidden: { not_equals: true } },
+      sort: "-sortOrder",
+      limit: 100,
+      depth: 1,
+    });
+    return result.docs as unknown as WorkDoc[];
+  },
+  ["getAllWork"],
+  { tags: ["work"], revalidate: 3600 }
+);
 
-export async function getFeaturedWork(): Promise<WorkDoc[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "work",
-    where: { featured: { equals: true }, hidden: { not_equals: true } },
-    sort: "-sortOrder",
-    limit: 100,
-    depth: 1,
-  });
-  return result.docs as unknown as WorkDoc[];
-}
+export const getFeaturedWork: () => Promise<WorkDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "work",
+      where: { featured: { equals: true }, hidden: { not_equals: true } },
+      sort: "-sortOrder",
+      limit: 100,
+      depth: 1,
+    });
+    return result.docs as unknown as WorkDoc[];
+  },
+  ["getFeaturedWork"],
+  { tags: ["work"], revalidate: 3600 }
+);
 
-export async function getWorkBySlug(slug: string): Promise<WorkDoc | null> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "work",
-    where: { slug: { equals: slug } },
-    limit: 1,
-    depth: 2,
-  });
-  return (result.docs[0] as unknown as WorkDoc) ?? null;
-}
+export const getWorkBySlug: (slug: string) => Promise<WorkDoc | null> = unstable_cache(
+  async (slug: string) => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "work",
+      where: { slug: { equals: slug } },
+      limit: 1,
+      depth: 2,
+    });
+    return (result.docs[0] as unknown as WorkDoc) ?? null;
+  },
+  ["getWorkBySlug"],
+  { tags: ["work"], revalidate: 3600 }
+);
 
-export async function getAllWorkSlugs(): Promise<string[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "work",
-    where: { hidden: { not_equals: true } },
-    limit: 1000,
-    depth: 0,
-  });
-  return (result.docs as unknown as WorkDoc[]).map((d) => d.slug);
-}
+export const getAllWorkSlugs: () => Promise<string[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "work",
+      where: { hidden: { not_equals: true } },
+      limit: 1000,
+      depth: 0,
+    });
+    return (result.docs as unknown as WorkDoc[]).map((d) => d.slug);
+  },
+  ["getAllWorkSlugs"],
+  { tags: ["work"], revalidate: 3600 }
+);
 
 // ─── Projects ───────────────────────────────────────────────────
 
-export async function getAllProjects(): Promise<ProjectDoc[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "projects",
-    where: { hidden: { not_equals: true } },
-    sort: "-sortOrder",
-    limit: 100,
-    depth: 1,
-  });
-  return result.docs as unknown as ProjectDoc[];
-}
+export const getAllProjects: () => Promise<ProjectDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "projects",
+      where: { hidden: { not_equals: true } },
+      sort: "-sortOrder",
+      limit: 100,
+      depth: 1,
+    });
+    return result.docs as unknown as ProjectDoc[];
+  },
+  ["getAllProjects"],
+  { tags: ["studio"], revalidate: 3600 }
+);
 
-export async function getFeaturedProjects(): Promise<ProjectDoc[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "projects",
-    where: { featured: { equals: true }, hidden: { not_equals: true } },
-    sort: "-sortOrder",
-    limit: 100,
-    depth: 1,
-  });
-  return result.docs as unknown as ProjectDoc[];
-}
+export const getFeaturedProjects: () => Promise<ProjectDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "projects",
+      where: { featured: { equals: true }, hidden: { not_equals: true } },
+      sort: "-sortOrder",
+      limit: 100,
+      depth: 1,
+    });
+    return result.docs as unknown as ProjectDoc[];
+  },
+  ["getFeaturedProjects"],
+  { tags: ["studio"], revalidate: 3600 }
+);
 
-export async function getProjectBySlug(
-  slug: string
-): Promise<ProjectDoc | null> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "projects",
-    where: { slug: { equals: slug } },
-    limit: 1,
-    depth: 2,
-  });
-  return (result.docs[0] as unknown as ProjectDoc) ?? null;
-}
+export const getProjectBySlug: (slug: string) => Promise<ProjectDoc | null> = unstable_cache(
+  async (slug: string) => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "projects",
+      where: { slug: { equals: slug } },
+      limit: 1,
+      depth: 2,
+    });
+    return (result.docs[0] as unknown as ProjectDoc) ?? null;
+  },
+  ["getProjectBySlug"],
+  { tags: ["studio"], revalidate: 3600 }
+);
 
-export async function getAllProjectSlugs(): Promise<string[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "projects",
-    where: { hidden: { not_equals: true } },
-    limit: 1000,
-    depth: 0,
-  });
-  return (result.docs as unknown as ProjectDoc[]).map((d) => d.slug);
-}
+export const getAllProjectSlugs: () => Promise<string[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "projects",
+      where: { hidden: { not_equals: true } },
+      limit: 1000,
+      depth: 0,
+    });
+    return (result.docs as unknown as ProjectDoc[]).map((d) => d.slug);
+  },
+  ["getAllProjectSlugs"],
+  { tags: ["studio"], revalidate: 3600 }
+);
 
 // ─── Clients ───────────────────────────────────────────────────
 
-export async function getAllClients(): Promise<ClientDoc[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "clients",
-    sort: "sortOrder",
-    limit: 100,
-    depth: 1,
-  });
-  return result.docs as unknown as ClientDoc[];
-}
+export const getAllClients: () => Promise<ClientDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "clients",
+      sort: "sortOrder",
+      limit: 100,
+      depth: 1,
+    });
+    return result.docs as unknown as ClientDoc[];
+  },
+  ["getAllClients"],
+  { tags: ["clients"], revalidate: 3600 }
+);
 
 // ─── Blog Posts ─────────────────────────────────────────────────
 
-export async function getAllBlogPosts(): Promise<BlogPostDoc[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "blog-posts",
-    sort: "-date",
-    limit: 100,
-    depth: 1,
-  });
-  return result.docs as unknown as BlogPostDoc[];
-}
+export const getAllBlogPosts: () => Promise<BlogPostDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "blog-posts",
+      sort: "-date",
+      limit: 100,
+      depth: 1,
+    });
+    return result.docs as unknown as BlogPostDoc[];
+  },
+  ["getAllBlogPosts"],
+  { tags: ["dispatch"], revalidate: 3600 }
+);
 
-export async function getRecentBlogPosts(
-  count: number
-): Promise<BlogPostDoc[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "blog-posts",
-    sort: "-date",
-    limit: count,
-    depth: 1,
-  });
-  return result.docs as unknown as BlogPostDoc[];
-}
+export const getRecentBlogPosts: (count: number) => Promise<BlogPostDoc[]> = unstable_cache(
+  async (count: number) => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "blog-posts",
+      sort: "-date",
+      limit: count,
+      depth: 1,
+    });
+    return result.docs as unknown as BlogPostDoc[];
+  },
+  ["getRecentBlogPosts"],
+  { tags: ["dispatch"], revalidate: 3600 }
+);
 
-export async function getBlogPostBySlug(
-  slug: string
-): Promise<BlogPostDoc | null> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "blog-posts",
-    where: { slug: { equals: slug } },
-    limit: 1,
-    depth: 1,
-  });
-  return (result.docs[0] as unknown as BlogPostDoc) ?? null;
-}
+export const getBlogPostBySlug: (slug: string) => Promise<BlogPostDoc | null> = unstable_cache(
+  async (slug: string) => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "blog-posts",
+      where: { slug: { equals: slug } },
+      limit: 1,
+      depth: 1,
+    });
+    return (result.docs[0] as unknown as BlogPostDoc) ?? null;
+  },
+  ["getBlogPostBySlug"],
+  { tags: ["dispatch"], revalidate: 3600 }
+);
 
-export async function getAllBlogSlugs(): Promise<string[]> {
-  const payload = await getPayloadClient();
-  const result = await payload.find({
-    collection: "blog-posts",
-    limit: 1000,
-    depth: 0,
-  });
-  return (result.docs as unknown as BlogPostDoc[]).map((d) => d.slug);
-}
+export const getAllBlogSlugs: () => Promise<string[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "blog-posts",
+      limit: 1000,
+      depth: 0,
+    });
+    return (result.docs as unknown as BlogPostDoc[]).map((d) => d.slug);
+  },
+  ["getAllBlogSlugs"],
+  { tags: ["dispatch"], revalidate: 3600 }
+);
