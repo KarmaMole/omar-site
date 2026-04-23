@@ -1,6 +1,5 @@
-import { getPayload } from "payload";
-import config from "@payload-config";
 import { unstable_cache } from "next/cache";
+import { getPayloadClient } from "./client";
 import type {
   WorkDoc,
   ProjectDoc,
@@ -8,10 +7,6 @@ import type {
   ClientDoc,
   SiteSettingsDoc,
 } from "./types";
-
-async function getPayloadClient() {
-  return getPayload({ config });
-}
 
 // ─── Site Settings ──────────────────────────────────────────────
 
