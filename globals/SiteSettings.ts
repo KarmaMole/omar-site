@@ -10,7 +10,11 @@ export const SiteSettings: GlobalConfig = {
   hooks: {
     afterChange: [
       () => {
-        revalidateTag("settings");
+        try {
+          revalidateTag("settings");
+        } catch (err) {
+          console.warn("revalidateTag('settings') failed:", err);
+        }
       },
     ],
   },

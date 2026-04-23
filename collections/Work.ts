@@ -20,12 +20,20 @@ export const Work: CollectionConfig = {
     ],
     afterChange: [
       () => {
-        revalidateTag("work");
+        try {
+          revalidateTag("work");
+        } catch (err) {
+          console.warn("revalidateTag('work') failed:", err);
+        }
       },
     ],
     afterDelete: [
       () => {
-        revalidateTag("work");
+        try {
+          revalidateTag("work");
+        } catch (err) {
+          console.warn("revalidateTag('work') failed:", err);
+        }
       },
     ],
   },

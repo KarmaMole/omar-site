@@ -15,12 +15,20 @@ export const Clients: CollectionConfig = {
   hooks: {
     afterChange: [
       () => {
-        revalidateTag("clients");
+        try {
+          revalidateTag("clients");
+        } catch (err) {
+          console.warn("revalidateTag('clients') failed:", err);
+        }
       },
     ],
     afterDelete: [
       () => {
-        revalidateTag("clients");
+        try {
+          revalidateTag("clients");
+        } catch (err) {
+          console.warn("revalidateTag('clients') failed:", err);
+        }
       },
     ],
   },

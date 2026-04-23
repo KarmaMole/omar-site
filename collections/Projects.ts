@@ -24,12 +24,20 @@ export const Projects: CollectionConfig = {
     ],
     afterChange: [
       () => {
-        revalidateTag("studio");
+        try {
+          revalidateTag("studio");
+        } catch (err) {
+          console.warn("revalidateTag('studio') failed:", err);
+        }
       },
     ],
     afterDelete: [
       () => {
-        revalidateTag("studio");
+        try {
+          revalidateTag("studio");
+        } catch (err) {
+          console.warn("revalidateTag('studio') failed:", err);
+        }
       },
     ],
   },

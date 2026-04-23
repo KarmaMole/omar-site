@@ -32,12 +32,20 @@ export const BlogPosts: CollectionConfig = {
     ],
     afterChange: [
       () => {
-        revalidateTag("dispatch");
+        try {
+          revalidateTag("dispatch");
+        } catch (err) {
+          console.warn("revalidateTag('dispatch') failed:", err);
+        }
       },
     ],
     afterDelete: [
       () => {
-        revalidateTag("dispatch");
+        try {
+          revalidateTag("dispatch");
+        } catch (err) {
+          console.warn("revalidateTag('dispatch') failed:", err);
+        }
       },
     ],
   },
