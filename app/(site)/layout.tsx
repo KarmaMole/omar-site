@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
 import CustomCursor from "@/components/custom-cursor";
@@ -72,6 +73,7 @@ export default function SiteLayout({
         {process.env.NEXT_PUBLIC_GA_ID && (
           <CookieConsent gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}
+        <Analytics />
       </body>
     </html>
   );
