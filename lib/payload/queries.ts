@@ -30,6 +30,15 @@ export const getAllWork: () => Promise<WorkDoc[]> = unstable_cache(
       sort: "-sortOrder",
       limit: 100,
       depth: 1,
+      select: {
+        title: true,
+        slug: true,
+        client: true,
+        roleCredits: true,
+        coverImage: true,
+        categories: true,
+        tags: true,
+      },
     });
     return result.docs as unknown as WorkDoc[];
   },
@@ -94,6 +103,13 @@ export const getAllProjects: () => Promise<ProjectDoc[]> = unstable_cache(
       sort: "-sortOrder",
       limit: 100,
       depth: 1,
+      select: {
+        title: true,
+        slug: true,
+        coverImage: true,
+        categories: true,
+        tags: true,
+      },
     });
     return result.docs as unknown as ProjectDoc[];
   },
@@ -174,6 +190,16 @@ export const getAllBlogPosts: () => Promise<BlogPostDoc[]> = unstable_cache(
       sort: "-date",
       limit: 100,
       depth: 1,
+      select: {
+        title: true,
+        slug: true,
+        date: true,
+        excerpt: true,
+        coverImage: true,
+        isExternal: true,
+        publicationName: true,
+        publicationUrl: true,
+      },
     });
     return result.docs as unknown as BlogPostDoc[];
   },
