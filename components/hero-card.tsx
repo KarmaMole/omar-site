@@ -59,7 +59,10 @@ export default function HeroCard({
     size === "lg"
       ? "text-xs tracking-[0.2em] mb-2"
       : "text-[10px] tracking-[0.2em] mb-1";
-  const defaultSizes = size === "lg" ? "100vw" : "(max-width: 768px) 100vw, 50vw";
+  const defaultSizes =
+    size === "lg"
+      ? "(max-width: 1280px) 100vw, 1184px"
+      : "(max-width: 768px) 100vw, 50vw";
 
   return (
     <div

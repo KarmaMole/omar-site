@@ -115,6 +115,7 @@ export default async function HomePage() {
             <FadeIn className="mt-10">
               <Link
                 href="/work"
+                prefetch={false}
                 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
               >
                 View All Work &rarr;
@@ -174,6 +175,7 @@ export default async function HomePage() {
             <FadeIn className="mt-10">
               <Link
                 href="/studio"
+                prefetch={false}
                 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
               >
                 View All Studio Work &rarr;
@@ -218,6 +220,7 @@ export default async function HomePage() {
           <FadeIn className="mt-10">
             <Link
               href="/work"
+              prefetch={false}
               className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
             >
               View All Work &rarr;
@@ -260,6 +263,7 @@ export default async function HomePage() {
             <FadeIn className="mt-10">
               <Link
                 href="/dispatch"
+                prefetch={false}
                 className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
               >
                 Read More &rarr;

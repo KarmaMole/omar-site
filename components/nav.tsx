@@ -51,7 +51,7 @@ export default function Nav() {
       {/* Desktop Sidebar */}
       <nav className="hidden lg:flex fixed left-0 top-0 h-screen w-20 flex-col items-center justify-between py-8 z-50 border-r border-white/[0.06]" aria-label="Main navigation">
         {/* Logo */}
-        <Link href="/" className="font-mono text-xs tracking-widest text-light-300 hover:text-cyan transition-colors [writing-mode:vertical-lr] rotate-180">
+        <Link href="/" prefetch={false} className="font-mono text-xs tracking-widest text-light-300 hover:text-cyan transition-colors [writing-mode:vertical-lr] rotate-180">
           OMAR KAMEL
         </Link>
 
@@ -63,6 +63,7 @@ export default function Nav() {
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={false}
                 className={`font-mono text-[10px] tracking-[0.2em] uppercase transition-all duration-200 [writing-mode:vertical-lr] rotate-180 px-1.5 py-2 border-l-2 ${
                   isActive
                     ? "text-cyan bg-cyan/5 border-cyan shadow-[0_0_8px_rgba(0,217,255,0.4)]"
@@ -78,6 +79,7 @@ export default function Nav() {
         {/* CTA */}
         <Link
           href="/contact"
+          prefetch={false}
           className="font-mono text-[10px] tracking-[0.15em] uppercase text-cyan hover:text-white transition-colors [writing-mode:vertical-lr] rotate-180"
         >
           Start a Project
@@ -86,7 +88,7 @@ export default function Nav() {
 
       {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-white/[0.06]">
-        <Link href="/" className="font-mono text-sm tracking-widest text-light-100">
+        <Link href="/" prefetch={false} className="font-mono text-sm tracking-widest text-light-100">
           OK
         </Link>
         <button
@@ -120,6 +122,7 @@ export default function Nav() {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}
               onClick={() => setMobileOpen(false)}
               className={`text-4xl font-light tracking-tight transition-all duration-300 pl-4 -ml-4 border-l-2 ${
                 isActive ? "text-cyan border-cyan bg-cyan/5" : "text-light-100 hover:text-cyan border-transparent"
@@ -138,6 +141,7 @@ export default function Nav() {
         >
           <Link
             href="/contact"
+            prefetch={false}
             onClick={() => setMobileOpen(false)}
             className="font-mono text-[10px] tracking-[0.15em] uppercase text-cyan hover:text-white transition-colors"
           >
