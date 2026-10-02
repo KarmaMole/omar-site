@@ -4,11 +4,37 @@ import { useEffect } from "react";
 
 export default function HeroHeight() {
   useEffect(() => {
-    // Capture the initial viewport height once and lock it as a CSS variable.
-    // This prevents the hero from resizing when mobile browser chrome
-    // collapses on scroll (Chromium bug with svh/dvh units).
-    const h = window.innerHeight;
-    document.documentElement.style.setProperty("--hero-h", `${h}px`);
+    // Lock the hero to the viewport height as a CSS variable. This prevents
+    // the hero from resizing when the mobile URL bar collapses on scroll
+    // (that only changes the height, never the width), while still
+    // re-measuring when the width changes or the device rotates.
+    const root = document.documentElement;
+    let lastWidth = window.innerWidth;
+    let orientationTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const apply = () => {
+      lastWidth = window.innerWidth;
+      root.style.setProperty("--hero-h", `${window.innerHeight}px`);
+    };
+
+    const onResize = () => {
+      if (window.innerWidth !== lastWidth) apply();
+    };
+
+    // Dimensions can lag the event on some browsers, so measure after it settles.
+    const onOrientationChange = () => {
+      clearTimeout(orientationTimer);
+      orientationTimer = setTimeout(apply, 250);
+    };
+
+    apply();
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onOrientationChange);
+    return () => {
+      clearTimeout(orientationTimer);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onOrientationChange);
+    };
   }, []);
 
   return null;

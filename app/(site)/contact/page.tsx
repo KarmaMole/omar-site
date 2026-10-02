@@ -58,17 +58,17 @@ export default async function ContactPage() {
               <div className="space-y-10">
                 {/* Based in */}
                 <div>
-                  <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
+                  <h2 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
                     Based In
-                  </h3>
+                  </h2>
                   <p className="text-light-100">Dubai, UAE</p>
                 </div>
 
                 {/* Email */}
                 <div>
-                  <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
+                  <h2 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
                     Email
-                  </h3>
+                  </h2>
                   <ObfuscatedEmail
                     user="omar"
                     domain="omarkamel.com"
@@ -79,9 +79,9 @@ export default async function ContactPage() {
                 {/* Social links */}
                 {socialLinks && socialLinks.length > 0 && (
                   <div>
-                    <h3 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
+                    <h2 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
                       Connect
-                    </h3>
+                    </h2>
                     <ul className="space-y-2">
                       {socialLinks.map((link) => (
                         <li key={link.platform}>

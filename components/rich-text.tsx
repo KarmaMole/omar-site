@@ -22,7 +22,7 @@ function flattenText(nodes: unknown[]): string {
 
 const EMBED_PARAGRAPH_RE = /^\[(https?:\/\/[^\s\]]+)\]$/;
 
-const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
+const makeConverters = (embedTitle?: string): JSXConvertersFunction => ({ defaultConverters }) => ({
   ...defaultConverters,
   paragraph: ({ node, nodesToJSX }) => {
     const children = node.children ?? [];
@@ -42,7 +42,7 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
       if (embed) {
         return (
           <div className="not-prose my-8">
-            <MediaEmbedComponent embed={embed} />
+            <MediaEmbedComponent embed={embed} title={embedTitle} />
           </div>
         );
       }
@@ -56,6 +56,8 @@ interface RichTextProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: SerializedEditorState | any;
   className?: string;
+  /** Accessible title for any inline video embeds (usually the item title) */
+  embedTitle?: string;
 }
 
 function isValidLexicalData(data: unknown): data is SerializedEditorState {
@@ -66,7 +68,7 @@ function isValidLexicalData(data: unknown): data is SerializedEditorState {
   return root.type === "root" && Array.isArray(root.children);
 }
 
-export function RichText({ data, className }: RichTextProps) {
+export function RichText({ data, className, embedTitle }: RichTextProps) {
   if (!data) return null;
 
   if (!isValidLexicalData(data)) {
@@ -97,7 +99,7 @@ export function RichText({ data, className }: RichTextProps) {
       <div className={className ?? "prose prose-invert prose-lg max-w-none text-light-200 leading-relaxed"}>
         <PayloadRichText
           data={data}
-          converters={converters}
+          converters={makeConverters(embedTitle)}
         />
       </div>
     );

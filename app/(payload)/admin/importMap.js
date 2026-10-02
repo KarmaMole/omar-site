@@ -24,16 +24,15 @@ import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { default as default_9d13a0cb80050f4a6de63507a432e483 } from '@/components/admin/gallery-upload'
 import { default as default_499b787cbfd953fe31fd75ce1898156f } from '@/components/admin/copy-image-ref'
 import { default as default_e15e987645240d06cfe6d75e93fc628a } from '@/components/admin/generate-all-button'
-import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 import { OverviewComponent as OverviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
+import { default as default_907eef7bbc0ef9beea04c58c939e2e37 } from '@/components/admin/homepage-nav-link'
 import { default as default_bd8a37e8ac419c0b2ccb6ef2e225a54c } from '@/components/admin/reorder-nav-link'
 import { default as default_211cec84292c325c71f58f5fc273dfc2 } from '@/components/admin/reorder-link'
-import { default as default_homepage_nav_link } from '@/components/admin/homepage-nav-link'
-import { default as default_homepage_curator_view } from '@/components/admin/homepage-curator/view'
+import { default as default_034173c4c7276f74ebda8e1f67fb413c } from '@/components/admin/homepage-curator/view'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -68,10 +67,9 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
-  "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
+  "@/components/admin/homepage-nav-link#default": default_907eef7bbc0ef9beea04c58c939e2e37,
   "@/components/admin/reorder-nav-link#default": default_bd8a37e8ac419c0b2ccb6ef2e225a54c,
   "@/components/admin/reorder-link#default": default_211cec84292c325c71f58f5fc273dfc2,
-  "@/components/admin/homepage-nav-link#default": default_homepage_nav_link,
-  "@/components/admin/homepage-curator/view#default": default_homepage_curator_view,
+  "@/components/admin/homepage-curator/view#default": default_034173c4c7276f74ebda8e1f67fb413c,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

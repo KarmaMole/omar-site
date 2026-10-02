@@ -13,8 +13,9 @@ export type SaveHomepageInput = {
   recentPins: (Id | null)[];
 };
 
-function isId(value: unknown): value is Id {
-  return (typeof value === "number" && Number.isFinite(value)) || (typeof value === "string" && value.length > 0);
+// Postgres ids are integers
+function isId(value: unknown): value is number {
+  return typeof value === "number" && Number.isInteger(value) && value > 0;
 }
 
 export async function saveHomepage(
@@ -35,16 +36,18 @@ export async function saveHomepage(
   ) {
     return { ok: false, error: "Invalid homepage data." };
   }
+  // Validated above
+  const pins = recentPins as (number | null)[];
 
   try {
     await payload.updateGlobal({
       slug: "homepage",
       data: {
-        featuredWork,
-        studio: [...new Set(studio)],
-        recentPin1: recentPins[0],
-        recentPin2: recentPins[1],
-        recentPin3: recentPins[2],
+        featuredWork: featuredWork as number | null,
+        studio: [...new Set(studio as number[])],
+        recentPin1: pins[0],
+        recentPin2: pins[1],
+        recentPin3: pins[2],
       },
       user,
       overrideAccess: false,

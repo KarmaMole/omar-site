@@ -7,7 +7,6 @@ interface HeroCardProps {
   href: string;
   title: string;
   coverImage: MediaUpload | null;
-  coverAlt?: string;
   /** Small uppercase mono eyebrow above the title (client, content type, etc.) */
   eyebrow?: string | null;
   /** Optional secondary line below the title (e.g. categories) */
@@ -29,9 +28,28 @@ const aspectClass = {
   "4/3": "aspect-[4/3]",
 } as const;
 
+/** Splits a label like "AI Production / Digital" or "Music, Film" into lowercase tokens. */
+function tokens(value: string): string[] {
+  return value
+    .split(/[\/,]/)
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean);
+}
+
 /**
- * Shared hero/feature card used across the homepage for featured work,
- * featured explorations, and the recent work grid. Full-bleed cover image
+ * True when `meta` adds nothing beyond what the eyebrow already shows
+ * (identical, or every token of meta already appears in the eyebrow).
+ */
+function repeatsEyebrow(eyebrow: string | null | undefined, meta: string): boolean {
+  if (!eyebrow) return false;
+  const shown = new Set(tokens(eyebrow));
+  const extra = tokens(meta);
+  return extra.length > 0 && extra.every((t) => shown.has(t));
+}
+
+/**
+ * Shared hero/feature card used across the homepage for the featured work,
+ * studio highlights, and the recent work grid. Full-bleed cover image
  * with dark gradient overlay and bottom-left text block. Hover scale on
  * the cover, optional video embed overlay.
  */
@@ -39,7 +57,6 @@ export default function HeroCard({
   href,
   title,
   coverImage,
-  coverAlt,
   eyebrow,
   bottomMeta,
   size = "lg",
@@ -48,6 +65,7 @@ export default function HeroCard({
   videoEmbed,
   sizes,
 }: HeroCardProps) {
+  const showBottomMeta = Boolean(bottomMeta) && !repeatsEyebrow(eyebrow, bottomMeta as string);
   const finalAspect = aspect ?? (size === "lg" ? "21/9" : "4/3");
   const aspectCls = aspectClass[finalAspect];
   const padding = size === "lg" ? "p-5 md:p-8 lg:p-12" : "p-4 md:p-6 lg:p-8";
@@ -72,7 +90,7 @@ export default function HeroCard({
         {coverImage?.url ? (
           <Image
             src={coverImage.sizes?.hero?.url ?? coverImage.url}
-            alt={coverAlt ?? coverImage.alt ?? title}
+            alt=""
             fill
             className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
             sizes={sizes ?? defaultSizes}
@@ -99,7 +117,7 @@ export default function HeroCard({
           <h3 className={`${titleSize} font-light tracking-tight text-white`}>
             {title}
           </h3>
-          {bottomMeta && (
+          {showBottomMeta && (
             <p className="hidden md:block font-mono text-xs tracking-[0.15em] uppercase text-light-300 mt-3">
               {bottomMeta}
             </p>

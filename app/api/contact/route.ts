@@ -53,7 +53,12 @@ function isRateLimited(ip: string): boolean {
   return false;
 }
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// No whitespace or list/markup separators, so "a@b.c,x@y.z" is rejected
+const EMAIL_REGEX = /^[^\s@,;<>]+@[^\s@,;<>]+\.[^\s@,;<>]+$/;
+
+const MAX_NAME_LENGTH = 100;
+const MAX_EMAIL_LENGTH = 254;
+const MAX_MESSAGE_LENGTH = 5000;
 
 export async function POST(req: NextRequest) {
   try {
@@ -109,8 +114,36 @@ export async function POST(req: NextRequest) {
     const trimmedEmail = email.trim();
     const trimmedMessage = message.trim();
 
-    // Graceful fallback if SMTP not configured (e.g. local dev without env vars)
+    // Length caps
+    if (trimmedName.length > MAX_NAME_LENGTH) {
+      return NextResponse.json(
+        { error: `Name must be ${MAX_NAME_LENGTH} characters or fewer.` },
+        { status: 400 }
+      );
+    }
+    if (trimmedEmail.length > MAX_EMAIL_LENGTH) {
+      return NextResponse.json(
+        { error: `Email must be ${MAX_EMAIL_LENGTH} characters or fewer.` },
+        { status: 400 }
+      );
+    }
+    if (trimmedMessage.length > MAX_MESSAGE_LENGTH) {
+      return NextResponse.json(
+        { error: `Message must be ${MAX_MESSAGE_LENGTH} characters or fewer.` },
+        { status: 400 }
+      );
+    }
+
+    // SMTP not configured: fail loudly in production so the visitor is not told
+    // "sent" when nothing was delivered. Log-and-succeed only outside production.
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      if (process.env.NODE_ENV === "production") {
+        console.error("[Contact Form Error] SMTP is not configured");
+        return NextResponse.json(
+          { error: "Messages cannot be sent right now. Please email me directly instead." },
+          { status: 500 }
+        );
+      }
       console.log("[Contact Form Submission]", {
         name: trimmedName,
         email: trimmedEmail,

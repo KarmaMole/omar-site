@@ -93,5 +93,4 @@ export interface SiteSettingsDoc {
   aboutPhoto?: MediaUpload | string | null;
   profilePhoto?: MediaUpload | string | null;
   socialLinks?: { platform: string; url: string }[] | null;
-  googleAnalyticsId?: string | null;
 }

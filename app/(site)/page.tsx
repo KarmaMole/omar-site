@@ -18,7 +18,8 @@ import {
   getAllClients,
 } from "@/lib/payload/queries";
 import { fillRecentSlots, RECENT_WORK_SLOTS } from "@/lib/payload/homepage";
-import type { WorkDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
+import type { WorkDoc } from "@/lib/payload/types";
+import { dispatchHref } from "@/lib/dispatch-link";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -27,6 +28,8 @@ export const metadata: Metadata = {
     "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
   alternates: {
     canonical: "/",
+    // A child `alternates` replaces the layout's, so re-declare the feed link here.
+    types: { "application/rss+xml": "/feed.xml" },
   },
   openGraph: {
     title: "Omar Kamel: AI Creative & Production Lead",
@@ -46,9 +49,21 @@ export const metadata: Metadata = {
   },
 };
 
-function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
-  const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
-  return (img as MediaUpload)?.alt ?? doc.title;
+/**
+ * Eyebrow and bottom meta for a work card. With a client, the eyebrow is the
+ * client and the bottom line lists categories. Without one, the eyebrow already
+ * shows the first category, so the bottom line lists only the remaining ones
+ * (avoiding "AI PRODUCTION" printed twice).
+ */
+function workCardMeta(work: WorkDoc): { eyebrow: string | null; bottomMeta: string | null } {
+  const categories = work.categories ?? [];
+  if (work.client) {
+    return { eyebrow: work.client, bottomMeta: categories.join(" / ") || null };
+  }
+  return {
+    eyebrow: categories[0] ?? null,
+    bottomMeta: categories.slice(1).join(" / ") || null,
+  };
 }
 
 export default async function HomePage() {
@@ -106,6 +121,7 @@ export default async function HomePage() {
       {heroWork && (() => {
         const heroVideo = heroWork.media?.find((m) => m.type === "youtube" || m.type === "vimeo") ?? null;
         const cover = typeof heroWork.coverImage === "object" ? heroWork.coverImage : null;
+        const heroMeta = workCardMeta(heroWork);
         return (
           <section className="max-w-7xl mx-auto px-6 lg:px-12 py-section-sm md:py-section border-t border-white/[0.07]">
             <FadeIn>
@@ -116,9 +132,8 @@ export default async function HomePage() {
                 href={`/work/${heroWork.slug}`}
                 title={heroWork.title}
                 coverImage={cover}
-                coverAlt={getCoverAlt(heroWork)}
-                eyebrow={heroWork.client || heroWork.categories?.[0] || null}
-                bottomMeta={heroWork.categories && heroWork.categories.length > 0 ? heroWork.categories.join(" / ") : null}
+                eyebrow={heroMeta.eyebrow}
+                bottomMeta={heroMeta.bottomMeta}
                 size="lg"
                 aspect={heroVideo ? "video" : "21/9"}
                 priority
@@ -209,6 +224,7 @@ export default async function HomePage() {
               {gridWork.map((work, i) => {
                 const cover = typeof work.coverImage === "object" ? work.coverImage : null;
                 const isFullWidth = i === 0;
+                const meta = workCardMeta(work);
                 return (
                   <div
                     key={work.id}
@@ -218,9 +234,8 @@ export default async function HomePage() {
                       href={`/work/${work.slug}`}
                       title={work.title}
                       coverImage={cover}
-                      coverAlt={getCoverAlt(work)}
-                      eyebrow={work.client || work.categories?.[0] || null}
-                      bottomMeta={work.categories && work.categories.length > 0 ? work.categories.join(" / ") : null}
+                      eyebrow={meta.eyebrow}
+                      bottomMeta={meta.bottomMeta}
                       size="sm"
                       aspect={isFullWidth ? "21/9" : "4/3"}
                       sizes={isFullWidth ? "100vw" : "50vw"}
@@ -250,10 +265,13 @@ export default async function HomePage() {
               <h2 className="section-label">Latest Dispatch</h2>
             </FadeIn>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-7 mt-10">
-              {recentPosts.map((post, i) => (
+              {recentPosts.map((post, i) => {
+                const { href, external } = dispatchHref(post);
+                return (
                 <FadeIn key={post.id} delay={i * 100}>
                   <Link
-                    href={`/dispatch/${post.slug}`}
+                    href={href}
+                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                     className="group block -mx-3 px-3 py-3 rounded-sm hover:bg-white/[0.02] transition-colors border-b border-white/[0.05] md:border-b-0 border-l-2 border-l-transparent hover:border-l-cyan"
                   >
                     {post.date && (
@@ -271,7 +289,8 @@ export default async function HomePage() {
                     )}
                   </Link>
                 </FadeIn>
-              ))}
+                );
+              })}
             </div>
             <FadeIn className="mt-10">
               <Link
@@ -324,7 +343,7 @@ export default async function HomePage() {
             <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4 mt-8">
               {clients.slice(0, 18).map((client, i) => (
                 <FadeIn key={client.id} delay={i * 40}>
-                  <span className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/70">
+                  <span className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-400">
                     {client.name}
                   </span>
                 </FadeIn>
@@ -369,7 +388,7 @@ export default async function HomePage() {
                     <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md flex-1">{t.description}</p>
                     <div className="flex flex-wrap gap-2 mt-5">
                       {t.tags.map((tag) => (
-                        <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-white/[0.07] rounded px-2.5 py-1">{tag}</span>
+                        <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-400 border border-white/[0.07] rounded px-2.5 py-1">{tag}</span>
                       ))}
                     </div>
                     <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">{t.domain} &rarr;</span>

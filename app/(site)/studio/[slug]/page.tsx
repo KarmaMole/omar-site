@@ -10,16 +10,27 @@ import GalleryGrid from "@/components/gallery-grid";
 import { getProjectBySlug, getAllProjectSlugs, getAllProjects } from "@/lib/payload/queries";
 import MoreItems from "@/components/more-items";
 import { SITE_URL } from "@/lib/constants";
+import { absUrl } from "@/lib/abs-url";
+import { describeFromRichText } from "@/lib/seo-text";
+import type { ProjectDoc } from "@/lib/payload/types";
 
 interface StudioDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+/** CMS rich text first (trimmed at a word boundary); a short fallback that does not repeat the title. */
+function projectDescription(project: ProjectDoc): string {
+  const categories = project.categories?.join(", ");
+  const fallback = `${categories || "Studio"} project by Omar Kamel.`;
+  return describeFromRichText(project.description, fallback);
+}
+
 export async function generateMetadata({ params }: StudioDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  if (!project) return {};
-  const description = `${project.title}: ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`;
+  // Throwing here (not just in the page) makes missing slugs a real 404
+  if (!project) notFound();
+  const description = projectDescription(project);
   return {
     title: project.title,
     description,
@@ -63,8 +74,8 @@ export default async function StudioDetailPage({ params }: StudioDetailPageProps
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.title,
-    description: `${project.title} - ${project.categories?.join(", ") ?? "project"} by Omar Kamel.`,
-    ...(cover?.url ? { image: cover.url } : {}),
+    description: projectDescription(project),
+    ...(cover?.url ? { image: absUrl(cover.url) } : {}),
     author: {
       "@type": "Person",
       name: "Omar Kamel",
@@ -128,20 +139,20 @@ export default async function StudioDetailPage({ params }: StudioDetailPageProps
 
         {project.tags && project.tags.length > 0 && (
           <div className="mb-8">
-            <p className="font-mono text-[10px] tracking-widest uppercase text-light-300/70">
+            <p className="font-mono text-[10px] tracking-widest uppercase text-light-400">
               {project.tags.split(",").map((t) => t.trim()).filter(Boolean).join(" / ")}
             </p>
           </div>
         )}
 
-        {project.description ? <RichText data={project.description} className="mb-10" /> : null}
+        {project.description ? <RichText data={project.description} className="mb-10" embedTitle={project.title} /> : null}
 
         {gallery.length > 0 && <GalleryGrid images={gallery} title={project.title} />}
 
         {project.media && project.media.length > 0 && (
           <div className="space-y-6 mb-10">
             {project.media.map((embed) => (
-              <MediaEmbedComponent key={embed.url} embed={embed} />
+              <MediaEmbedComponent key={embed.url} embed={embed} title={project.title} />
             ))}
           </div>
         )}

@@ -42,7 +42,7 @@ export default function ContentCard({
         {cover?.url ? (
           <Image
             src={cover.sizes?.card?.url ?? cover.url}
-            alt={cover.alt ?? title}
+            alt=""
             fill
             priority={priority}
             loading={priority ? undefined : "lazy"}
@@ -52,7 +52,7 @@ export default function ContentCard({
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-[#0a0a0a] flex flex-col justify-end p-4">
             {label && (
-              <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-light-300/50 mb-1">
+              <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-light-400 mb-1">
                 {label}
               </p>
             )}

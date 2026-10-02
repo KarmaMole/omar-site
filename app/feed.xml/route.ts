@@ -1,5 +1,6 @@
 import { getAllBlogPosts } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
+import { absUrl } from "@/lib/abs-url";
 
 const baseUrl = SITE_URL;
 
@@ -17,7 +18,7 @@ export async function GET() {
       const title = escapeXml(post.title);
       const cover =
         typeof post.coverImage === "object" && post.coverImage
-          ? post.coverImage
+          ? (post.coverImage as typeof post.coverImage & { mimeType?: string; filesize?: number })
           : null;
       return `
     <item>
@@ -27,7 +28,7 @@ export async function GET() {
       <description>${description}</description>
       <author>omar@omarkamel.com (Omar Kamel)</author>
       ${pubDate ? `<pubDate>${pubDate}</pubDate>` : ""}
-      ${cover?.url ? `<enclosure url="${escapeXml(cover.url)}" type="image/jpeg" length="0" />` : ""}
+      ${cover?.url && cover.mimeType && cover.filesize ? `<enclosure url="${escapeXml(absUrl(cover.url))}" type="${cover.mimeType}" length="${cover.filesize}" />` : ""}
     </item>`;
     })
     .join("");

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { WORK_CATEGORIES } from "@/lib/categories";
 import { revalidateTag } from "next/cache";
 import { resolveVimeoUrls } from "@/lib/resolve-vimeo";
 
@@ -37,8 +38,9 @@ export const Work: CollectionConfig = {
       },
     ],
   },
+  versions: { maxPerDoc: 10 },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => (user ? true : { hidden: { not_equals: true } }),
     create: ({ req: { user } }) => !!user,
     update: ({ req: { user } }) => !!user,
     delete: ({ req: { user } }) => !!user,
@@ -87,15 +89,7 @@ export const Work: CollectionConfig = {
       name: "categories",
       type: "select",
       hasMany: true,
-      options: [
-        { label: "Commercial", value: "Commercial" },
-        { label: "Corporate", value: "Corporate" },
-        { label: "Documentary", value: "Documentary" },
-        { label: "AI Production", value: "AI Production" },
-        { label: "Design", value: "Design" },
-        { label: "Digital", value: "Digital" },
-        { label: "Awareness", value: "Awareness" },
-      ],
+      options: WORK_CATEGORIES.map((value) => ({ label: value, value })),
     },
     {
       name: "tags",

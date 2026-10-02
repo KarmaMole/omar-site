@@ -18,4 +18,8 @@ export const mailer = nodemailer.createTransport({
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  // Fail fast so a stalled SMTP server cannot hang the serverless function
+  connectionTimeout: 10_000,
+  greetingTimeout: 10_000,
+  socketTimeout: 10_000,
 });

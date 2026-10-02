@@ -35,7 +35,8 @@ interface FadeInProps {
 
 export default function FadeIn({ children, className = "", delay }: FadeInProps) {
   const ref = useRef<HTMLDivElement>(null);
-  // If the user prefers reduced motion, start visible and skip the observer.
+  // Starts hidden and is revealed once scrolled into view. Users who prefer
+  // reduced motion get it revealed straight away and skip the observer.
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

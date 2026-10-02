@@ -8,6 +8,7 @@ import FadeIn from "@/components/fade-in";
 import { RichText } from "@/components/rich-text";
 import { getSiteSettings } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
+import { absUrl } from "@/lib/abs-url";
 
 export const metadata: Metadata = {
   title: "About",
@@ -58,7 +59,7 @@ export default async function AboutPage() {
       "Digital Content",
     ],
     sameAs: (settings.socialLinks ?? []).map((s: { url: string }) => s.url),
-    ...(photo?.url ? { image: photo.url } : {}),
+    ...(photo?.url ? { image: absUrl(photo.url) } : {}),
   };
 
   return (
@@ -106,7 +107,7 @@ export default async function AboutPage() {
           <FadeIn>
             {/* Skills section */}
             <div className="border-t border-white/[0.07] pt-16">
-              <span className="section-label">Skills &amp; Tools</span>
+              <h2 className="section-label leading-6">Skills &amp; Tools</h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
                 {skills.map((group) => (
                   <div key={group.category} className="border-l border-white/[0.07] pl-4">

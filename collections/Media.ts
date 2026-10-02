@@ -1,4 +1,17 @@
 import type { CollectionConfig } from "payload";
+import { revalidateTag } from "next/cache";
+
+const CONTENT_TAGS = ["work", "studio", "dispatch", "settings", "clients", "homepage"];
+
+function revalidateAllContent() {
+  for (const tag of CONTENT_TAGS) {
+    try {
+      revalidateTag(tag);
+    } catch (err) {
+      console.warn(`revalidateTag('${tag}') failed:`, err);
+    }
+  }
+}
 
 export const Media: CollectionConfig = {
   slug: "media",
@@ -8,6 +21,12 @@ export const Media: CollectionConfig = {
     update: ({ req: { user } }) => !!user,
     delete: ({ req: { user } }) => !!user,
   },
+  hooks: {
+    // Media is referenced by most content, so any change refreshes all tagged caches
+    afterChange: [revalidateAllContent],
+    afterDelete: [revalidateAllContent],
+  },
+
   upload: {
     mimeTypes: ["image/*", "video/*"],
     formatOptions: {

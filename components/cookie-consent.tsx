@@ -65,14 +65,14 @@ export default function CookieConsent({ gaId }: { gaId: string }) {
           <div className="max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-sm">
             <p className="text-[#f5f5f5]/70">
               This site uses cookies for analytics.{" "}
-              <span className="text-[#f5f5f5]/40">
+              <span className="text-light-400">
                 We only track basic page views via Google Analytics.
               </span>
             </p>
             <div className="flex gap-3 shrink-0">
               <button
                 onClick={decline}
-                className="px-4 py-2 border border-[#f5f5f5]/20 text-[#f5f5f5]/50 hover:text-[#f5f5f5] hover:border-[#f5f5f5]/40 transition-colors text-xs uppercase tracking-wider"
+                className="px-4 py-2 border border-[#f5f5f5]/20 text-light-400 hover:text-[#f5f5f5] hover:border-[#f5f5f5]/40 transition-colors text-xs uppercase tracking-wider"
               >
                 Decline
               </button>

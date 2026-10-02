@@ -3,9 +3,11 @@ export const revalidate = 300;
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import JsonLd from "@/components/json-ld";
+import FadeIn from "@/components/fade-in";
 import { getAllWork } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
-import WorkContent from "./work-content";
+import WorkView from "./work-content";
+import WorkFiltered from "./work-filtered";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -50,9 +52,25 @@ export default async function WorkPage() {
   };
 
   return (
-    <Suspense>
+    <>
       <JsonLd data={collectionJsonLd} />
-      <WorkContent work={allWork} />
-    </Suspense>
+      <div className="pt-24 pb-16 animate-fade-in">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Header lives on the server, outside Suspense, so the h1 is in the static HTML */}
+          <FadeIn>
+            <div className="mb-12">
+              <span className="section-label">Portfolio</span>
+              <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">Work</h1>
+              <p className="text-light-300 mt-3">two decades of production across brands, agencies, and independent work.</p>
+            </div>
+          </FadeIn>
+          {/* Fallback is the full unfiltered grid, so crawlers and no-JS clients see every card.
+              WorkFiltered applies ?category= after hydration. */}
+          <Suspense fallback={<WorkView work={allWork} category={null} />}>
+            <WorkFiltered work={allWork} />
+          </Suspense>
+        </div>
+      </div>
+    </>
   );
 }

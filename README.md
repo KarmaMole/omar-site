@@ -1,111 +1,74 @@
-# Omar Kamel — Personal Portfolio & Brand Website
+# Omar Kamel: Portfolio & Brand Website
 
-Portfolio and brand site built with Next.js 15, Sanity CMS, and Tailwind CSS.
+Source for [omarkamel.com](https://omarkamel.com). Next.js 15 (App Router) with an embedded Payload CMS.
 
 ## Tech Stack
 
-- **Framework:** Next.js 15 (App Router)
-- **Styling:** Tailwind CSS
-- **CMS:** Sanity v4 (embedded Studio at `/studio`)
-- **Email:** Resend
-- **Hosting:** Vercel
+- **Framework:** Next.js 15 (App Router), React 19
+- **CMS:** Payload 3 (admin at `/admin`)
+- **Database:** Postgres on Neon
+- **Media storage:** Vercel Blob
+- **Styling:** Tailwind CSS 3
+- **Email:** SMTP via nodemailer (contact form)
+- **Hosting:** Vercel (project `omar2026`)
 
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- npm
-
-### Setup
-
-1. Clone the repo:
+## Setup
 
 ```bash
 git clone https://github.com/KarmaMole/omar-site.git
 cd omar-site
-```
-
-2. Install dependencies:
-
-```bash
 npm install
+cp .env.example .env.local   # then fill in the values
 ```
 
-3. Create a `.env.local` file from the template:
+| Variable | Purpose |
+|---|---|
+| `DATABASE_URI` | Neon Postgres connection string |
+| `PAYLOAD_SECRET` | Payload auth secret (required in production) |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob, for media uploads |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS` | Contact form mail. Production refuses to accept messages if these are missing |
+| `CONTACT_EMAIL` | Where contact form messages go |
+| `ANTHROPIC_API_KEY`, `FAL_KEY` | Admin-only "Generate All" button on Dispatches |
+| `NEXT_PUBLIC_GA_ID` | Google Analytics (optional, loads only after cookie consent) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical site URL |
 
-```bash
-cp .env.example .env.local
-```
+### ⚠ Schema changes and the production database
 
-4. Fill in your environment variables:
+There is no migrations folder. Payload pushes schema changes automatically whenever `next dev` starts, and `.env.local` points at the **production** database. So:
 
-- **Sanity:** Create a project at [sanity.io/manage](https://www.sanity.io/manage) and copy the project ID
-- **Resend:** Sign up at [resend.com](https://resend.com) and get an API key (optional for local dev — form submissions log to console without it)
+- Don't run `npm run dev` after renaming or removing a field unless you mean to apply that change to production.
+- For schema changes, dry-run first: Drizzle's `pushSchema` returns the SQL statements without applying them, so you can check there's no data loss.
+- `next dev` renders blank pages because the site's CSP blocks `unsafe-eval`. To test locally, use `npm run build && npm start`.
 
-5. Run the dev server:
+## Content (Payload admin at `/admin`)
 
-```bash
-npm run dev
-```
+- **Works:** client and personal work (`/work`)
+- **Studio:** personal projects (`/studio`)
+- **Dispatches:** the blog (`/dispatch`), markdown body, with an AI "Generate All" button for excerpt, SEO and cover image
+- **Clients:** the "Selected Clients" list
+- **Homepage** (sidebar link): drag-and-drop picker for Featured Work, From the Studio and Recent Work pins. Unpinned Recent Work slots fill with the newest work automatically
+- **Reorder Items** (sidebar link): the order of `/work` and `/studio`
+- **Site Settings:** hero, about bio, photos, social links
 
-Open [http://localhost:3000](http://localhost:3000).
-
-### Sanity Studio
-
-Access the CMS at [http://localhost:3000/studio](http://localhost:3000/studio).
-
-To use Sanity Studio:
-
-1. Go to [sanity.io/manage](https://www.sanity.io/manage) and create a new project
-2. Copy the project ID into `NEXT_PUBLIC_SANITY_PROJECT_ID` in `.env.local`
-3. Add `http://localhost:3000` to your project's CORS origins in Sanity settings
-4. Restart the dev server
-
-## Deploy to Vercel
-
-1. Push your code to GitHub
-2. Go to [vercel.com/new](https://vercel.com/new) and import the repository
-3. Add all environment variables from `.env.example` in the Vercel dashboard:
-   - `NEXT_PUBLIC_SANITY_PROJECT_ID` — your Sanity project ID
-   - `NEXT_PUBLIC_SANITY_DATASET` — `production`
-   - `NEXT_PUBLIC_SANITY_API_VERSION` — `2024-01-01`
-   - `SANITY_API_TOKEN` — generate a read token in Sanity settings
-   - `RESEND_API_KEY` — your Resend API key
-   - `CONTACT_EMAIL` — `omar@omarkamel.com`
-4. Deploy
-
-After deploying, add your Vercel domain (e.g. `omar-site.vercel.app`) to Sanity's CORS origins.
+Work, Studio and Dispatches keep their last 10 versions, which you can restore from each item's Versions tab.
 
 ## Project Structure
 
 ```
-app/(site)/       — Public site pages (nav + footer layout)
-app/studio/       — Embedded Sanity Studio (no site chrome)
-app/api/          — API routes (contact form)
-components/       — Reusable React components
-lib/              — Utilities, Sanity client, types, queries, dummy data
-sanity/           — Sanity schema definitions
+app/(site)/        Public site pages
+app/(payload)/     Payload admin and REST API (/admin, /api)
+app/api/           Custom API routes (contact form, reorder)
+collections/       Payload collections
+globals/           Payload globals (Site Settings, Homepage)
+components/        React components (components/admin: custom admin UI)
+lib/payload/       Cached data queries and homepage logic
+scripts/archive/   Finished one-off migrations. Do not run
 ```
 
-## Content Management
+## Caching
 
-All content is managed via Sanity Studio at `/studio`:
-
-- **Work** — Client projects and creative work (filterable by category: AI & Production, Video Production, AI Films, Music, Comics & Writing)
-- **Projects** — Personal ventures and platforms (6DOF Reviews, humanimpact.news, etc.)
-- **Blog Posts** — Full blog with rich text, images, code blocks, and SEO fields
-- **Site Settings** — Hero text, about bio, social links, profile photo, analytics ID
+Pages are static or ISR. Data queries are wrapped in `unstable_cache` with tags (`work`, `studio`, `dispatch`, `clients`, `settings`, `homepage`), and collection hooks call `revalidateTag` on every change, so edits show up within about a minute.
 
 ## SEO
 
-- Auto-generated `sitemap.xml` at `/sitemap.xml`
-- `robots.txt` at `/robots.txt` (disallows `/studio`)
-- RSS feed at `/feed.xml`
-- OpenGraph metadata on all pages
-- Google Analytics — add your GA measurement ID to Site Settings in Sanity
-
-## Future
-
-- `/services` page is a coming-soon placeholder — ready for Stripe integration
-- Add ISR + Sanity webhooks for on-demand revalidation when content changes
+`/sitemap.xml`, `/robots.txt`, `/feed.xml` (RSS), per-page Open Graph images, and JSON-LD (Person, WebSite, CreativeWork, Article, BreadcrumbList).

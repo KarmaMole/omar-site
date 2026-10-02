@@ -1,38 +1,58 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
-export default function CustomCursor() {
+/** Elements that should light up the cursor ring. */
+const INTERACTIVE = "a, button, [role='button'], input[type='submit']";
+/** Elements where the native cursor (text caret, iframe pointer) must stay. */
+const NATIVE =
+  "input:not([type='submit']):not([type='button']):not([type='reset']):not([type='checkbox']):not([type='radio']), textarea, select, [contenteditable]:not([contenteditable='false']), iframe";
+
+/** Hide the native cursor everywhere except where the user needs it. */
+const CURSOR_CSS = `
+body, a, button, [role='button'], label { cursor: none !important; }
+${NATIVE} { cursor: auto !important; }
+`;
+
+function CursorLayer() {
   const circleRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
-  const mouse = useRef({ x: -100, y: -100 });
-  const circle = useRef({ x: -100, y: -100 });
-  const hoveringRef = useRef(false);
-  const visibleRef = useRef(false);
-  const [, forceRender] = useState(0);
+  const resetHoverRef = useRef<() => void>(() => {});
+  const pathname = usePathname();
 
   useEffect(() => {
-    // Only show on devices with hover capability
-    const mq = window.matchMedia("(hover: hover)");
-    if (!mq.matches) return;
+    const mouse = { x: -100, y: -100 };
+    const circle = { x: -100, y: -100 };
+    let hovering = false;
+    let inWindow = false;
+    let overNative = false;
+    let shown = false;
+    let hasPosition = false;
+    let raf = 0;
 
-    // Hide native cursor
-    document.body.style.cursor = "none";
     const style = document.createElement("style");
-    style.textContent =
-      "a, button, [role='button'], input, textarea, select, label { cursor: none !important; }";
+    style.textContent = CURSOR_CSS;
     document.head.appendChild(style);
 
-    const setVisible = (v: boolean) => {
-      if (visibleRef.current === v) return;
-      visibleRef.current = v;
-      if (circleRef.current) circleRef.current.style.opacity = v ? "1" : "0";
-      if (dotRef.current) dotRef.current.style.opacity = v ? "1" : "0";
+    const syncVisible = () => {
+      const v = inWindow && !overNative;
+      if (v === shown) return;
+      shown = v;
+      const opacity = v ? "1" : "0";
+      if (circleRef.current) circleRef.current.style.opacity = opacity;
+      if (dotRef.current) dotRef.current.style.opacity = opacity;
+    };
+
+    const placeCircle = () => {
+      if (!circleRef.current) return;
+      const offset = hovering ? 24 : 12;
+      circleRef.current.style.transform = `translate(${circle.x - offset}px, ${circle.y - offset}px)`;
     };
 
     const setHovering = (h: boolean) => {
-      if (hoveringRef.current === h) return;
-      hoveringRef.current = h;
+      if (hovering === h) return;
+      hovering = h;
       if (circleRef.current) {
         const size = h ? 48 : 24;
         circleRef.current.style.width = `${size}px`;
@@ -41,111 +61,101 @@ export default function CustomCursor() {
           ? "rgba(0, 217, 255, 1)"
           : "rgba(0, 217, 255, 0.5)";
       }
+      placeCircle();
     };
 
-    const onMouseMove = (e: MouseEvent) => {
-      mouse.current = { x: e.clientX, y: e.clientY };
-      if (!visibleRef.current) setVisible(true);
+    // Ease the ring toward the pointer; stop looping once it has caught up.
+    const tick = () => {
+      const dx = mouse.x - circle.x;
+      const dy = mouse.y - circle.y;
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        circle.x = mouse.x;
+        circle.y = mouse.y;
+        placeCircle();
+        raf = 0;
+        return;
+      }
+      circle.x += dx * 0.15;
+      circle.y += dy * 0.15;
+      placeCircle();
+      raf = requestAnimationFrame(tick);
+    };
+    const kick = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
 
-      // Update dot immediately
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      if (!hasPosition) {
+        // First sighting: appear in place instead of flying in from the corner.
+        hasPosition = true;
+        circle.x = mouse.x;
+        circle.y = mouse.y;
+        placeCircle();
+      }
+      inWindow = true;
+      syncVisible();
       if (dotRef.current) {
         dotRef.current.style.transform = `translate(${e.clientX - 2}px, ${e.clientY - 2}px)`;
       }
+      kick();
     };
 
-    const onMouseEnterInteractive = () => setHovering(true);
-    const onMouseLeaveInteractive = () => setHovering(false);
-
-    const onMouseLeave = () => setVisible(false);
-    const onMouseEnter = () => setVisible(true);
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseleave", onMouseLeave);
-    document.addEventListener("mouseenter", onMouseEnter);
-
-    // Observe interactive elements for hover state
-    const addListeners = () => {
-      const interactives = document.querySelectorAll(
-        "a, button, [role='button'], input[type='submit']"
-      );
-      interactives.forEach((el) => {
-        el.addEventListener("mouseenter", onMouseEnterInteractive);
-        el.addEventListener("mouseleave", onMouseLeaveInteractive);
-      });
-      return interactives;
+    // One delegated listener pair replaces per-element binding.
+    const onOver = (e: PointerEvent) => {
+      if (e.pointerType === "touch") return;
+      const target = e.target instanceof Element ? e.target : null;
+      inWindow = true;
+      overNative = Boolean(target?.closest(NATIVE));
+      setHovering(Boolean(target?.closest(INTERACTIVE)));
+      syncVisible();
+      kick();
     };
 
-    let interactives = addListeners();
-
-    // Re-observe on DOM changes (debounced to prevent listener thrashing)
-    let mutationRaf: number | null = null;
-    let mutationTimeout: ReturnType<typeof setTimeout> | null = null;
-    const observer = new MutationObserver((mutations) => {
-      // Skip mutations inside lightbox portal (aria-modal dialogs)
-      const isLightbox = mutations.every((m) =>
-        (m.target as Element).closest?.("[aria-modal]")
-      );
-      if (isLightbox) return;
-
-      if (mutationRaf) return;
-      // Debounce with a small delay to batch rapid DOM changes
-      if (mutationTimeout) clearTimeout(mutationTimeout);
-      mutationTimeout = setTimeout(() => {
-        mutationRaf = requestAnimationFrame(() => {
-          interactives.forEach((el) => {
-            el.removeEventListener("mouseenter", onMouseEnterInteractive);
-            el.removeEventListener("mouseleave", onMouseLeaveInteractive);
-          });
-          interactives = addListeners();
-          mutationRaf = null;
-        });
-      }, 100);
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    // Smooth follow with rAF
-    let raf: number;
-    const animate = () => {
-      const dx = mouse.current.x - circle.current.x;
-      const dy = mouse.current.y - circle.current.y;
-      circle.current.x += dx * 0.15;
-      circle.current.y += dy * 0.15;
-
-      if (circleRef.current) {
-        const size = hoveringRef.current ? 48 : 24;
-        const offset = size / 2;
-        circleRef.current.style.transform = `translate(${circle.current.x - offset}px, ${circle.current.y - offset}px)`;
+    const onOut = (e: PointerEvent) => {
+      // relatedTarget is null when the pointer leaves the window.
+      if (e.relatedTarget === null) {
+        inWindow = false;
+        overNative = false;
+        setHovering(false);
+        syncVisible();
       }
-
-      raf = requestAnimationFrame(animate);
     };
-    raf = requestAnimationFrame(animate);
 
-    // Trigger a single render to show the cursor elements
-    forceRender(1);
+    resetHoverRef.current = () => {
+      setHovering(false);
+      overNative = false;
+      syncVisible();
+    };
+
+    document.addEventListener("pointermove", onMove, { passive: true });
+    document.addEventListener("pointerover", onOver, { passive: true });
+    document.addEventListener("pointerout", onOut, { passive: true });
 
     return () => {
-      document.body.style.cursor = "";
+      document.removeEventListener("pointermove", onMove);
+      document.removeEventListener("pointerover", onOver);
+      document.removeEventListener("pointerout", onOut);
+      if (raf) cancelAnimationFrame(raf);
       style.remove();
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseleave", onMouseLeave);
-      document.removeEventListener("mouseenter", onMouseEnter);
-      interactives.forEach((el) => {
-        el.removeEventListener("mouseenter", onMouseEnterInteractive);
-        el.removeEventListener("mouseleave", onMouseLeaveInteractive);
-      });
-      observer.disconnect();
-      if (mutationTimeout) clearTimeout(mutationTimeout);
-      if (mutationRaf) cancelAnimationFrame(mutationRaf);
-      cancelAnimationFrame(raf);
+      resetHoverRef.current = () => {};
     };
   }, []);
 
+  // The element under the pointer is replaced on navigation without a
+  // pointerout, so clear the hover ring when the route changes.
+  useEffect(() => {
+    resetHoverRef.current();
+  }, [pathname]);
+
   return (
     <>
-      {/* Circle outline - smoothly follows */}
+      {/* Circle outline, smoothly follows */}
       <div
         ref={circleRef}
+        aria-hidden="true"
         className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full border transition-[width,height,border-color,opacity] duration-200"
         style={{
           width: 24,
@@ -154,9 +164,10 @@ export default function CustomCursor() {
           opacity: 0,
         }}
       />
-      {/* Precision dot - follows mouse exactly */}
+      {/* Precision dot, follows the pointer exactly */}
       <div
         ref={dotRef}
+        aria-hidden="true"
         className="pointer-events-none fixed left-0 top-0 z-[9999] rounded-full bg-cyan"
         style={{
           width: 4,
@@ -166,4 +177,24 @@ export default function CustomCursor() {
       />
     </>
   );
+}
+
+export default function CustomCursor() {
+  const [enabled, setEnabled] = useState(false);
+
+  // Only for fine pointers (mouse, trackpad) and only when motion is welcome.
+  useEffect(() => {
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setEnabled(fine.matches && !reduce.matches);
+    update();
+    fine.addEventListener("change", update);
+    reduce.addEventListener("change", update);
+    return () => {
+      fine.removeEventListener("change", update);
+      reduce.removeEventListener("change", update);
+    };
+  }, []);
+
+  return enabled ? <CursorLayer /> : null;
 }

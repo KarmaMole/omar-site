@@ -21,29 +21,23 @@ const config: Config = {
           100: '#f5f5f5',
           200: '#e5e5e5',
           300: '#a3a3a3',
+          // Readable muted text: 5.7:1 on #0a0a0a, 5.3:1 on #141414 (AA). Use instead of light-300/NN on text.
+          400: '#8a8a8a',
         },
         cyan: {
           DEFAULT: '#00d9ff',
-          dark: '#00b8d9',
-          glow: 'rgba(0, 217, 255, 0.15)',
-          strong: 'var(--color-accent-strong)',
-          medium: 'var(--color-accent-medium)',
-          subtle: 'var(--color-accent-subtle)',
         },
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         serif: ['var(--font-serif)', 'Source Serif 4', 'Georgia', 'serif'],
         mono: ['var(--font-mono)', 'JetBrains Mono', 'monospace'],
-        display: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         "hero": "clamp(3rem, 8vw, 8rem)",
-        "hero-sub": "clamp(1.25rem, 2.5vw, 2rem)",
       },
       letterSpacing: {
         'display': '-0.04em',
-        'tight-xl': '-0.03em',
       },
       transitionTimingFunction: {
         'spring-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
@@ -64,28 +58,13 @@ const config: Config = {
         lg: '4px',
       },
       keyframes: {
-        'fade-up': {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
         'fade-in': {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        'slide-in': {
-          '0%': { opacity: '0', transform: 'translateX(-20px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        'glow-pulse': {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '1' },
-        },
       },
       animation: {
-        'fade-up': 'fade-up 0.6s ease-out forwards',
         'fade-in': 'fade-in 0.4s ease-out forwards',
-        'slide-in': 'slide-in 0.5s ease-out forwards',
-        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
       },
     },
   },

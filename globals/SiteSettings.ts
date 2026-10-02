@@ -80,13 +80,5 @@ export const SiteSettings: GlobalConfig = {
         },
       ],
     },
-    {
-      name: "googleAnalyticsId",
-      type: "text",
-      label: "Google Analytics ID",
-      admin: {
-        position: "sidebar",
-      },
-    },
   ],
 };

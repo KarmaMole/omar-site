@@ -599,13 +599,22 @@ export default function TronGame() {
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      const isSelect = e.key === " " || e.key === "Enter";
+      // Space/Enter on a focused link or button belongs to that control
+      // (the START button, the skip-to-CV link), not to the game.
+      const onControl = e.target instanceof Element && e.target.closest("a, button") !== null;
+
       if (phase === "ready") {
+        // Only deliberate keys start the game, so Tab and friends pass through.
+        const isStartKey = isSelect || e.key.startsWith("Arrow");
+        if (!isStartKey || (isSelect && onControl)) return;
         e.preventDefault();
         startGame();
         return;
       }
 
-      if (phase === "lost" && (e.key === " " || e.key === "Enter")) {
+      if (phase === "lost" && isSelect) {
+        if (onControl) return;
         e.preventDefault();
         startGame();
         return;
@@ -782,6 +791,17 @@ export default function TronGame() {
 
   return (
     <div className="relative flex flex-col h-[calc(100dvh-3.5rem)] lg:h-[100dvh] select-none overflow-hidden touch-none">
+      {/* Quiet escape hatch: the CV is public, so it should not be gated behind winning */}
+      {phase !== "playing" && phase !== "won" && (
+        <a
+          href="/Omar Kamel CV2026.pdf"
+          download
+          className="absolute top-3 right-4 z-40 font-mono text-[10px] tracking-widest uppercase text-light-400 hover:text-cyan transition-colors"
+        >
+          Skip the game, download CV
+        </a>
+      )}
+
       {/* CRT scanline overlay */}
       <div
         className="pointer-events-none absolute inset-0 z-20"
@@ -835,7 +855,7 @@ export default function TronGame() {
                 Arrow keys or WASD to steer
               </p>
               <p className="md:hidden">Swipe or tap to steer</p>
-              <p className="text-white/40 text-xs mt-2">
+              <p className="text-light-400 text-xs mt-2">
                 Outlast both opponents to unlock access
               </p>
             </div>
@@ -874,7 +894,7 @@ export default function TronGame() {
             </div>
             <div className="font-mono text-light-300 text-sm space-y-1">
               <p>Decryption complete.</p>
-              <p className="text-white/40 text-xs">
+              <p className="text-light-400 text-xs">
                 All opponents derezzed.
               </p>
             </div>
@@ -913,7 +933,7 @@ export default function TronGame() {
             >
               RETRY
             </button>
-            <p className="font-mono text-white/30 text-xs">
+            <p className="font-mono text-light-400 text-xs">
               Press Space or tap to retry
             </p>
           </div>
@@ -923,7 +943,7 @@ export default function TronGame() {
       {/* Mobile touch hint */}
       {phase === "playing" && (
         <div className="md:hidden absolute bottom-4 left-0 right-0 z-10 text-center">
-          <span className="font-mono text-white/20 text-xs">
+          <span className="font-mono text-light-400 text-xs">
             swipe or tap sides to turn
           </span>
         </div>

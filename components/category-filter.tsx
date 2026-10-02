@@ -1,31 +1,18 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import ScrollFilters from "@/components/scroll-filters";
 import FilterPill from "@/components/filter-pill";
+import { WORK_CATEGORIES, sameCategory } from "@/lib/categories";
 import type { WorkDoc } from "@/lib/payload/types";
-
-const ALL_CATEGORIES = [
-  "Commercial",
-  "Corporate",
-  "Documentary",
-  "AI Production",
-  "Design",
-  "Digital",
-  "Awareness",
-];
 
 interface CategoryFilterProps {
   work: WorkDoc[];
+  /** Active category from the URL, if any (matched case-insensitively) */
+  activeCategory: string | null;
 }
 
-export default function CategoryFilter({ work }: CategoryFilterProps) {
-  const searchParams = useSearchParams();
-  const activeCategory = searchParams.get("category") || null;
-
+export default function CategoryFilter({ work, activeCategory }: CategoryFilterProps) {
   // Only show categories that have at least one item
-  const categories = ALL_CATEGORIES.filter((cat) =>
-    work.some((w) => w.categories?.some((c) => c.toLowerCase() === cat.toLowerCase()))
+  const categories = WORK_CATEGORIES.filter((cat) =>
+    work.some((w) => w.categories?.some((c) => sameCategory(c, cat)))
   );
 
   return (
@@ -37,7 +24,7 @@ export default function CategoryFilter({ work }: CategoryFilterProps) {
             key={category}
             href={`/work?category=${encodeURIComponent(category)}`}
             label={category}
-            active={activeCategory === category}
+            active={sameCategory(activeCategory, category)}
           />
         ))}
       </ScrollFilters>

@@ -11,22 +11,34 @@ import MoreItems from "@/components/more-items";
 import GalleryGrid from "@/components/gallery-grid";
 import { formatDate } from "@/lib/utils";
 import { SITE_URL } from "@/lib/constants";
+import { absUrl } from "@/lib/abs-url";
+import { describeFromRichText } from "@/lib/seo-text";
+import type { WorkDoc } from "@/lib/payload/types";
 
 interface WorkDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+/** "Title for Client", or just the title when there is no client. */
+function workTitle(work: WorkDoc): string {
+  return work.client ? `${work.title} for ${work.client}` : work.title;
+}
+
+/** CMS rich text first (trimmed at a word boundary); templated fallback otherwise. */
+function workDescription(work: WorkDoc): string {
+  const fallback = [workTitle(work), work.roleCredits, work.categories?.join(", ")]
+    .filter((part): part is string => Boolean(part && part.length > 0))
+    .join(". ");
+  return describeFromRichText(work.description, fallback);
+}
+
 export async function generateMetadata({ params }: WorkDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const work = await getWorkBySlug(slug);
-  if (!work) return {};
-  const title = work.client ? `${work.title}: ${work.client}` : work.title;
-  const descriptionParts = [
-    work.client ? `${work.title} for ${work.client}` : work.title,
-    work.roleCredits,
-    work.categories?.join(", "),
-  ].filter((part): part is string => Boolean(part && part.length > 0));
-  const description = descriptionParts.join(". ");
+  // Throwing here (not just in the page) makes missing slugs a real 404
+  if (!work) notFound();
+  const title = workTitle(work);
+  const description = workDescription(work);
   return {
     title,
     description,
@@ -65,8 +77,8 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: work.title,
-    description: `${work.title}${work.client ? ` for ${work.client}` : ""}`,
-    ...(cover?.url ? { image: cover.url } : {}),
+    description: workDescription(work),
+    ...(cover?.url ? { image: absUrl(cover.url) } : {}),
     ...(work.date ? { datePublished: work.date } : {}),
     author: {
       "@type": "Person",
@@ -114,7 +126,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <h1 className="text-4xl md:text-5xl font-light text-light-100 mb-4">{work.title}</h1>
         {work.date && <p className="text-sm text-light-300 font-mono mb-6">{formatDate(work.date)}</p>}
         <div className="mb-8" />
-        {work.description ? <RichText data={work.description} className="mb-10" /> : null}
+        {work.description ? <RichText data={work.description} className="mb-10" embedTitle={work.title} /> : null}
         {work.gallery && Array.isArray(work.gallery) && work.gallery.length > 0 && (
           <GalleryGrid
             images={work.gallery.filter(
@@ -126,7 +138,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         )}
         {work.media && work.media.length > 0 && (
           <div className="space-y-6 mb-10">
-            {work.media.map((embed) => (<MediaEmbedComponent key={embed.url} embed={embed} />))}
+            {work.media.map((embed) => (<MediaEmbedComponent key={embed.url} embed={embed} title={work.title} />))}
           </div>
         )}
         {work.externalLink && (
@@ -134,7 +146,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
             View Project &rarr;
           </a>
         )}
-        <ShareRow title={work.client ? `${work.title}: ${work.client}` : work.title} url={`${SITE_URL}/work/${slug}`} />
+        <ShareRow title={workTitle(work)} url={`${SITE_URL}/work/${slug}`} />
         <MoreWork currentSlug={slug} />
       </div>
     </div>

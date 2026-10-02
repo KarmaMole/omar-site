@@ -5,15 +5,18 @@ import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
 import ShareRow from "@/components/share-row";
 import TagBadge from "@/components/tag-badge";
-import Markdown from "react-markdown";
+import Markdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import MediaEmbedComponent from "@/components/media-embed";
 import { splitBodyByEmbeds } from "@/lib/parse-embeds";
 import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from "@/lib/payload/queries";
 import MoreItems from "@/components/more-items";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatDateShort } from "@/lib/utils";
 import { sourceSerif } from "@/lib/fonts";
 import { SITE_URL } from "@/lib/constants";
+import { absUrl } from "@/lib/abs-url";
+import { stripEmDashes } from "@/lib/seo-text";
+import { dispatchHref } from "@/lib/dispatch-link";
 
 interface DispatchPostPageProps {
   params: Promise<{ slug: string }>;
@@ -22,7 +25,8 @@ interface DispatchPostPageProps {
 export async function generateMetadata({ params }: DispatchPostPageProps): Promise<Metadata> {
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
-  if (!post) return {};
+  // Throwing here (not just in the page) makes missing slugs a real 404
+  if (!post) notFound();
   // CMS meta.title often already contains brand suffix, so bypass the layout
   // template with `absolute` when it's set. Otherwise fall back to post.title
   // and let the template add the brand.
@@ -33,7 +37,7 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
   // Defensive trim: catches trailing whitespace on older posts whose
   // descriptions were sliced mid-word before the word-boundary fix.
   const rawDescription = post.meta?.description ?? post.excerpt ?? undefined;
-  const description = rawDescription?.trimEnd();
+  const description = rawDescription ? stripEmDashes(rawDescription.trimEnd()) : undefined;
   return {
     title,
     description,
@@ -57,6 +61,15 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
 
 export const revalidate = 60;
 
+// The page title is already the h1, so an h1 inside the markdown body is demoted
+// to h2 (some older posts open with their own "# Title").
+const markdownComponents: Components = {
+  h1: ({ node, ...props }) => {
+    void node;
+    return <h2 {...props} />;
+  },
+};
+
 export async function generateStaticParams() {
   const slugs = await getAllBlogSlugs();
   return slugs.map((slug) => ({ slug }));
@@ -68,7 +81,6 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
   if (!post) notFound();
 
   const cover = typeof post.coverImage === "object" && post.coverImage ? post.coverImage : null;
-  const categories = post.categories ?? [];
   const tags = post.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
 
   // Resolve image-N references in markdown body
@@ -89,7 +101,7 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
     ...(post.excerpt ? { description: post.excerpt } : {}),
     ...(post.date ? { datePublished: post.date } : {}),
     ...(post.updatedAt ? { dateModified: post.updatedAt } : {}),
-    ...(cover?.url ? { image: cover.url } : {}),
+    ...(cover?.url ? { image: absUrl(cover.url) } : {}),
     author: {
       "@type": "Person",
       name: "Omar Kamel",
@@ -147,11 +159,11 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
             {splitBodyByEmbeds(body).map((seg, i) =>
               seg.kind === "text" ? (
                 <div key={i} className="prose prose-lg prose-invert max-w-none leading-relaxed font-light">
-                  <Markdown remarkPlugins={[remarkGfm]}>{seg.content}</Markdown>
+                  <Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{seg.content}</Markdown>
                 </div>
               ) : (
                 <div key={i} className="my-8">
-                  <MediaEmbedComponent embed={seg.embed} />
+                  <MediaEmbedComponent embed={seg.embed} title={post.title} />
                 </div>
               ),
             )}
@@ -174,13 +186,17 @@ async function MoreDispatch({ currentSlug }: { currentSlug: string }) {
   return (
     <MoreItems
       variant="text"
-      items={others.map((p) => ({
-        slug: p.slug,
-        title: p.title,
-        href: `/dispatch/${p.slug}`,
-        subtitle: p.date ? new Date(p.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : undefined,
-        excerpt: p.excerpt ?? null,
-      }))}
+      items={others.map((p) => {
+        const { href, external } = dispatchHref(p);
+        return {
+          slug: p.slug,
+          title: p.title,
+          href,
+          external,
+          subtitle: p.date ? formatDateShort(p.date) : undefined,
+          excerpt: p.excerpt ?? null,
+        };
+      })}
       label="More Dispatch"
       viewAllHref="/dispatch"
       viewAllLabel="All Dispatch"

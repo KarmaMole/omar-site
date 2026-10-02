@@ -153,7 +153,7 @@ export default async function ServicesPage() {
                         <Link
                           key={ref.label}
                           href={ref.href}
-                          className="font-mono text-[10px] tracking-widest uppercase text-light-300/70 border border-white/[0.07] px-3 py-1.5 hover:text-cyan hover:border-cyan/30 transition-colors"
+                          className="font-mono text-[10px] tracking-widest uppercase text-light-400 border border-white/[0.07] px-3 py-1.5 hover:text-cyan hover:border-cyan/30 transition-colors"
                         >
                           {ref.label}
                         </Link>
@@ -206,7 +206,7 @@ export default async function ServicesPage() {
                   {clients.slice(0, 18).map((client) => (
                     <span
                       key={client.id}
-                      className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-300/70"
+                      className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-400"
                     >
                       {client.name}
                     </span>

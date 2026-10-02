@@ -19,7 +19,7 @@ export default function Error({
         <p className="text-[#f5f5f5]/70 text-lg mb-2 font-mono">
           Something went wrong.
         </p>
-        <p className="text-[#f5f5f5]/40 text-sm mb-8 font-mono">
+        <p className="text-[#8a8a8a] text-sm mb-8 font-mono">
           {error.digest ? `Ref: ${error.digest}` : error.message}
         </p>
         <button

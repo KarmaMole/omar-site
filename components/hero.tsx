@@ -38,7 +38,7 @@ export default async function Hero() {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan/10 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/4" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12">
-        {/* Option B: Everything stacked vertically */}
+        {/* Content stacked vertically */}
         <div className="max-w-3xl">
           <HeroAnimations animation="fade-up" delay={300}>
             <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-cyan mb-5">
@@ -83,7 +83,7 @@ export default async function Hero() {
 
       {/* Bottom scroll indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-        <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-light-300/60">
+        <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-light-400">
           Scroll
         </span>
         <div className="w-px h-6 bg-gradient-to-b from-light-300/60 to-transparent" />

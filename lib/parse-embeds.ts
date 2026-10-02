@@ -1,4 +1,5 @@
 import type { MediaEmbed } from "@/lib/payload/types";
+import { hostMatches } from "@/lib/embed-url";
 
 export function matchEmbedUrl(rawUrl: string): MediaEmbed | null {
   const url = rawUrl.trim();
@@ -11,16 +12,16 @@ export function matchEmbedUrl(rawUrl: string): MediaEmbed | null {
     return null;
   }
 
-  if (host === "youtu.be" || host.endsWith("youtube.com") || host.endsWith("youtube-nocookie.com")) {
+  if (host === "youtu.be" || hostMatches(host, "youtube.com") || hostMatches(host, "youtube-nocookie.com")) {
     return { type: "youtube", url };
   }
-  if (host === "vimeo.com" || host.endsWith(".vimeo.com") || host === "player.vimeo.com") {
+  if (hostMatches(host, "vimeo.com")) {
     return { type: "vimeo", url };
   }
-  if (host === "soundcloud.com" || host.endsWith(".soundcloud.com")) {
+  if (hostMatches(host, "soundcloud.com")) {
     return { type: "soundcloud", url };
   }
-  if (host === "open.spotify.com" || host.endsWith(".spotify.com")) {
+  if (hostMatches(host, "spotify.com")) {
     return { type: "spotify", url };
   }
   return null;

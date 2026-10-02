@@ -62,6 +62,8 @@ export default buildConfig({
               media: true,
             },
             token: process.env.BLOB_READ_WRITE_TOKEN,
+            // Upload straight from the browser to Blob, bypassing the ~4.5 MB function body limit
+            clientUploads: true,
           }),
         ]
       : []),
@@ -74,10 +76,18 @@ export default buildConfig({
         (doc as { excerpt?: string }).excerpt ?? "",
     }),
   ],
+  // GraphQL is unused by the site, so it is switched off to shrink the API surface
   graphQL: {
-    maxComplexity: 1000,
-    disablePlaygroundInProduction: true,
+    disable: true,
   },
+  // Cap relationship depth on REST requests (the caller controls ?depth=)
+  maxDepth: 4,
+  // Cookie auth is only accepted from these origins
+  csrf: [
+    "https://omarkamel.com",
+    "https://www.omarkamel.com",
+    ...(process.env.NODE_ENV !== "production" ? ["http://localhost:3000"] : []),
+  ],
   sharp,
   admin: {
     avatar: "default",

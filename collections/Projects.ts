@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { PROJECT_CATEGORIES } from "@/lib/categories";
 import { revalidateTag } from "next/cache";
 import { resolveVimeoUrls } from "@/lib/resolve-vimeo";
 
@@ -41,8 +42,9 @@ export const Projects: CollectionConfig = {
       },
     ],
   },
+  versions: { maxPerDoc: 10 },
   access: {
-    read: () => true,
+    read: ({ req: { user } }) => (user ? true : { hidden: { not_equals: true } }),
     create: ({ req: { user } }) => !!user,
     update: ({ req: { user } }) => !!user,
     delete: ({ req: { user } }) => !!user,
@@ -66,15 +68,7 @@ export const Projects: CollectionConfig = {
       name: "categories",
       type: "select",
       hasMany: true,
-      options: [
-        { label: "Music", value: "Music" },
-        { label: "Visual", value: "Visual" },
-        { label: "Comics", value: "Comics" },
-        { label: "Film", value: "Film" },
-        { label: "AI", value: "AI" },
-        { label: "Photography", value: "Photography" },
-        { label: "Research", value: "Research" },
-      ],
+      options: PROJECT_CATEGORIES.map((value) => ({ label: value, value })),
       admin: {
         position: "sidebar",
       },

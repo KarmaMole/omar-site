@@ -8,6 +8,8 @@ interface MoreItem {
   title: string;
   coverImage?: MediaUpload | string | null;
   href: string;
+  /** True when href points off-site (opens in a new tab) */
+  external?: boolean;
   subtitle?: string;
   excerpt?: string | null;
 }
@@ -45,6 +47,7 @@ export default function MoreItems({ items, label = "More", viewAllHref, viewAllL
               <Link
                 key={item.slug}
                 href={item.href}
+                {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                 className="group block border-l border-white/[0.07] hover:border-cyan rounded-sm hover:bg-white/[0.02] transition-colors pl-5 py-1"
               >
                 {item.subtitle && (
@@ -75,7 +78,7 @@ export default function MoreItems({ items, label = "More", viewAllHref, viewAllL
                 <div className="relative aspect-video bg-dark-200 overflow-hidden rounded-[2px] mb-3">
                   <Image
                     src={(cover as MediaUpload).sizes?.card?.url ?? cover.url}
-                    alt={(cover as MediaUpload).alt ?? item.title}
+                    alt=""
                     fill
                     className="object-cover group-hover:scale-[1.03] transition-transform duration-300"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

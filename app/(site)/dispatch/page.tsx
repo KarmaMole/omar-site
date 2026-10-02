@@ -3,9 +3,11 @@ export const revalidate = 300;
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import JsonLd from "@/components/json-ld";
+import FadeIn from "@/components/fade-in";
 import { getAllBlogPosts } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
-import DispatchContent from "./dispatch-content";
+import DispatchView from "./dispatch-content";
+import DispatchFiltered from "./dispatch-filtered";
 
 export const metadata: Metadata = {
   title: "Dispatch",
@@ -13,6 +15,8 @@ export const metadata: Metadata = {
     "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",
   alternates: {
     canonical: "/dispatch",
+    // A child `alternates` replaces the layout's, so re-declare the feed link here.
+    types: { "application/rss+xml": "/feed.xml" },
   },
   openGraph: {
     title: "Dispatch: Omar Kamel",
@@ -53,9 +57,29 @@ export default async function DispatchPage() {
   };
 
   return (
-    <Suspense>
+    <>
       <JsonLd data={collectionJsonLd} />
-      <DispatchContent posts={posts} />
-    </Suspense>
+      <div className="pt-24 pb-16 animate-fade-in">
+        <div className="max-w-7xl mx-auto px-6">
+          {/* Header lives on the server, outside Suspense, so the h1 is in the static HTML */}
+          <FadeIn>
+            <div className="mb-12">
+              <span className="section-label">Field Notes</span>
+              <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
+                Dispatch
+              </h1>
+              <p className="text-light-300 mt-3">
+                articles on AI production, creative workflows, and industry insights.
+              </p>
+            </div>
+          </FadeIn>
+          {/* Fallback is the full unfiltered list, so crawlers and no-JS clients see every post.
+              DispatchFiltered applies ?category= and ?tag= after hydration. */}
+          <Suspense fallback={<DispatchView posts={posts} category={null} tag={null} />}>
+            <DispatchFiltered posts={posts} />
+          </Suspense>
+        </div>
+      </div>
+    </>
   );
 }

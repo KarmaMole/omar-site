@@ -14,8 +14,13 @@ export default function Error({
         Something went wrong
       </h1>
       <p className="mt-4 text-lg text-light-300">
-        {error.message || "An unexpected error occurred."}
+        Sorry, this page hit a problem. Please try again.
       </p>
+      {error.digest && (
+        <p className="mt-2 font-mono text-xs text-light-400">
+          Reference: {error.digest}
+        </p>
+      )}
       <button
         onClick={reset}
         className="mt-8 inline-block border border-cyan text-cyan px-6 py-3 text-sm font-mono transition-colors hover:bg-cyan hover:text-black rounded-[2px]"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface ShareRowProps {
   title: string;
@@ -9,7 +9,15 @@ interface ShareRowProps {
 }
 
 export default function ShareRow({ title, url, label = "Share" }: ShareRowProps) {
-  const [copied, setCopied] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const copied = copyState === "copied";
+
+  useEffect(() => {
+    return () => {
+      if (resetTimer.current) clearTimeout(resetTimer.current);
+    };
+  }, []);
 
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
@@ -17,13 +25,16 @@ export default function ShareRow({ title, url, label = "Share" }: ShareRowProps)
   const linkedInHref = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
 
   async function handleCopy() {
+    let next: "copied" | "failed" = "copied";
     try {
       await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
     } catch {
-      // clipboard blocked; fail silently
+      // Clipboard API unavailable or permission denied
+      next = "failed";
     }
+    setCopyState(next);
+    if (resetTimer.current) clearTimeout(resetTimer.current);
+    resetTimer.current = setTimeout(() => setCopyState("idle"), next === "copied" ? 1600 : 4000);
   }
 
   const iconClass =
@@ -31,7 +42,7 @@ export default function ShareRow({ title, url, label = "Share" }: ShareRowProps)
 
   return (
     <div className="mt-12 flex items-center gap-3">
-      <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-light-300/70 mr-1">
+      <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-light-400 mr-1">
         {label}
       </span>
       <a
@@ -59,7 +70,7 @@ export default function ShareRow({ title, url, label = "Share" }: ShareRowProps)
       <button
         type="button"
         onClick={handleCopy}
-        aria-label={copied ? "Link copied" : "Copy link"}
+        aria-label="Copy link"
         className={iconClass}
       >
         {copied ? (
@@ -73,11 +84,17 @@ export default function ShareRow({ title, url, label = "Share" }: ShareRowProps)
           </svg>
         )}
       </button>
-      {copied && (
-        <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-cyan">
-          Copied
-        </span>
-      )}
+      {/* Always mounted so screen readers announce the change */}
+      <span
+        role="status"
+        aria-live="polite"
+        className={`font-mono text-[10px] tracking-[0.15em] uppercase ${
+          copyState === "failed" ? "text-red-400" : "text-cyan"
+        }`}
+      >
+        {copyState === "copied" && "Copied"}
+        {copyState === "failed" && "Copy failed. Use the address bar."}
+      </span>
     </div>
   );
 }

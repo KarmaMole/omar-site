@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Not Found: Omar Kamel",
+  // The layout title template appends ": Omar Kamel"
+  title: "Not Found",
 };
 
 export default function NotFound() {

@@ -13,11 +13,40 @@ const navItems = [
   { href: "/about", label: "About" },
 ];
 
+/** "page" for an exact match, "true" when on a child page of that section. */
+function currentFor(pathname: string, href: string): "page" | "true" | undefined {
+  const clean = pathname.length > 1 ? pathname.replace(/\/$/, "") : pathname;
+  if (clean === href) return "page";
+  if (href !== "/" && clean.startsWith(`${href}/`)) return "true";
+  return undefined;
+}
+
 export default function Nav() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+  // Close the menu whenever the route changes
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
+  // Lock page scroll while the menu is open, and close if the viewport grows to desktop
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setMobileOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => {
+      document.body.style.overflow = prev;
+      mq.removeEventListener("change", onChange);
+    };
+  }, [mobileOpen]);
 
   // Focus trap for mobile menu
   useEffect(() => {
@@ -64,6 +93,7 @@ export default function Nav() {
                 key={item.href}
                 href={item.href}
                 prefetch={false}
+                aria-current={currentFor(pathname, item.href)}
                 className={`font-mono text-[10px] tracking-[0.2em] uppercase transition-all duration-200 [writing-mode:vertical-lr] rotate-180 px-1.5 py-2 border-l-2 ${
                   isActive
                     ? "text-cyan bg-cyan/5 border-cyan shadow-[0_0_8px_rgba(0,217,255,0.4)]"
@@ -96,6 +126,8 @@ export default function Nav() {
           onClick={() => setMobileOpen(!mobileOpen)}
           className="text-light-100 p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-menu"
         >
           <div className="w-6 flex flex-col gap-1.5">
             <span className={`block h-px bg-current transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[3.5px]" : ""}`} />
@@ -107,6 +139,7 @@ export default function Nav() {
       {/* Mobile Fullscreen Menu */}
       <div
         ref={menuRef}
+        id="mobile-menu"
         role="dialog"
         aria-modal="true"
         aria-label="Navigation menu"
@@ -124,6 +157,7 @@ export default function Nav() {
               href={item.href}
               prefetch={false}
               onClick={() => setMobileOpen(false)}
+              aria-current={currentFor(pathname, item.href)}
               className={`text-4xl font-light tracking-tight transition-all duration-300 pl-4 -ml-4 border-l-2 ${
                 isActive ? "text-cyan border-cyan bg-cyan/5" : "text-light-100 hover:text-cyan border-transparent"
               } ${mobileOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-4"}`}
@@ -148,6 +182,19 @@ export default function Nav() {
             Start a Project &rarr;
           </Link>
         </div>
+        {/* Reachable close control inside the trapped region. Visible only when focused,
+            since the header toggle already shows an X for pointer users. */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setMobileOpen(false);
+            hamburgerRef.current?.focus();
+          }}
+          className="sr-only focus:not-sr-only focus:absolute focus:bottom-8 focus:left-12 font-mono text-[10px] tracking-widest uppercase text-light-300 px-3 py-2 border border-white/20"
+        >
+          Close menu
+        </button>
       </div>
     </>
   );

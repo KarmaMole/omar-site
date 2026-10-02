@@ -9,6 +9,9 @@ import type {
 } from "./types";
 import { toHomepageConfig, type HomepageConfig } from "./homepage";
 
+// Upper bound for list queries so nothing is silently truncated
+const LIST_LIMIT = 1000;
+
 // ─── Site Settings ──────────────────────────────────────────────
 
 export const getSiteSettings: () => Promise<SiteSettingsDoc> = unstable_cache(
@@ -41,7 +44,7 @@ export const getAllWork: () => Promise<WorkDoc[]> = unstable_cache(
       collection: "work",
       where: { hidden: { not_equals: true } },
       sort: "-sortOrder",
-      limit: 100,
+      limit: LIST_LIMIT,
       depth: 1,
       select: {
         title: true,
@@ -115,7 +118,7 @@ export const getWorkBySlug: (slug: string) => Promise<WorkDoc | null> = unstable
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "work",
-      where: { slug: { equals: slug } },
+      where: { slug: { equals: slug }, hidden: { not_equals: true } },
       limit: 1,
       depth: 2,
     });
@@ -140,6 +143,26 @@ export const getAllWorkSlugs: () => Promise<string[]> = unstable_cache(
   { tags: ["work"], revalidate: 3600 }
 );
 
+/** Slug and last-modified date pairs for the sitemap. */
+export const getWorkSitemapEntries: () => Promise<{ slug: string; updatedAt: string }[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "work",
+      where: { hidden: { not_equals: true } },
+      limit: LIST_LIMIT,
+      depth: 0,
+      select: { slug: true, updatedAt: true },
+    });
+    return (result.docs as unknown as { slug: string; updatedAt: string }[]).map((d) => ({
+      slug: d.slug,
+      updatedAt: d.updatedAt,
+    }));
+  },
+  ["getWorkSitemapEntries"],
+  { tags: ["work"], revalidate: 3600 }
+);
+
 // ─── Projects ───────────────────────────────────────────────────
 
 export const getAllProjects: () => Promise<ProjectDoc[]> = unstable_cache(
@@ -149,7 +172,7 @@ export const getAllProjects: () => Promise<ProjectDoc[]> = unstable_cache(
       collection: "projects",
       where: { hidden: { not_equals: true } },
       sort: "-sortOrder",
-      limit: 100,
+      limit: LIST_LIMIT,
       depth: 1,
       select: {
         title: true,
@@ -198,7 +221,7 @@ export const getProjectBySlug: (slug: string) => Promise<ProjectDoc | null> = un
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "projects",
-      where: { slug: { equals: slug } },
+      where: { slug: { equals: slug }, hidden: { not_equals: true } },
       limit: 1,
       depth: 2,
     });
@@ -220,6 +243,26 @@ export const getAllProjectSlugs: () => Promise<string[]> = unstable_cache(
     return (result.docs as unknown as ProjectDoc[]).map((d) => d.slug);
   },
   ["getAllProjectSlugs"],
+  { tags: ["studio"], revalidate: 3600 }
+);
+
+/** Slug and last-modified date pairs for the sitemap. */
+export const getProjectSitemapEntries: () => Promise<{ slug: string; updatedAt: string }[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "projects",
+      where: { hidden: { not_equals: true } },
+      limit: LIST_LIMIT,
+      depth: 0,
+      select: { slug: true, updatedAt: true },
+    });
+    return (result.docs as unknown as { slug: string; updatedAt: string }[]).map((d) => ({
+      slug: d.slug,
+      updatedAt: d.updatedAt,
+    }));
+  },
+  ["getProjectSitemapEntries"],
   { tags: ["studio"], revalidate: 3600 }
 );
 
@@ -248,13 +291,15 @@ export const getAllBlogPosts: () => Promise<BlogPostDoc[]> = unstable_cache(
     const result = await payload.find({
       collection: "blog-posts",
       sort: "-date",
-      limit: 100,
+      limit: LIST_LIMIT,
       depth: 1,
       select: {
         title: true,
         slug: true,
         date: true,
         excerpt: true,
+        categories: true,
+        tags: true,
         coverImage: true,
         isExternal: true,
         publicationName: true,
@@ -308,5 +353,24 @@ export const getAllBlogSlugs: () => Promise<string[]> = unstable_cache(
     return (result.docs as unknown as BlogPostDoc[]).map((d) => d.slug);
   },
   ["getAllBlogSlugs"],
+  { tags: ["dispatch"], revalidate: 3600 }
+);
+
+/** Slug and last-modified date pairs for the sitemap. */
+export const getBlogSitemapEntries: () => Promise<{ slug: string; updatedAt: string }[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "blog-posts",
+      limit: LIST_LIMIT,
+      depth: 0,
+      select: { slug: true, updatedAt: true },
+    });
+    return (result.docs as unknown as { slug: string; updatedAt: string }[]).map((d) => ({
+      slug: d.slug,
+      updatedAt: d.updatedAt,
+    }));
+  },
+  ["getBlogSitemapEntries"],
   { tags: ["dispatch"], revalidate: 3600 }
 );

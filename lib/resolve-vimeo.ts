@@ -1,6 +1,10 @@
+import { parseVimeo } from "./embed-url";
+
 /**
  * Resolves Vimeo vanity URLs to numeric IDs via the oEmbed API.
  * Called in beforeChange hooks so the database always stores numeric URLs.
+ * Unlisted privacy hashes (vimeo.com/ID/HASH or ?h=HASH) are preserved,
+ * otherwise the video would not play.
  */
 export async function resolveVimeoUrls(
   media: { type: string; url: string; id?: string }[] | undefined | null
@@ -11,11 +15,14 @@ export async function resolveVimeoUrls(
     media.map(async (item) => {
       if (item.type !== "vimeo") return item;
 
-      // Extract numeric ID from any Vimeo URL format (/manage/videos/ID, /video/ID, /ID)
-      const numericMatch = item.url.match(/vimeo\.com\/(?:.*\/)?(\d+)/);
-      if (numericMatch) {
-        // Normalize to clean format
-        return { ...item, url: `https://vimeo.com/${numericMatch[1]}` };
+      // Extract numeric ID (and unlisted hash) from any Vimeo URL format
+      // (/manage/videos/ID, /video/ID, /ID, /ID/HASH, player ?h=HASH)
+      const parsed = parseVimeo(item.url);
+      if (parsed) {
+        const clean = parsed.hash
+          ? `https://vimeo.com/${parsed.id}/${parsed.hash}`
+          : `https://vimeo.com/${parsed.id}`;
+        return { ...item, url: clean };
       }
 
       try {

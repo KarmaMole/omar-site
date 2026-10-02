@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { DISPATCH_CATEGORIES } from "@/lib/categories";
 import { revalidateTag } from "next/cache";
 
 export const BlogPosts: CollectionConfig = {
@@ -12,6 +13,7 @@ export const BlogPosts: CollectionConfig = {
     defaultColumns: ["title", "date", "tags"],
     group: "Content",
   },
+  versions: { maxPerDoc: 10 },
   access: {
     read: () => true,
     create: ({ req: { user } }) => !!user,
@@ -160,13 +162,7 @@ export const BlogPosts: CollectionConfig = {
       name: "categories",
       type: "select",
       hasMany: true,
-      options: [
-        { label: "AI Production", value: "AI Production" },
-        { label: "Workflows", value: "Workflows" },
-        { label: "Industry", value: "Industry" },
-        { label: "Tools", value: "Tools" },
-        { label: "Case Studies", value: "Case Studies" },
-      ],
+      options: DISPATCH_CATEGORIES.map((value) => ({ label: value, value })),
       admin: {
         position: "sidebar",
       },

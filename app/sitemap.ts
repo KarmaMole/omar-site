@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getAllWorkSlugs, getAllProjectSlugs, getAllBlogSlugs } from "@/lib/payload/queries";
+import { getWorkSitemapEntries, getProjectSitemapEntries, getBlogSitemapEntries } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
 
 export const revalidate = 3600;
@@ -7,33 +7,28 @@ export const revalidate = 3600;
 const baseUrl = SITE_URL;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [workSlugs, projectSlugs, blogSlugs] = await Promise.all([
-    getAllWorkSlugs(),
-    getAllProjectSlugs(),
-    getAllBlogSlugs(),
+  const [work, projects, posts] = await Promise.all([
+    getWorkSitemapEntries(),
+    getProjectSitemapEntries(),
+    getBlogSitemapEntries(),
   ]);
 
+  // Google ignores priority and changeFrequency; lastModified is what it uses
   const staticPages: MetadataRoute.Sitemap = [
-    { url: baseUrl, changeFrequency: "weekly", priority: 1 },
-    { url: `${baseUrl}/work`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/services`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${baseUrl}/studio`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/dispatch`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${baseUrl}/about`, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${baseUrl}/contact`, changeFrequency: "yearly", priority: 0.5 },
+    { url: baseUrl },
+    { url: `${baseUrl}/work` },
+    { url: `${baseUrl}/services` },
+    { url: `${baseUrl}/studio` },
+    { url: `${baseUrl}/dispatch` },
+    { url: `${baseUrl}/about` },
+    { url: `${baseUrl}/contact` },
   ];
 
-  const workPages: MetadataRoute.Sitemap = workSlugs.map((slug) => ({
-    url: `${baseUrl}/work/${slug}`, changeFrequency: "monthly", priority: 0.6,
-  }));
+  const entries = (path: string, docs: { slug: string; updatedAt?: string | null }[]) =>
+    docs.map((doc) => ({
+      url: `${baseUrl}/${path}/${doc.slug}`,
+      ...(doc.updatedAt ? { lastModified: new Date(doc.updatedAt) } : {}),
+    }));
 
-  const studioPages: MetadataRoute.Sitemap = projectSlugs.map((slug) => ({
-    url: `${baseUrl}/studio/${slug}`, changeFrequency: "monthly", priority: 0.6,
-  }));
-
-  const dispatchPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-    url: `${baseUrl}/dispatch/${slug}`, changeFrequency: "monthly", priority: 0.7,
-  }));
-
-  return [...staticPages, ...workPages, ...studioPages, ...dispatchPages];
+  return [...staticPages, ...entries("work", work), ...entries("studio", projects), ...entries("dispatch", posts)];
 }

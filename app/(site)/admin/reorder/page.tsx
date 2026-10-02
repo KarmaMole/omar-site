@@ -61,7 +61,7 @@ export default async function ReorderPage() {
         <h1 className="font-mono text-lg tracking-widest uppercase text-cyan mb-2">
           Reorder Items
         </h1>
-        <p className="text-sm text-light-300/60">
+        <p className="text-sm text-light-400">
           Drag items to reorder. First item shows at the top of the site. Hit
           Save when done.
         </p>

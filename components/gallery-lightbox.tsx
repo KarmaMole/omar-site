@@ -24,13 +24,25 @@ export default function GalleryLightbox({
   const touchStartX = useRef(0);
   const touchDelta = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const current = images[index];
   const total = images.length;
 
   // Fade in on mount
   useEffect(() => {
-    requestAnimationFrame(() => setVisible(true));
+    const raf = requestAnimationFrame(() => setVisible(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  // Clear any pending timers if the lightbox unmounts mid-transition
+  useEffect(() => {
+    return () => {
+      if (fadeTimer.current) clearTimeout(fadeTimer.current);
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
   }, []);
 
   // Lock body scroll
@@ -42,9 +54,14 @@ export default function GalleryLightbox({
     };
   }, []);
 
-  // Focus container for keyboard events
+  // Move focus into the dialog, and hand it back to the trigger on close
   useEffect(() => {
+    openerRef.current = document.activeElement as HTMLElement | null;
     containerRef.current?.focus();
+    return () => {
+      const opener = openerRef.current;
+      if (opener && opener.isConnected) opener.focus();
+    };
   }, []);
 
   // Preload adjacent images
@@ -74,7 +91,8 @@ export default function GalleryLightbox({
     (newIndex: number) => {
       if (newIndex < 0 || newIndex >= total) return;
       setFading(true);
-      setTimeout(() => {
+      if (fadeTimer.current) clearTimeout(fadeTimer.current);
+      fadeTimer.current = setTimeout(() => {
         setIndex(newIndex);
         setFading(false);
       }, 150);
@@ -84,7 +102,8 @@ export default function GalleryLightbox({
 
   const close = useCallback(() => {
     setVisible(false);
-    setTimeout(onClose, 200);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(onClose, 200);
   }, [onClose]);
 
   const handleKeyDown = useCallback(
@@ -92,6 +111,27 @@ export default function GalleryLightbox({
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") goTo(index - 1);
       if (e.key === "ArrowRight") goTo(index + 1);
+
+      // Focus trap: keep Tab cycling inside the dialog
+      if (e.key === "Tab" && containerRef.current) {
+        const focusable = Array.from(
+          containerRef.current.querySelectorAll<HTMLElement>("button:not([disabled]), a[href], [tabindex]:not([tabindex='-1'])")
+        );
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey && (active === first || active === containerRef.current)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     },
     [close, goTo, index]
   );
@@ -191,10 +231,10 @@ export default function GalleryLightbox({
 
       {/* Counter + Caption */}
       <div className="absolute bottom-6 left-0 right-0 z-20 text-center">
-        <span className="font-mono text-[10px] tracking-widest uppercase text-light-300/60">
+        <span className="font-mono text-[10px] tracking-widest uppercase text-light-400">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
-        <p className="font-mono text-[11px] text-light-300/40 mt-1">
+        <p className="font-mono text-[11px] text-light-400 mt-1">
           {title}
         </p>
       </div>
