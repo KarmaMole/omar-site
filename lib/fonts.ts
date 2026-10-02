@@ -1,13 +1,11 @@
 import { Source_Serif_4 } from "next/font/google";
 
 /**
- * Single canonical instance of Source_Serif_4 for editorial typography.
- * Import as { sourceSerif } and apply via sourceSerif.className.
+ * Source Serif 4 for editorial typography. Apply via `.className`; the site
+ * layout does not load it, so pages without serif text never download it.
  *
- * The site layout separately instantiates Source_Serif_4 with a `variable`
- * key for the `--font-serif` CSS variable. Consumers that need the className
- * on a specific element (headings, editorial body) should use this export
- * so Next.js deduplicates the font file requests.
+ * Google serves one variable file for this family, so every page that uses
+ * it shares (and preloads) the same file.
  */
 export const sourceSerif = Source_Serif_4({
   subsets: ["latin"],

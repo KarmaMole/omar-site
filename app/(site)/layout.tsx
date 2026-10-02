@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
@@ -20,11 +20,6 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: {
@@ -60,7 +55,7 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="site" className={`${inter.variable} ${jetbrains.variable} ${sourceSerif.variable} bg-[#0a0a0a] text-[#f5f5f5]`}>
+    <html lang="en" data-theme="site" className={`${inter.variable} ${jetbrains.variable} bg-[#0a0a0a] text-[#f5f5f5]`}>
       <head />
       <body className={`${inter.className} bg-[#0a0a0a] text-[#f5f5f5]`}>
         <CustomCursor />
