@@ -62,6 +62,29 @@ export const getFeaturedWork: () => Promise<WorkDoc[]> = unstable_cache(
   { tags: ["work"], revalidate: 3600 }
 );
 
+export const getRecentWork: (count: number) => Promise<WorkDoc[]> = unstable_cache(
+  async (count: number) => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "work",
+      where: { hidden: { not_equals: true } },
+      sort: "-createdAt",
+      limit: count,
+      depth: 1,
+      select: {
+        title: true,
+        slug: true,
+        client: true,
+        coverImage: true,
+        categories: true,
+      },
+    });
+    return result.docs as unknown as WorkDoc[];
+  },
+  ["getRecentWork"],
+  { tags: ["work"], revalidate: 3600 }
+);
+
 export const getWorkBySlug: (slug: string) => Promise<WorkDoc | null> = unstable_cache(
   async (slug: string) => {
     const payload = await getPayloadClient();

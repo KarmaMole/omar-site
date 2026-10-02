@@ -11,6 +11,7 @@ import { formatDate } from "@/lib/utils";
 import {
   getSiteSettings,
   getFeaturedWork,
+  getRecentWork,
   getFeaturedProjects,
   getRecentBlogPosts,
   getAllClients,
@@ -43,15 +44,20 @@ export const metadata: Metadata = {
   },
 };
 
+// 1 full-width card + 4 in the two-column grid
+const RECENT_WORK_COUNT = 5;
+
 function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
   const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
   return (img as MediaUpload)?.alt ?? doc.title;
 }
 
 export default async function HomePage() {
-  const [settings, featuredWork, featuredProjects, recentPosts, clients] = await Promise.all([
+  const [settings, featuredWork, recentWork, featuredProjects, recentPosts, clients] = await Promise.all([
     getSiteSettings(),
     getFeaturedWork(),
+    // One extra so the grid stays full when the hero item is among the newest
+    getRecentWork(RECENT_WORK_COUNT + 1),
     getFeaturedProjects(),
     getRecentBlogPosts(3),
     getAllClients(),
@@ -79,7 +85,9 @@ export default async function HomePage() {
   };
 
   const heroWork = featuredWork.length > 0 ? featuredWork[0] : null;
-  const gridWork = featuredWork.slice(1);
+  const gridWork = recentWork
+    .filter((work) => work.id !== heroWork?.id)
+    .slice(0, RECENT_WORK_COUNT);
 
   return (
     <>
