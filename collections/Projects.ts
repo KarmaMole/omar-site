@@ -26,7 +26,7 @@ export const Projects: CollectionConfig = {
     afterChange: [
       () => {
         try {
-          revalidateTag("studio");
+          revalidateTag("studio", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('studio') failed:", err);
         }
@@ -35,7 +35,7 @@ export const Projects: CollectionConfig = {
     afterDelete: [
       () => {
         try {
-          revalidateTag("studio");
+          revalidateTag("studio", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('studio') failed:", err);
         }

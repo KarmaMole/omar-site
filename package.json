@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint app components lib"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
@@ -23,7 +23,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@vercel/analytics": "^2.0.1",
     "autoprefixer": "^10.4.27",
-    "next": "15.4.11",
+    "next": "16.3.8",
     "nodemailer": "^10.0.13",
     "payload": "3.90.2",
     "react": "^19.2.4",
@@ -39,8 +39,8 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/sanitize-html": "^2.16.2",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^15.5.14",
+    "eslint": "^9.39.0",
+    "eslint-config-next": "16.3.8",
     "postcss": "^8.5.8",
     "tailwindcss": "^3.4.19",
     "typescript": "^5.9.3"
