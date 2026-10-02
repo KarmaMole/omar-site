@@ -48,19 +48,17 @@ const services = [
       "Currently leading AI creative and production at Optix (Publicis Groupe), building AI-powered pipelines for major airlines, automotive brands, and financial institutions. I use Claude, ChatGPT, MidJourney, ComfyUI, Veo, Kling, and Suno daily. I know what works and what's still hype.",
     references: [
       { label: "AI Workshop Program", href: "/contact" },
-      { label: "Mentora", href: "/studio/mentora" },
     ],
   },
   {
     label: "Digital Builds",
     description:
-      "I build functional web platforms, dashboards, and internal tools using Replit, Claude Code, and modern frameworks. Not wireframes and Figma decks that sit in a drawer. Working products that solve real problems, ship fast, and hold up under actual use.",
+      "I build functional web platforms, desktop apps, dashboards, and internal tools using Replit, Claude Code, and modern frameworks. Not wireframes and Figma decks that sit in a drawer. Working products that solve real problems, ship fast, and hold up under actual use.",
     benefit:
-      "Current live builds include an AI-powered news aggregator, a real-time geopolitical monitoring dashboard, a voice-driven training platform, and team collaboration tools. Full-stack delivery from database to deployment, no handoffs to a dev team. You get the product, not a pitch deck.",
+      "Current live builds include an AI-powered news aggregator and Savage Impulse, a suite of local-first desktop tools for people who work with content. Full-stack delivery from database to deployment, no handoffs to a dev team. You get the product, not a pitch deck.",
     references: [
       { label: "Human Impact", href: "/studio/human-impact" },
-      { label: "Iran War Monitor", href: "/studio/iran-war-monitor" },
-      { label: "Mentora", href: "/studio/mentora" },
+      { label: "Savage Impulse", href: "https://savageimpulse.com" },
     ],
   },
   {
