@@ -67,7 +67,7 @@ export const getRecentWork: (count: number) => Promise<WorkDoc[]> = unstable_cac
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "work",
-      where: { hidden: { not_equals: true } },
+      where: { featured: { equals: true }, hidden: { not_equals: true } },
       sort: "-createdAt",
       limit: count,
       depth: 1,

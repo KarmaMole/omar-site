@@ -44,8 +44,8 @@ export const metadata: Metadata = {
   },
 };
 
-// 1 full-width card + 4 in the two-column grid
-const RECENT_WORK_COUNT = 5;
+// 1 full-width card + 2 in the two-column grid
+const RECENT_WORK_COUNT = 3;
 
 function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
   const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
