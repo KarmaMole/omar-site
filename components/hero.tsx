@@ -22,7 +22,8 @@ export default async function Hero() {
             src={bg.url}
             alt=""
             fill
-            priority
+            preload
+            fetchPriority="high"
             className="object-cover"
             style={{ filter: "saturate(0.85) contrast(1.1)" }}
           />

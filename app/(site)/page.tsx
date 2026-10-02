@@ -136,7 +136,6 @@ export default async function HomePage() {
                 bottomMeta={heroMeta.bottomMeta}
                 size="lg"
                 aspect={heroVideo ? "video" : "21/9"}
-                priority
                 videoEmbed={heroVideo}
               />
             </FadeIn>
@@ -173,7 +172,6 @@ export default async function HomePage() {
                 bottomMeta={heroProject.tags || null}
                 size="lg"
                 aspect={heroProjectVideo ? "video" : "21/9"}
-                priority
                 videoEmbed={heroProjectVideo}
               />
             </FadeIn>

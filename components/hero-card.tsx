@@ -94,7 +94,8 @@ export default function HeroCard({
             fill
             className="object-cover group-hover:scale-[1.05] transition-transform duration-500"
             sizes={sizes ?? defaultSizes}
-            priority={priority}
+            preload={priority}
+            fetchPriority={priority ? "high" : undefined}
           />
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-dark-200 to-dark-100" />

@@ -44,7 +44,8 @@ export default function ContentCard({
             src={cover.sizes?.card?.url ?? cover.url}
             alt=""
             fill
-            priority={priority}
+            preload={priority}
+            fetchPriority={priority ? "high" : undefined}
             loading={priority ? undefined : "lazy"}
             sizes={sizes}
             className="object-cover group-hover:scale-[1.05] transition-transform duration-500"

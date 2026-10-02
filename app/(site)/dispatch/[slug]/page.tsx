@@ -141,7 +141,8 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
             fill
             sizes="(max-width: 1024px) 100vw, calc(100vw - 80px)"
             className="object-cover"
-            priority
+            preload
+            fetchPriority="high"
           />
         </div>
       )}
