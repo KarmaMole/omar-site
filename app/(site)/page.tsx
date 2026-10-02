@@ -369,8 +369,7 @@ export default async function HomePage() {
             {[
               { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game deep-dives, and immersive tech analysis focused on the Meta Quest ecosystem and beyond.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
               { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by their actual human impact rather than clicks or engagement.", tags: ["AI", "News", "Aggregator", "Impact"] },
-              { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that transform corporate training materials into interactive, voice-driven learning sessions.", tags: ["AI", "Voice", "Corporate", "Training"] },
-              { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time monitoring dashboard tracking military and geopolitical developments across the Iran region with live data feeds.", tags: ["Geopolitics", "Real-time", "Dashboard"] },
+              { name: "Savage Impulse", url: "https://savageimpulse.com", domain: "savageimpulse.com", description: "Local-first desktop tools for people who work with content, from a voice-over studio to semantic footage search, built from 20 years in production.", tags: ["Desktop", "Local-first", "Creators", "Tools"] },
             ].map((t, i) => (
               <FadeIn key={t.name} delay={i * 80}>
                 <a
