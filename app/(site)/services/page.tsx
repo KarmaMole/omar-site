@@ -45,10 +45,9 @@ const services = [
     description:
       "I run structured AI training programs for marketing teams. Six sessions covering content creation, social media, strategy, presentations, and automation. Live, online, practical. Participants leave with tools and workflows they can use the next day.",
     benefit:
-      "Currently leading AI creative and production at Optix / Publicis Groupe, building AI-powered pipelines for major airlines, automotive brands, and financial institutions. I use Claude, ChatGPT, MidJourney, ComfyUI, Veo, Kling, and Suno daily. I know what works and what's still hype.",
+      "Currently leading AI creative and production at Optix (Publicis Groupe), building AI-powered pipelines for major airlines, automotive brands, and financial institutions. I use Claude, ChatGPT, MidJourney, ComfyUI, Veo, Kling, and Suno daily. I know what works and what's still hype.",
     references: [
       { label: "AI Workshop Program", href: "/contact" },
-      { label: "Optix AI Hub", href: "/studio/optix-ai-hub" },
       { label: "Mentora", href: "/studio/mentora" },
     ],
   },
@@ -105,7 +104,7 @@ const steps = [
   {
     number: "03",
     title: "Deliver",
-    description: "Final assets in the formats you need, ready for deployment. No pending approvals from the design committee. Finished work.",
+    description: "Final assets in the formats you need, ready for deployment. Ready to use, not waiting on another round. Finished work.",
   },
   {
     number: "04",
@@ -125,10 +124,10 @@ export default async function ServicesPage() {
             <div className="mb-16">
               <span className="section-label">Services</span>
               <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
-                Production Without the Agency
+                Independent Projects
               </h1>
               <p className="text-light-300 mt-3 max-w-2xl">
-                one person. no agency overhead. twenty years of production experience now accelerated by AI.
+                alongside my role leading AI production at Optix (Publicis Groupe), I take on a small number of independent projects.
               </p>
             </div>
           </FadeIn>
@@ -200,7 +199,10 @@ export default async function ServicesPage() {
         <section className="border-t border-white/[0.07] py-12 md:py-16">
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
-              <span className="section-label mb-8 block">Selected Clients</span>
+              <span className="section-label block">Selected Clients</span>
+              <p className="text-light-300 text-sm mt-3 mb-8 max-w-xl">
+                Including work delivered at Optix (Publicis Groupe).
+              </p>
               {clients.length > 0 && (
                 <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4">
                   {clients.slice(0, 18).map((client) => (

@@ -339,6 +339,9 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-6 lg:px-12">
             <FadeIn>
               <h2 className="section-label">Selected Clients</h2>
+              <p className="text-light-300 text-sm mt-3 max-w-xl">
+                Including work delivered at Optix (Publicis Groupe).
+              </p>
             </FadeIn>
             <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4 mt-8">
               {clients.slice(0, 18).map((client, i) => (
@@ -368,8 +371,6 @@ export default async function HomePage() {
               { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by their actual human impact rather than clicks or engagement.", tags: ["AI", "News", "Aggregator", "Impact"] },
               { name: "Mentora", url: "https://mentora.replit.app/", domain: "mentora.replit.app", description: "Conversational AI coaches that transform corporate training materials into interactive, voice-driven learning sessions.", tags: ["AI", "Voice", "Corporate", "Training"] },
               { name: "Iran War Monitor", url: "https://war-monitor.replit.app/", domain: "war-monitor.replit.app", description: "Real-time monitoring dashboard tracking military and geopolitical developments across the Iran region with live data feeds.", tags: ["Geopolitics", "Real-time", "Dashboard"] },
-              { name: "Optix AI Hub", url: "https://optixhub.replit.app/", domain: "optixhub.replit.app", description: "Centralized team platform for discovering, organizing, and managing AI tools and resources across collaborative workflows.", tags: ["AI", "Tools", "Team", "Platform"] },
-              { name: "Optix Projects", url: "https://optixprojects.replit.app/", domain: "optixprojects.replit.app", description: "Project management and tracking platform built for the Optix creative production pipeline and cross-team coordination.", tags: ["Projects", "Management", "Workflow"] },
             ].map((t, i) => (
               <FadeIn key={t.name} delay={i * 80}>
                 <a
