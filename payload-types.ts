@@ -144,6 +144,7 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   sessions?:
@@ -234,8 +235,7 @@ export interface Work {
   } | null;
   coverImage?: (number | null) | Media;
   categories?:
-    | ('Commercial' | 'Corporate' | 'Documentary' | 'AI Production' | 'Design' | 'Digital' | 'Awareness')[]
-    | null;
+    ('Commercial' | 'Corporate' | 'Documentary' | 'AI Production' | 'Design' | 'Digital' | 'Awareness')[] | null;
   /**
    * Comma-separated tags (e.g. Corporate, Metro, TV Ad)
    */
@@ -484,6 +484,7 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  resetPasswordRequestedAt?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:
