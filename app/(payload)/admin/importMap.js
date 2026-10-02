@@ -32,6 +32,8 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { default as default_bd8a37e8ac419c0b2ccb6ef2e225a54c } from '@/components/admin/reorder-nav-link'
 import { default as default_211cec84292c325c71f58f5fc273dfc2 } from '@/components/admin/reorder-link'
+import { default as default_homepage_nav_link } from '@/components/admin/homepage-nav-link'
+import { default as default_homepage_curator_view } from '@/components/admin/homepage-curator/view'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -69,5 +71,7 @@ export const importMap = {
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e,
   "@/components/admin/reorder-nav-link#default": default_bd8a37e8ac419c0b2ccb6ef2e225a54c,
   "@/components/admin/reorder-link#default": default_211cec84292c325c71f58f5fc273dfc2,
+  "@/components/admin/homepage-nav-link#default": default_homepage_nav_link,
+  "@/components/admin/homepage-curator/view#default": default_homepage_curator_view,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

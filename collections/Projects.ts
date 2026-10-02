@@ -6,7 +6,7 @@ export const Projects: CollectionConfig = {
   slug: "projects",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "status", "featured"],
+    defaultColumns: ["title", "status"],
     group: "Content",
   },
   labels: {
@@ -204,7 +204,8 @@ export const Projects: CollectionConfig = {
       defaultValue: false,
       index: true,
       admin: {
-        position: "sidebar",
+        // Retired: homepage placement now lives in the Homepage global
+        hidden: true,
       },
     },
     {
@@ -213,7 +214,7 @@ export const Projects: CollectionConfig = {
       defaultValue: false,
       admin: {
         position: "sidebar",
-        description: "Hide this item from the site without deleting it. Hidden items won't appear even if featured.",
+        description: "Hide this item from the site without deleting it. Hidden items won't appear anywhere, including the homepage.",
       },
     },
     {

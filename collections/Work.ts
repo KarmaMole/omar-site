@@ -6,7 +6,7 @@ export const Work: CollectionConfig = {
   slug: "work",
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "client", "featured", "date"],
+    defaultColumns: ["title", "client", "date"],
     group: "Content",
   },
   hooks: {
@@ -159,7 +159,8 @@ export const Work: CollectionConfig = {
       defaultValue: false,
       index: true,
       admin: {
-        position: "sidebar",
+        // Retired: homepage placement now lives in the Homepage global
+        hidden: true,
       },
     },
     {
@@ -168,7 +169,7 @@ export const Work: CollectionConfig = {
       defaultValue: false,
       admin: {
         position: "sidebar",
-        description: "Hide this item from the site without deleting it. Hidden items won't appear even if featured.",
+        description: "Hide this item from the site without deleting it. Hidden items won't appear anywhere, including the homepage.",
       },
     },
     {

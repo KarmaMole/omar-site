@@ -1,0 +1,498 @@
+/* Uses Payload's theme variables so it follows the admin's light/dark theme. */
+
+.root {
+  padding-bottom: 80px;
+}
+
+/* ─── Header ─────────────────────────────────────────── */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 0 16px;
+  margin-bottom: 8px;
+  background: var(--theme-bg);
+  border-bottom: 1px solid var(--theme-elevation-100);
+}
+
+.title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.lede {
+  margin: 6px 0 0;
+  max-width: 560px;
+  color: var(--theme-elevation-600);
+  font-size: 14px;
+}
+
+.headerActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.primaryButton,
+.secondaryButton,
+.linkButton {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: var(--style-radius-s, 4px);
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.primaryButton {
+  border: 1px solid var(--theme-elevation-1000);
+  background: var(--theme-elevation-1000);
+  color: var(--theme-elevation-0);
+}
+
+.primaryButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.secondaryButton,
+.linkButton {
+  border: 1px solid var(--theme-elevation-200);
+  background: transparent;
+  color: var(--theme-text);
+}
+
+.secondaryButton:hover,
+.linkButton:hover {
+  border-color: var(--theme-elevation-400);
+}
+
+.statusOk,
+.statusError,
+.statusDirty {
+  font-size: 13px;
+}
+
+.statusOk {
+  color: var(--theme-success-500);
+}
+
+.statusError {
+  color: var(--theme-error-500);
+}
+
+.statusDirty {
+  color: var(--theme-warning-500, #d9a400);
+}
+
+/* ─── Layout ─────────────────────────────────────────── */
+
+.layout {
+  display: grid;
+  /* Canvas is a scaled-down preview so all three sections fit on screen */
+  grid-template-columns: minmax(0, 720px) 360px;
+  justify-content: start;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .layout {
+    grid-template-columns: minmax(0, 720px);
+  }
+}
+
+.canvas {
+  min-width: 0;
+}
+
+.section {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--theme-elevation-100);
+}
+
+.section:last-child {
+  border-bottom: 0;
+}
+
+.sectionHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-bottom: 14px;
+}
+
+.sectionLabel {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sectionHint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--theme-elevation-500);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
+/* ─── Drop targets ───────────────────────────────────── */
+
+.slot,
+.zone {
+  border-radius: var(--style-radius-m, 6px);
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+  transition: outline-color 0.15s, background-color 0.15s;
+}
+
+.zone {
+  padding: 2px;
+}
+
+.slotReady {
+  outline-color: var(--theme-elevation-200);
+  outline-style: dashed;
+}
+
+.slotOver {
+  outline-color: var(--theme-success-500);
+  outline-style: solid;
+  background-color: var(--theme-elevation-50);
+}
+
+.appendTarget {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  height: 100%;
+  border: 1px dashed var(--theme-elevation-200);
+  border-radius: var(--style-radius-m, 6px);
+  color: var(--theme-elevation-500);
+  font-size: 13px;
+}
+
+/* ─── Cards ──────────────────────────────────────────── */
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--style-radius-m, 6px);
+  background-color: var(--theme-elevation-150);
+  background-size: cover;
+  background-position: center;
+  cursor: grab;
+  user-select: none;
+}
+
+.card:active {
+  cursor: grabbing;
+}
+
+.aspectWide {
+  aspect-ratio: 21 / 9;
+}
+
+.aspectCard {
+  aspect-ratio: 4 / 3;
+}
+
+.cardShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.05) 60%);
+}
+
+.cardAuto {
+  cursor: default;
+  outline: 1px dashed var(--theme-elevation-300);
+  outline-offset: -1px;
+}
+
+.cardAuto .cardShade {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.45));
+}
+
+.cardAuto .cardText {
+  opacity: 0.75;
+}
+
+.badge,
+.badgeAuto {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.badge {
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+}
+
+.badgeAuto {
+  background: rgba(0, 0, 0, 0.55);
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.cardAction {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.card:hover .cardAction,
+.cardAction:focus-visible {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .cardAction {
+    opacity: 1;
+  }
+}
+
+.cardText {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #fff;
+}
+
+.cardEyebrow {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.cardTitle {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.cardWarning {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ffd166;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border: 1px dashed var(--theme-elevation-250);
+  border-radius: var(--style-radius-m, 6px);
+  color: var(--theme-elevation-500);
+  font-size: 14px;
+  text-align: center;
+}
+
+.dragging {
+  opacity: 0.4;
+}
+
+/* ─── Library ────────────────────────────────────────── */
+
+.library {
+  position: sticky;
+  top: 120px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 140px);
+  margin-top: 24px;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-m, 6px);
+  background: var(--theme-elevation-0);
+  overflow: hidden;
+}
+
+@media (max-width: 1100px) {
+  .library {
+    position: static;
+    max-height: 520px;
+  }
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--theme-elevation-150);
+}
+
+.tab,
+.tabActive {
+  flex: 1;
+  padding: 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--theme-elevation-500);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tabActive {
+  color: var(--theme-text);
+  border-bottom-color: var(--theme-text);
+}
+
+.search {
+  margin: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--theme-elevation-150);
+  border-radius: var(--style-radius-s, 4px);
+  background: var(--theme-input-bg, var(--theme-elevation-50));
+  color: var(--theme-text);
+  font: inherit;
+  font-size: 13px;
+}
+
+.libraryList {
+  flex: 1;
+  margin: 0;
+  padding: 0 6px 8px;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: var(--style-radius-s, 4px);
+}
+
+.row:hover {
+  background: var(--theme-elevation-50);
+}
+
+.rowGrip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.thumb {
+  flex-shrink: 0;
+  display: block;
+  width: 56px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 3px;
+  background: var(--theme-elevation-150);
+}
+
+.rowText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rowTitle {
+  overflow: hidden;
+  font-size: 13px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rowMeta {
+  overflow: hidden;
+  font-size: 11px;
+  color: var(--theme-elevation-500);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rowPlaced {
+  color: var(--theme-success-500);
+  font-weight: 600;
+}
+
+.rowActions {
+  display: flex;
+  gap: 4px;
+}
+
+.rowButton {
+  padding: 3px 8px;
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: var(--style-radius-s, 4px);
+  background: transparent;
+  color: var(--theme-text);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.rowButton:hover:not(:disabled) {
+  border-color: var(--theme-elevation-500);
+}
+
+.rowButton:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.overlay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 280px;
+  padding: 8px;
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: var(--style-radius-m, 6px);
+  background: var(--theme-elevation-0);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  font-size: 13px;
+  cursor: grabbing;
+}

@@ -10,12 +10,14 @@ import HeroCard from "@/components/hero-card";
 import { formatDate } from "@/lib/utils";
 import {
   getSiteSettings,
-  getFeaturedWork,
+  getHomepageConfig,
+  getWorkByIds,
   getRecentWork,
-  getFeaturedProjects,
+  getProjectsByIds,
   getRecentBlogPosts,
   getAllClients,
 } from "@/lib/payload/queries";
+import { fillRecentSlots, RECENT_WORK_SLOTS } from "@/lib/payload/homepage";
 import type { WorkDoc, BlogPostDoc, MediaUpload } from "@/lib/payload/types";
 import { SITE_URL } from "@/lib/constants";
 
@@ -44,21 +46,24 @@ export const metadata: Metadata = {
   },
 };
 
-// 1 full-width card + 2 in the two-column grid
-const RECENT_WORK_COUNT = 3;
-
 function getCoverAlt(doc: WorkDoc | BlogPostDoc): string {
   const img = typeof doc.coverImage === "object" ? doc.coverImage : null;
   return (img as MediaUpload)?.alt ?? doc.title;
 }
 
 export default async function HomePage() {
-  const [settings, featuredWork, recentWork, featuredProjects, recentPosts, clients] = await Promise.all([
+  // Curated in the admin at /admin/homepage
+  const homepage = await getHomepageConfig();
+  const pinIds = homepage.recentPins.filter((id) => id != null);
+  const heroIds = homepage.featuredWork != null ? [homepage.featuredWork] : [];
+
+  const [settings, heroWorkDocs, pinnedWork, newestWork, featuredProjects, recentPosts, clients] = await Promise.all([
     getSiteSettings(),
-    getFeaturedWork(),
-    // One extra so the grid stays full when the hero item is among the newest
-    getRecentWork(RECENT_WORK_COUNT + 1),
-    getFeaturedProjects(),
+    getWorkByIds(heroIds),
+    getWorkByIds(pinIds),
+    // Enough to fill every slot even if the hero and all pins are among the newest
+    getRecentWork(RECENT_WORK_SLOTS * 2 + 1),
+    getProjectsByIds(homepage.studio),
     getRecentBlogPosts(3),
     getAllClients(),
   ]);
@@ -84,10 +89,10 @@ export default async function HomePage() {
     },
   };
 
-  const heroWork = featuredWork.length > 0 ? featuredWork[0] : null;
-  const gridWork = recentWork
-    .filter((work) => work.id !== heroWork?.id)
-    .slice(0, RECENT_WORK_COUNT);
+  const heroWork = heroWorkDocs[0] ?? null;
+  const gridWork = fillRecentSlots(homepage.recentPins, newestWork, heroWork?.id, pinnedWork).flatMap(
+    (slot) => (slot ? [slot.item] : [])
+  );
 
   return (
     <>
@@ -158,7 +163,7 @@ export default async function HomePage() {
               />
             </FadeIn>
 
-            {/* Remaining featured studio items */}
+            {/* Remaining studio items */}
             {featuredProjects.length > 1 && (
               <FadeIn className="mt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-7">

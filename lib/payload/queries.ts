@@ -7,6 +7,7 @@ import type {
   ClientDoc,
   SiteSettingsDoc,
 } from "./types";
+import { toHomepageConfig, type HomepageConfig } from "./homepage";
 
 // ─── Site Settings ──────────────────────────────────────────────
 
@@ -17,6 +18,18 @@ export const getSiteSettings: () => Promise<SiteSettingsDoc> = unstable_cache(
   },
   ["getSiteSettings"],
   { tags: ["settings"], revalidate: 3600 }
+);
+
+// ─── Homepage ───────────────────────────────────────────────────
+
+export const getHomepageConfig: () => Promise<HomepageConfig> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const doc = await payload.findGlobal({ slug: "homepage", depth: 0 });
+    return toHomepageConfig(doc as unknown as Record<string, unknown>);
+  },
+  ["getHomepageConfig"],
+  { tags: ["homepage"], revalidate: 3600 }
 );
 
 // ─── Work ───────────────────────────────────────────────────────
@@ -46,19 +59,31 @@ export const getAllWork: () => Promise<WorkDoc[]> = unstable_cache(
   { tags: ["work"], revalidate: 3600 }
 );
 
-export const getFeaturedWork: () => Promise<WorkDoc[]> = unstable_cache(
-  async () => {
+/** Non-hidden Work items by id, returned in the order of `ids`. */
+export const getWorkByIds: (ids: (string | number)[]) => Promise<WorkDoc[]> = unstable_cache(
+  async (ids: (string | number)[]) => {
+    if (ids.length === 0) return [];
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "work",
-      where: { featured: { equals: true }, hidden: { not_equals: true } },
-      sort: "-sortOrder",
-      limit: 100,
+      where: { id: { in: ids }, hidden: { not_equals: true } },
+      limit: ids.length,
       depth: 1,
+      select: {
+        title: true,
+        slug: true,
+        client: true,
+        coverImage: true,
+        categories: true,
+        media: true,
+      },
     });
-    return result.docs as unknown as WorkDoc[];
+    const docs = result.docs as unknown as WorkDoc[];
+    return ids
+      .map((id) => docs.find((d) => String(d.id) === String(id)))
+      .filter((d): d is WorkDoc => !!d);
   },
-  ["getFeaturedWork"],
+  ["getWorkByIds"],
   { tags: ["work"], revalidate: 3600 }
 );
 
@@ -67,7 +92,7 @@ export const getRecentWork: (count: number) => Promise<WorkDoc[]> = unstable_cac
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "work",
-      where: { featured: { equals: true }, hidden: { not_equals: true } },
+      where: { hidden: { not_equals: true } },
       sort: "-createdAt",
       limit: count,
       depth: 1,
@@ -140,19 +165,31 @@ export const getAllProjects: () => Promise<ProjectDoc[]> = unstable_cache(
   { tags: ["studio"], revalidate: 3600 }
 );
 
-export const getFeaturedProjects: () => Promise<ProjectDoc[]> = unstable_cache(
-  async () => {
+/** Non-hidden Projects by id, returned in the order of `ids`. */
+export const getProjectsByIds: (ids: (string | number)[]) => Promise<ProjectDoc[]> = unstable_cache(
+  async (ids: (string | number)[]) => {
+    if (ids.length === 0) return [];
     const payload = await getPayloadClient();
     const result = await payload.find({
       collection: "projects",
-      where: { featured: { equals: true }, hidden: { not_equals: true } },
-      sort: "-sortOrder",
-      limit: 100,
+      where: { id: { in: ids }, hidden: { not_equals: true } },
+      limit: ids.length,
       depth: 1,
+      select: {
+        title: true,
+        slug: true,
+        coverImage: true,
+        categories: true,
+        tags: true,
+        media: true,
+      },
     });
-    return result.docs as unknown as ProjectDoc[];
+    const docs = result.docs as unknown as ProjectDoc[];
+    return ids
+      .map((id) => docs.find((d) => String(d.id) === String(id)))
+      .filter((d): d is ProjectDoc => !!d);
   },
-  ["getFeaturedProjects"],
+  ["getProjectsByIds"],
   { tags: ["studio"], revalidate: 3600 }
 );
 

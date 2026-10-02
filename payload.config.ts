@@ -13,6 +13,7 @@ import { Projects } from "./collections/Projects";
 import { BlogPosts } from "./collections/BlogPosts";
 import { Clients } from "./collections/Clients";
 import { SiteSettings } from "./globals/SiteSettings";
+import { Homepage } from "./globals/Homepage";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -42,7 +43,7 @@ export default buildConfig({
     BlogPosts,
     Clients,
   ],
-  globals: [SiteSettings],
+  globals: [SiteSettings, Homepage],
   secret: process.env.PAYLOAD_SECRET || require("crypto").randomBytes(32).toString("hex"),
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
@@ -85,7 +86,17 @@ export default buildConfig({
     },
     components: {
       beforeDashboard: ["@/components/admin/reorder-link#default"],
-      afterNavLinks: ["@/components/admin/reorder-nav-link#default"],
+      afterNavLinks: [
+        "@/components/admin/homepage-nav-link#default",
+        "@/components/admin/reorder-nav-link#default",
+      ],
+      views: {
+        homepage: {
+          Component: "@/components/admin/homepage-curator/view#default",
+          path: "/homepage",
+          meta: { title: "Homepage" },
+        },
+      },
     },
   },
 });
