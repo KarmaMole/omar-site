@@ -35,7 +35,7 @@ export const BlogPosts: CollectionConfig = {
     afterChange: [
       () => {
         try {
-          revalidateTag("dispatch");
+          revalidateTag("dispatch", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('dispatch') failed:", err);
         }
@@ -44,7 +44,7 @@ export const BlogPosts: CollectionConfig = {
     afterDelete: [
       () => {
         try {
-          revalidateTag("dispatch");
+          revalidateTag("dispatch", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('dispatch') failed:", err);
         }

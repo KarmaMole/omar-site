@@ -22,7 +22,7 @@ export const Work: CollectionConfig = {
     afterChange: [
       () => {
         try {
-          revalidateTag("work");
+          revalidateTag("work", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('work') failed:", err);
         }
@@ -31,7 +31,7 @@ export const Work: CollectionConfig = {
     afterDelete: [
       () => {
         try {
-          revalidateTag("work");
+          revalidateTag("work", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('work') failed:", err);
         }

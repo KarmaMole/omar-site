@@ -11,7 +11,7 @@ export const SiteSettings: GlobalConfig = {
     afterChange: [
       () => {
         try {
-          revalidateTag("settings");
+          revalidateTag("settings", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('settings') failed:", err);
         }

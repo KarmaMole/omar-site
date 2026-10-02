@@ -16,7 +16,7 @@ export const Clients: CollectionConfig = {
     afterChange: [
       () => {
         try {
-          revalidateTag("clients");
+          revalidateTag("clients", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('clients') failed:", err);
         }
@@ -25,7 +25,7 @@ export const Clients: CollectionConfig = {
     afterDelete: [
       () => {
         try {
-          revalidateTag("clients");
+          revalidateTag("clients", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('clients') failed:", err);
         }

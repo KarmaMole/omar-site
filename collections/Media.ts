@@ -6,7 +6,7 @@ const CONTENT_TAGS = ["work", "studio", "dispatch", "settings", "clients", "home
 function revalidateAllContent() {
   for (const tag of CONTENT_TAGS) {
     try {
-      revalidateTag(tag);
+      revalidateTag(tag, { expire: 0 });
     } catch (err) {
       console.warn(`revalidateTag('${tag}') failed:`, err);
     }

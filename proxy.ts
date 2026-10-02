@@ -8,7 +8,7 @@ const CANONICAL_HOST = "omarkamel.com";
 // (omar2026-*.vercel.app, omar2026-git-*.vercel.app) remain accessible.
 const REDIRECT_HOSTS = new Set(["omar2026.vercel.app"]);
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
 
   if (REDIRECT_HOSTS.has(host)) {

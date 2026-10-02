@@ -21,7 +21,7 @@ export const Homepage: GlobalConfig = {
     afterChange: [
       () => {
         try {
-          revalidateTag("homepage");
+          revalidateTag("homepage", { expire: 0 });
         } catch (err) {
           console.warn("revalidateTag('homepage') failed:", err);
         }
