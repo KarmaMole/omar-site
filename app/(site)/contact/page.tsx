@@ -1,10 +1,13 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
-import { ContactForm } from "@/components/contact-form";
 import ObfuscatedEmail from "@/components/obfuscated-email";
-import FadeIn from "@/components/fade-in";
-import { getSiteSettings } from "@/lib/payload/queries";
+import DeckRoot from "@/components/deck/deck-root";
+import DeckContactForm from "@/components/deck/contact-form";
+import { TitleSlide } from "@/components/deck/parts";
+import { PieceFig } from "@/components/deck/work-piece";
+import { getDeckWork } from "@/lib/payload/queries";
+import { SOCIAL } from "@/lib/deck";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -27,82 +30,28 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const settings = await getSiteSettings();
-  const socialLinks = settings.socialLinks ?? [];
+  const work = await getDeckWork();
+  const storm = work.find((w) => w.slug === "storm-ai-short");
 
   return (
-    <div className="pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-6">
-        <FadeIn>
-          {/* Header */}
-          <div className="mb-16">
-            <span className="section-label">Contact</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-light-100 mt-2">
-              Start a Project
-            </h1>
-            <p className="text-light-300 mt-3">tell me about your vision.</p>
-          </div>
-        </FadeIn>
-
-        <div className="grid grid-cols-1 md:grid-cols-5 items-start gap-16">
-          {/* Left: form (60%) */}
-          <div className="md:col-span-3">
-            <FadeIn>
-              <ContactForm />
-            </FadeIn>
-          </div>
-
-          {/* Right: info (40%) */}
-          <div className="md:col-span-2">
-            <FadeIn>
-              <div className="space-y-10">
-                {/* Based in */}
-                <div>
-                  <h2 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
-                    Based In
-                  </h2>
-                  <p className="text-light-100">Dubai, UAE</p>
-                </div>
-
-                {/* Email */}
-                <div>
-                  <h2 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
-                    Email
-                  </h2>
-                  <ObfuscatedEmail
-                    user="omar"
-                    domain="omarkamel.com"
-                    className="text-light-100 link-underline"
-                  />
-                </div>
-
-                {/* Social links */}
-                {socialLinks && socialLinks.length > 0 && (
-                  <div>
-                    <h2 className="font-mono text-xs uppercase tracking-widest text-cyan mb-3">
-                      Connect
-                    </h2>
-                    <ul className="space-y-2">
-                      {socialLinks.map((link) => (
-                        <li key={link.platform}>
-                          <a
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-light-300 link-underline transition-colors hover:text-light-100"
-                          >
-                            {link.platform}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </FadeIn>
-          </div>
+    <DeckRoot mode="doc">
+      <TitleSlide short kicker="Contact" light="We" bold="Talk" sub="usually one call. a few lines about the project is enough. i read every message and reply myself." />
+      <div className="wrap">
+        <div className="ct">
+          <DeckContactForm />
+          <aside className="ct-side" aria-label="Elsewhere">
+            {storm ? <div className="stage" style={{ display: "block" }}><PieceFig doc={storm} /></div> : null}
+            <ul className="facts">
+              <li><span>Email</span><ObfuscatedEmail user="omar" domain="omarkamel.com" className="more" /></li>
+              <li><span>Based in</span>Dubai, UAE</li>
+              <li><span>Working at</span>Optix (Publicis Groupe)</li>
+              {SOCIAL.map((s) => (
+                <li key={s.name}><span>{s.name}</span><a href={s.url} target="_blank" rel="noopener noreferrer">{s.url.replace(/^https?:\/\/(www\.)?/, "")}</a></li>
+              ))}
+            </ul>
+          </aside>
         </div>
       </div>
-    </div>
+    </DeckRoot>
   );
 }

@@ -1,25 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import Nav from "@/components/nav";
-import Footer from "@/components/footer";
-import CustomCursor from "@/components/custom-cursor";
+import DeckChrome from "@/components/deck/chrome";
 import CookieConsent from "@/components/cookie-consent";
 import { SITE_URL } from "@/lib/constants";
 import "../globals.css";
+import "./deck.css";
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
   variable: "--font-inter",
   display: "swap",
 });
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
-
 
 export const metadata: Metadata = {
   title: {
@@ -46,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#E7E2D6",
 };
 
 export default function SiteLayout({
@@ -55,16 +49,15 @@ export default function SiteLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="site" className={`${inter.variable} ${jetbrains.variable} bg-[#0a0a0a] text-[#f5f5f5]`}>
-      <head />
-      <body className={`${inter.className} bg-[#0a0a0a] text-[#f5f5f5]`}>
-        <CustomCursor />
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-cyan focus:text-black focus:px-4 focus:py-2 focus:font-mono focus:text-xs focus:tracking-widest focus:uppercase">
-          Skip to content
-        </a>
-        <Nav />
-        <main id="main-content" className="lg:pl-20 pt-14 lg:pt-0">{children}</main>
-        <Footer />
+    <html lang="en" className={inter.variable} style={{ ["--body" as string]: "var(--font-inter), ui-sans-serif, system-ui, sans-serif" }}>
+      <head>
+        <link rel="preload" href="/fonts/metropolis-semibold.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/metropolis-medium.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+      </head>
+      <body>
+        <a href="#main-content" className="skip">Skip to content</a>
+        <DeckChrome />
+        <main id="main-content">{children}</main>
         {process.env.NEXT_PUBLIC_GA_ID && (
           <CookieConsent gaId={process.env.NEXT_PUBLIC_GA_ID} />
         )}

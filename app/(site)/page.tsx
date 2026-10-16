@@ -1,31 +1,30 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
-import Link from "next/link";
 import JsonLd from "@/components/json-ld";
-import { sourceSerif } from "@/lib/fonts";
-import Hero from "@/components/hero";
-import FadeIn from "@/components/fade-in";
-import HeroCard from "@/components/hero-card";
-import { formatDate } from "@/lib/utils";
+import DeckRoot from "@/components/deck/deck-root";
+import { ClientsSlide, Divider, EndSlide, Fig, Head, More, Piece, TextSlide } from "@/components/deck/parts";
+import { WorkPiece } from "@/components/deck/work-piece";
 import {
   getSiteSettings,
   getHomepageConfig,
-  getWorkByIds,
-  getRecentWork,
-  getProjectsByIds,
+  getDeckWork,
+  getDeckProjects,
   getRecentBlogPosts,
   getAllClients,
 } from "@/lib/payload/queries";
-import { fillRecentSlots, RECENT_WORK_SLOTS } from "@/lib/payload/homepage";
+import { fillRecentSlots } from "@/lib/payload/homepage";
 import type { WorkDoc } from "@/lib/payload/types";
 import { dispatchHref } from "@/lib/dispatch-link";
+import { coverOf, plainText, ratioOf, srcOf } from "@/lib/deck";
 import { SITE_URL } from "@/lib/constants";
+
+const DESCRIPTION =
+  "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.";
 
 export const metadata: Metadata = {
   title: { absolute: "Omar Kamel: AI Creative & Production Lead" },
-  description:
-    "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
+  description: DESCRIPTION,
   alternates: {
     canonical: "/",
     // A child `alternates` replaces the layout's, so re-declare the feed link here.
@@ -33,8 +32,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Omar Kamel: AI Creative & Production Lead",
-    description:
-      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
+    description: DESCRIPTION,
     url: "/",
     type: "website",
     siteName: "Omar Kamel",
@@ -43,45 +41,55 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Omar Kamel: AI Creative & Production Lead",
-    description:
-      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
+    description: DESCRIPTION,
     creator: "@omarkamel",
   },
 };
 
+const TRANSMISSIONS = [
+  { name: "6DOF Reviews", kind: "vr and immersive tech", url: "https://6dofreviews.com", domain: "6dofreviews.com", text: "VR hardware reviews, game deep-dives and immersive tech analysis, focused on the Meta Quest ecosystem and beyond. Over 2 million views." },
+  { name: "Human Impact", kind: "news, ranked differently", url: "https://humanimpact.news", domain: "humanimpact.news", text: "An AI-powered news aggregator that ranks global stories by their actual human impact rather than clicks or engagement." },
+  { name: "Savage Impulse", kind: "desktop tools", url: "https://savageimpulse.com", domain: "savageimpulse.com", text: "Local-first desktop tools for people who work with content, from a voice-over studio to semantic footage search, built from twenty years in production." },
+];
+
+const fmt = (d: string) =>
+  new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "Asia/Dubai" });
+
 /**
- * Eyebrow and bottom meta for a work card. With a client, the eyebrow is the
- * client and the bottom line lists categories. Without one, the eyebrow already
- * shows the first category, so the bottom line lists only the remaining ones
- * (avoiding "AI PRODUCTION" printed twice).
+ * The home page is a deck in the form of Omar's portfolio presentation, filled from the CMS:
+ * Selected Work follows the homepage curation (featured + recent slots), then the newest
+ * AI productions, client work, the studio picks, builds, dispatches, about, clients.
  */
-function workCardMeta(work: WorkDoc): { eyebrow: string | null; bottomMeta: string | null } {
-  const categories = work.categories ?? [];
-  if (work.client) {
-    return { eyebrow: work.client, bottomMeta: categories.join(" / ") || null };
-  }
-  return {
-    eyebrow: categories[0] ?? null,
-    bottomMeta: categories.slice(1).join(" / ") || null,
-  };
-}
-
 export default async function HomePage() {
-  // Curated in the admin at /admin/homepage
   const homepage = await getHomepageConfig();
-  const pinIds = homepage.recentPins.filter((id) => id != null);
-  const heroIds = homepage.featuredWork != null ? [homepage.featuredWork] : [];
-
-  const [settings, heroWorkDocs, pinnedWork, newestWork, featuredProjects, recentPosts, clients] = await Promise.all([
+  const [settings, work, projects, posts, clients] = await Promise.all([
     getSiteSettings(),
-    getWorkByIds(heroIds),
-    getWorkByIds(pinIds),
-    // Enough to fill every slot even if the hero and all pins are among the newest
-    getRecentWork(RECENT_WORK_SLOTS * 2 + 1),
-    getProjectsByIds(homepage.studio),
-    getRecentBlogPosts(3),
+    getDeckWork(),
+    getDeckProjects(),
+    getRecentBlogPosts(6),
     getAllClients(),
   ]);
+
+  const byId = new Map(work.map((w) => [String(w.id), w]));
+  const featured = homepage.featuredWork != null ? byId.get(String(homepage.featuredWork)) ?? null : null;
+  const newest = [...work].sort((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? "")));
+  const slots = fillRecentSlots(homepage.recentPins, newest, featured?.id).flatMap((s) => (s ? [s.item] : []));
+  const selected = [featured, ...slots].filter((w): w is WorkDoc => !!w);
+  const used = new Set(selected.map((w) => String(w.id)));
+  const take = (pred: (w: WorkDoc) => boolean, n: number) => {
+    const out = newest.filter((w) => !used.has(String(w.id)) && pred(w)).slice(0, n);
+    out.forEach((w) => used.add(String(w.id)));
+    return out;
+  };
+  const ai = take((w) => !!w.categories?.includes("AI Production"), 4);
+  const client = take((w) => !!w.client, 6);
+
+  const studioIds = homepage.studio.map(String);
+  const studioPicks = studioIds.map((id) => projects.find((p) => String(p.id) === id)).filter((p): p is (typeof projects)[number] => !!p);
+  const studioMore = projects.filter((p) => !studioIds.includes(String(p.id))).slice(0, 4);
+
+  const photo = typeof settings.aboutPhoto === "object" && settings.aboutPhoto ? settings.aboutPhoto : null;
+  const bio = plainText(settings.aboutBio);
 
   const personJsonLd = {
     "@context": "https://schema.org",
@@ -91,331 +99,150 @@ export default async function HomePage() {
     url: SITE_URL,
     sameAs: (settings.socialLinks ?? []).map((s: { url: string }) => s.url),
   };
-
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     url: SITE_URL,
     name: "Omar Kamel",
-    publisher: {
-      "@type": "Person",
-      name: "Omar Kamel",
-      url: SITE_URL,
-    },
+    publisher: { "@type": "Person", name: "Omar Kamel", url: SITE_URL },
   };
 
-  const heroWork = heroWorkDocs[0] ?? null;
-  const gridWork = fillRecentSlots(homepage.recentPins, newestWork, heroWork?.id, pinnedWork).flatMap(
-    (slot) => (slot ? [slot.item] : [])
-  );
-
   return (
-    <>
+    <DeckRoot mode="deck" name="Omar Kamel">
       <JsonLd data={personJsonLd} />
       <JsonLd data={websiteJsonLd} />
 
-      {/* ── Hero ──────────────────────────────────────────────── */}
-      <Hero />
-
-      {/* ── Featured Work Showcase ────────────────────────────── */}
-      {heroWork && (() => {
-        const heroVideo = heroWork.media?.find((m) => m.type === "youtube" || m.type === "vimeo") ?? null;
-        const cover = typeof heroWork.coverImage === "object" ? heroWork.coverImage : null;
-        const heroMeta = workCardMeta(heroWork);
-        return (
-          <section className="max-w-7xl mx-auto px-6 lg:px-12 py-section-sm md:py-section border-t border-white/[0.07]">
-            <FadeIn>
-              <h2 className="section-label-primary">Featured Work</h2>
-            </FadeIn>
-            <FadeIn className="mt-8">
-              <HeroCard
-                href={`/work/${heroWork.slug}`}
-                title={heroWork.title}
-                coverImage={cover}
-                eyebrow={heroMeta.eyebrow}
-                bottomMeta={heroMeta.bottomMeta}
-                size="lg"
-                aspect={heroVideo ? "video" : "21/9"}
-                videoEmbed={heroVideo}
-              />
-            </FadeIn>
-            <FadeIn className="mt-10">
-              <Link
-                href="/work"
-                prefetch={false}
-                className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
-              >
-                View All Work &rarr;
-              </Link>
-            </FadeIn>
-          </section>
-        );
-      })()}
-
-      {/* ── From the Studio ───────────────────────────── */}
-      {featuredProjects.length > 0 && (() => {
-        const heroProject = featuredProjects[0];
-        const heroCover = typeof heroProject.coverImage === "object" && heroProject.coverImage ? heroProject.coverImage : null;
-        const heroProjectVideo = heroProject.media?.find((m) => m.type === "youtube" || m.type === "vimeo") ?? null;
-        return (
-          <section className="max-w-7xl mx-auto px-6 lg:px-12 py-section-sm md:py-section border-t border-white/[0.07]">
-            <FadeIn>
-              <h2 className="section-label-primary">From the Studio</h2>
-            </FadeIn>
-            {/* Hero studio item (first item) */}
-            <FadeIn className="mt-8">
-              <HeroCard
-                href={`/studio/${heroProject.slug}`}
-                title={heroProject.title}
-                coverImage={heroCover}
-                eyebrow={heroProject.categories?.length ? heroProject.categories.join(", ") : null}
-                bottomMeta={heroProject.tags || null}
-                size="lg"
-                aspect={heroProjectVideo ? "video" : "21/9"}
-                videoEmbed={heroProjectVideo}
-              />
-            </FadeIn>
-
-            {/* Remaining studio items */}
-            {featuredProjects.length > 1 && (
-              <FadeIn className="mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-                  {featuredProjects.slice(1).map((project) => {
-                    const cover = typeof project.coverImage === "object" && project.coverImage ? project.coverImage : null;
-                    return (
-                      <HeroCard
-                        key={project.id}
-                        href={`/studio/${project.slug}`}
-                        title={project.title}
-                        coverImage={cover}
-                        eyebrow={project.categories?.length ? project.categories.join(", ") : null}
-                        bottomMeta={project.tags || null}
-                        size="sm"
-                        aspect="4/3"
-                      />
-                    );
-                  })}
-                </div>
-              </FadeIn>
-            )}
-            <FadeIn className="mt-10">
-              <Link
-                href="/studio"
-                prefetch={false}
-                className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
-              >
-                View All Studio Work &rarr;
-              </Link>
-            </FadeIn>
-          </section>
-        );
-      })()}
-
-      {/* ── Recent Work Grid ──────────────────────────────────── */}
-      {gridWork.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 lg:px-12 py-section-sm md:py-section border-t border-white/[0.07]">
-          <FadeIn>
-            <h2 className="section-label">Recent Work</h2>
-          </FadeIn>
-          <FadeIn className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-              {gridWork.map((work, i) => {
-                const cover = typeof work.coverImage === "object" ? work.coverImage : null;
-                const isFullWidth = i === 0;
-                const meta = workCardMeta(work);
-                return (
-                  <div
-                    key={work.id}
-                    className={isFullWidth ? "md:col-span-2" : undefined}
-                  >
-                    <HeroCard
-                      href={`/work/${work.slug}`}
-                      title={work.title}
-                      coverImage={cover}
-                      eyebrow={meta.eyebrow}
-                      bottomMeta={meta.bottomMeta}
-                      size="sm"
-                      aspect={isFullWidth ? "21/9" : "4/3"}
-                      sizes={isFullWidth ? "100vw" : "50vw"}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </FadeIn>
-          <FadeIn className="mt-10">
-            <Link
-              href="/work"
-              prefetch={false}
-              className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
-            >
-              View All Work &rarr;
-            </Link>
-          </FadeIn>
-        </section>
-      )}
-
-      {/* ── Latest Dispatch ───────────────────────────────────── */}
-      {recentPosts.length > 0 && (
-        <section className="border-t border-white/[0.07] py-section-sm md:py-section bg-[#0d0d0d]/30">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <FadeIn>
-              <h2 className="section-label">Latest Dispatch</h2>
-            </FadeIn>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-7 mt-10">
-              {recentPosts.map((post, i) => {
-                const { href, external } = dispatchHref(post);
-                return (
-                <FadeIn key={post.id} delay={i * 100}>
-                  <Link
-                    href={href}
-                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="group block -mx-3 px-3 py-3 rounded-sm hover:bg-white/[0.02] transition-colors border-b border-white/[0.05] md:border-b-0 border-l-2 border-l-transparent hover:border-l-cyan"
-                  >
-                    {post.date && (
-                      <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-light-300 mb-2">
-                        {formatDate(post.date)}
-                      </p>
-                    )}
-                    <h3 className={`${sourceSerif.className} text-lg font-light text-light-100 group-hover:text-cyan transition-colors leading-snug`}>
-                      {post.title}
-                    </h3>
-                    {post.excerpt && (
-                      <p className={`${sourceSerif.className} text-sm text-light-300 mt-2 line-clamp-3`}>
-                        {post.excerpt}
-                      </p>
-                    )}
-                  </Link>
-                </FadeIn>
-                );
-              })}
-            </div>
-            <FadeIn className="mt-10">
-              <Link
-                href="/dispatch"
-                prefetch={false}
-                className="font-mono text-xs tracking-[0.2em] uppercase text-cyan hover:text-white transition-colors link-underline"
-              >
-                Read More &rarr;
-              </Link>
-            </FadeIn>
-          </div>
-        </section>
-      )}
-
-      {/* ── Track Record ──────────────────────────────────────── */}
-      <section className="border-y border-white/[0.07] py-section-sm md:py-section bg-[#0d0d0d]/30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <FadeIn>
-            <h2 className="section-label">Track Record</h2>
-          </FadeIn>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-white/[0.07] mt-10">
-            {[
-              { number: "20+", label: "Years" },
-              { number: "50+", label: "Brands" },
-              { number: "200+", label: "Projects" },
-              { number: "AI", label: "From Day 1" },
-            ].map((stat, i) => (
-              <FadeIn key={stat.label} delay={i * 80}>
-                <div className="text-center md:px-4">
-                  <p className="text-4xl md:text-5xl font-light text-light-100 tracking-tight">
-                    {stat.number}
-                  </p>
-                  <p className="font-mono text-xs tracking-[0.2em] uppercase text-light-300 mt-2">
-                    {stat.label}
-                  </p>
-                </div>
-              </FadeIn>
-            ))}
-          </div>
+      <section className="slide cover-slide" data-chapter="" data-title="Omar Kamel, AI Creative & Production Lead">
+        <div className="lock">
+          <h1>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/omar-kamel-horizontal.svg" alt="Omar Kamel" width={300} height={48} />
+          </h1>
+          <p>
+            portfolio of AI work<span className="bar">|</span>2026
+          </p>
+          <p className="meta">currently at Optix (Publicis Groupe)</p>
         </div>
+        <div className="illus">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/brand/desk-illustration.png" alt="Line drawing of Omar at his desk, seen from behind, with scripts, music, screens and guitars drifting up on a red thread" width={430} height={768} fetchPriority="high" />
+        </div>
+        <p className="line">
+          AI Creative &amp; Production Lead. <b>Twenty years</b> across Cairo, Italy and Dubai.
+        </p>
+        <a className="begin" href="#selected">
+          Begin <kbd>&darr;</kbd>
+        </a>
       </section>
 
-      {/* ── Clients ─────────────────────────────────────────── */}
-      {clients.length > 0 && (
-        <section className="py-section-sm md:py-section border-t border-white/[0.07]">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <FadeIn>
-              <h2 className="section-label">Selected Clients</h2>
-              <p className="text-light-300 text-sm mt-3 max-w-xl">
-                Including work delivered at Optix (Publicis Groupe).
-              </p>
-            </FadeIn>
-            <div className="flex flex-wrap gap-x-6 md:gap-x-10 gap-y-3 md:gap-y-4 mt-8">
-              {clients.slice(0, 18).map((client, i) => (
-                <FadeIn key={client.id} delay={i * 40}>
-                  <span className="font-mono text-[10px] md:text-sm tracking-widest uppercase text-light-400">
-                    {client.name}
-                  </span>
-                </FadeIn>
+      {selected.length > 0 && (
+        <>
+          <Divider id="selected" chapter="selected" chapterName="Selected Work" light="Selected" bold="Work" sub="where to start" count={`${selected.length} pieces`} />
+          {selected.map((w) => (
+            <WorkPiece key={w.id} doc={w} kind="work" chapter="selected" chapterName="Selected Work" />
+          ))}
+        </>
+      )}
+
+      {ai.length > 0 && (
+        <>
+          <Divider id="ai" chapter="ai" chapterName="AI Production" light="AI" bold="Production" sub="made with new tools" count={`${ai.length} pieces`} />
+          {ai.map((w) => (
+            <WorkPiece key={w.id} doc={w} kind="work" chapter="ai" chapterName="AI Production" />
+          ))}
+        </>
+      )}
+
+      {client.length > 0 && (
+        <>
+          <Divider id="client" chapter="client" chapterName="Client Content" light="Client" bold="Content" sub="things i've made for others" count={`${client.length} of ${work.length} pieces`} />
+          {client.map((w) => (
+            <WorkPiece key={w.id} doc={w} kind="work" chapter="client" chapterName="Client Content" />
+          ))}
+          <TextSlide chapter="client" chapterName="Client Content" title="The whole archive" width={980}
+            head={<Head client="The Archive" project={`${work.length} Pieces`} desc="twenty years of client work, newest first" />}>
+            <ol className="list">
+              {newest.filter((w) => !used.has(String(w.id))).slice(0, 6).map((w) => (
+                <li key={w.id}>
+                  <span className="d">{w.date ? new Date(w.date).getFullYear() : ""}</span>
+                  <a href={`/work/${w.slug}`}><span className="t">{w.title}</span></a>
+                  <span className="r">{(w.client ?? "").split(/ \/ | \| /)[0]}</span>
+                </li>
               ))}
-            </div>
-          </div>
-        </section>
+            </ol>
+            <div className="foot"><More href="/work">All {work.length} pieces</More></div>
+          </TextSlide>
+        </>
       )}
 
-      {/* ── Transmissions ────────────────────────────────────── */}
-      <section className="border-t border-white/[0.07] py-section-sm md:py-section bg-[#0d0d0d]/30">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <FadeIn>
-            <h2 className="section-label-primary">Transmissions</h2>
-            <p className="text-light-300 text-sm mt-3 max-w-xl">
-              Ongoing platforms and independent projects broadcasting on their own frequencies.
-            </p>
-          </FadeIn>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 mt-10">
-            {[
-              { name: "6DOF Reviews", url: "https://6dofreviews.com", domain: "6dofreviews.com", description: "VR hardware reviews, game deep-dives, and immersive tech analysis focused on the Meta Quest ecosystem and beyond.", tags: ["VR", "Reviews", "YouTube", "Quest"] },
-              { name: "Human Impact", url: "https://humanimpact.news", domain: "humanimpact.news", description: "AI-powered news aggregator that ranks global stories by their actual human impact rather than clicks or engagement.", tags: ["AI", "News", "Aggregator", "Impact"] },
-              { name: "Savage Impulse", url: "https://savageimpulse.com", domain: "savageimpulse.com", description: "Local-first desktop tools for people who work with content, from a voice-over studio to semantic footage search, built from 20 years in production.", tags: ["Desktop", "Local-first", "Creators", "Tools"] },
-            ].map((t, i) => (
-              <FadeIn key={t.name} delay={i * 80}>
-                <a
-                  href={t.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group relative flex flex-col h-full bg-dark-200 border-l-2 border-cyan/30 hover:border-cyan transition-[border-color,box-shadow] duration-300 pl-8 pr-9 py-8 lg:pl-10 lg:pr-11 lg:py-10 overflow-hidden shadow-[rgba(255,255,255,0.03)_0px_1px_0px_0px_inset]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative flex flex-col flex-1">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="live-indicator-dot inline-block w-2 h-2 rounded-full bg-cyan animate-pulse" />
-                      <span className="live-indicator-label font-mono text-[10px] tracking-[0.25em] uppercase text-cyan/60">Live</span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-light tracking-tight text-light-100 group-hover:text-white transition-colors">{t.name}</h3>
-                    <p className="text-light-300 text-sm mt-3 leading-relaxed max-w-md flex-1">{t.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-5">
-                      {t.tags.map((tag) => (
-                        <span key={tag} className="font-mono text-[10px] tracking-widest uppercase text-light-400 border border-white/[0.07] rounded px-2.5 py-1">{tag}</span>
-                      ))}
-                    </div>
-                    <span className="inline-block mt-6 font-mono text-xs tracking-[0.15em] uppercase text-cyan/70 group-hover:text-cyan transition-colors">{t.domain} &rarr;</span>
-                  </div>
-                </a>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-      </section>
+      {studioPicks.length + studioMore.length > 0 && (
+        <>
+          <Divider id="studio" chapter="studio" chapterName="The Studio" light="The" bold="Studio" sub="things i make for myself" count={`${projects.length} pieces`} />
+          {studioPicks.map((p) => (
+            <WorkPiece key={p.id} doc={p} kind="studio" chapter="studio" chapterName="The Studio" />
+          ))}
+          {studioMore.length > 0 && (
+            <Piece chapter="studio" chapterName="The Studio" title="Also in the studio"
+              head={<Head client="Also" project="In the Studio" desc={studioMore.map((p) => p.title.toLowerCase()).join(", ")} />}
+              figs={studioMore.map((p) => {
+                const c = coverOf(p);
+                return <Fig key={p.id} ratio={ratioOf(c)} src={srcOf(c, "card")} alt={p.title} href={`/studio/${p.slug}`} />;
+              })}>
+              <p>{studioMore.map((p) => p.title).join(". ")}.</p>
+              <div className="links"><More href="/studio">The whole studio</More></div>
+            </Piece>
+          )}
+        </>
+      )}
 
-      {/* ── CTA ───────────────────────────────────────────────── */}
-      <section className="border-t border-white/[0.07] py-section md:py-section-lg">
-        <FadeIn>
-          <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center">
-            <h2 className="text-4xl md:text-6xl font-light tracking-display text-light-100">
-              Have a project in mind?
-            </h2>
-            <div className="mt-10">
-              <Link
-                href="/contact"
-                className="inline-block font-mono text-xs tracking-[0.2em] uppercase bg-cyan text-black px-6 py-2.5 shadow-[0_2px_8px_rgba(0,217,255,0.2)] hover:shadow-[0_0_12px_rgba(0,217,255,0.4)] hover:scale-105 active:scale-95 transition-all duration-200"
-              >
-                Start a Project
-              </Link>
+      <TextSlide id="builds" chapter="builds" chapterName="Vibe Coding" title="Vibe coding: three live builds"
+        head={<Head client="Vibe Coding" project="Transmissions" desc="three builds, all live. full stack, database to deployment, no handoffs" />}>
+        <div className="split3">
+          {TRANSMISSIONS.map((t, i) => (
+            <div key={t.name}>
+              <span className="no">{"ABC"[i]}</span>
+              <h3>{t.name}</h3>
+              <p className="kind">{t.kind}</p>
+              <p>{t.text}</p>
+              <More href={t.url} external>{t.domain}</More>
             </div>
-          </div>
-        </FadeIn>
-      </section>
-    </>
+          ))}
+        </div>
+        <p className="credit" style={{ marginTop: 28, maxWidth: "60ch" }}>
+          <b>My Work</b><span className="bar">|</span><i>Concept, Design, Development, Claude Code.</i>
+        </p>
+      </TextSlide>
+
+      {posts.length > 0 && (
+        <TextSlide id="dispatches" chapter="dispatches" chapterName="The Dispatches" title="Dispatches, latest six" width={980}
+          head={<Head client="The Dispatches" project="Latest Six" desc="notes from inside production" />}>
+          <ol className="list">
+            {posts.map((p) => {
+              const { href, external } = dispatchHref(p);
+              return (
+                <li key={p.id}>
+                  <span className="d">{p.date ? fmt(p.date) : ""}</span>
+                  <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}><span className="t">{p.title}</span></a>
+                  <span className="r">{p.categories?.[0]?.toLowerCase()}</span>
+                </li>
+              );
+            })}
+          </ol>
+          <div className="foot"><More href="/dispatch">All dispatches</More></div>
+        </TextSlide>
+      )}
+
+      <Piece id="about" chapter="about" chapterName="About" title="Omar Kamel, about"
+        head={<Head client="Omar Kamel" project="About" desc="online, karmamole" />}
+        figs={photo ? <Fig ratio={ratioOf(photo, 0.75)} src={srcOf(photo)} alt={photo.alt || "Omar Kamel"} /> : null}>
+        <p className="lead">Different runtimes, same core logic: find the medium, tell the story, ship it.</p>
+        <p>{bio.split(/(?<=\.)\s+/).slice(2, 6).join(" ")}</p>
+        <div className="links"><More href="/about">The whole story</More></div>
+      </Piece>
+
+      {clients.length > 0 && <ClientsSlide names={clients.map((c) => c.name)} chapter="about" chapterName="About" />}
+
+      <EndSlide />
+    </DeckRoot>
   );
 }

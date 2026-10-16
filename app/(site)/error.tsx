@@ -8,25 +8,16 @@ export default function Error({
   reset: () => void;
 }) {
   return (
-    <section className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center bg-[#0a0a0a]">
-      <span className="section-label mb-4">Error</span>
-      <h1 className="text-4xl font-bold tracking-tight text-light-100">
-        Something went wrong
-      </h1>
-      <p className="mt-4 text-lg text-light-300">
-        Sorry, this page hit a problem. Please try again.
-      </p>
-      {error.digest && (
-        <p className="mt-2 font-mono text-xs text-light-400">
-          Reference: {error.digest}
-        </p>
-      )}
-      <button
-        onClick={reset}
-        className="mt-8 inline-block border border-cyan text-cyan px-6 py-3 text-sm font-mono transition-colors hover:bg-cyan hover:text-black rounded-[2px]"
-      >
-        Try again
-      </button>
-    </section>
+    <div data-mode="doc">
+      <section className="slide title-slide lost">
+        <div>
+          <span className="no">Error</span>
+          <h1>Something <b>Broke</b></h1>
+          <p className="sub">sorry, this page hit a problem. please try again.</p>
+          {error.digest ? <p className="sub">Reference: {error.digest}</p> : null}
+          <p style={{ marginTop: 26 }}><button type="button" className="more" onClick={reset}>Try again <span aria-hidden="true">&rarr;</span></button></p>
+        </div>
+      </section>
+    </div>
   );
 }

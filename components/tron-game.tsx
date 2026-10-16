@@ -30,9 +30,10 @@ const MAX_CELL = 14;
 const TICK_MS = 110;
 const WALL_PAD = 2; // px padding inside arena border
 
-const CYAN = "#00d9ff";
-const ORANGE = "#ff6b00";
-const MAGENTA = "#ff2d78";
+// Brand kit: the player rides scarlet; the programs are stone and warm grey, on a sand arena.
+const CYAN = "#E63946";
+const ORANGE = "#1C1917";
+const MAGENTA = "#67635E";
 
 /* ── Helpers ───────────────────────────────────────────────────── */
 
@@ -294,7 +295,7 @@ export default function TronGame() {
       trail: [],
       alive: true,
       color: CYAN,
-      glow: "rgba(0, 217, 255, 0.5)",
+      glow: "rgba(230, 57, 70, 0.45)",
       name: "PLAYER",
     };
 
@@ -306,7 +307,7 @@ export default function TronGame() {
       trail: [],
       alive: true,
       color: ORANGE,
-      glow: "rgba(255, 107, 0, 0.5)",
+      glow: "rgba(28, 25, 23, 0.35)",
       name: "SARK",
     };
 
@@ -318,7 +319,7 @@ export default function TronGame() {
       trail: [],
       alive: true,
       color: MAGENTA,
-      glow: "rgba(255, 45, 120, 0.5)",
+      glow: "rgba(103, 99, 94, 0.35)",
       name: "MCP",
     };
 
@@ -356,11 +357,11 @@ export default function TronGame() {
     const h = rows * cellSize;
 
     // Background
-    ctx.fillStyle = "#0a0a0a";
+    ctx.fillStyle = "#E7E2D6";
     ctx.fillRect(0, 0, w, h);
 
     // Grid lines
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.03)";
+    ctx.strokeStyle = "rgba(28, 25, 23, 0.07)";
     ctx.lineWidth = 0.5;
     for (let x = 0; x <= cols; x++) {
       ctx.beginPath();
@@ -396,7 +397,7 @@ export default function TronGame() {
         const head = cycle.trail[cycle.trail.length - 1];
         ctx.shadowColor = cycle.glow;
         ctx.shadowBlur = 12;
-        ctx.fillStyle = "#fff";
+        ctx.fillStyle = cycle === player ? "#C71926" : "#000";
         ctx.fillRect(
           head.x * cellSize + 1,
           head.y * cellSize + 1,
@@ -408,16 +409,16 @@ export default function TronGame() {
     }
 
     // Arena border - visible glowing edge
-    ctx.shadowColor = "rgba(0, 217, 255, 0.3)";
-    ctx.shadowBlur = 15;
-    ctx.strokeStyle = "rgba(0, 217, 255, 0.4)";
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = "#1C1917";
     ctx.lineWidth = 1.5;
     ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
     ctx.shadowBlur = 0;
 
     // Corner accents
     const corner = 8;
-    ctx.strokeStyle = "rgba(0, 217, 255, 0.6)";
+    ctx.strokeStyle = "#E63946";
     ctx.lineWidth = 2;
     // Top-left
     ctx.beginPath();
@@ -790,42 +791,33 @@ export default function TronGame() {
   /* ── UI ──────────────────────────────────────────────────────── */
 
   return (
-    <div className="relative flex flex-col h-[calc(100dvh-3.5rem)] lg:h-[100dvh] select-none overflow-hidden touch-none">
+    <div className="tron">
       {/* Quiet escape hatch: the CV is public, so it should not be gated behind winning */}
       {phase !== "playing" && phase !== "won" && (
         <a
           href="/Omar Kamel CV2026.pdf"
           download
-          className="absolute top-3 right-4 z-40 font-mono text-[10px] tracking-widest uppercase text-light-400 hover:text-cyan transition-colors"
+          className="tron-skip"
         >
           Skip the game, download CV
         </a>
       )}
 
-      {/* CRT scanline overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 z-20"
-        style={{
-          background:
-            "repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 3px)",
-        }}
-      />
-
       {/* Boot screen */}
       {phase === "boot" && (
-        <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#0a0a0a]">
-          <div className="font-mono text-sm md:text-base text-cyan space-y-1 p-8 max-w-lg">
+        <div className="tron-boot">
+          <div>
             {bootLines.map((line, i) => (
               <div
                 key={i}
-                className={`${line === "" ? "h-4" : ""} ${
-                  i === bootLines.length - 1 ? "animate-pulse" : ""
+                className={`${line === "" ? "gap" : ""} ${
+                  i === bootLines.length - 1 ? "blink" : ""
                 }`}
               >
                 {line}
               </div>
             ))}
-            <span className="inline-block w-2 h-4 bg-cyan animate-pulse" />
+            <span className="caret" />
           </div>
         </div>
       )}
@@ -833,35 +825,35 @@ export default function TronGame() {
       {/* Game area */}
       <div
         ref={containerRef}
-        className="flex-1 flex items-center justify-center overflow-hidden p-4 py-8 md:p-6"
+        className="tron-area"
       >
         <canvas
           ref={canvasRef}
-          className={`block ${
-            phase === "boot" ? "opacity-0" : "opacity-100"
-          } transition-opacity duration-500`}
+          className={phase === "boot" ? "hide" : undefined}
         />
       </div>
 
       {/* Ready overlay */}
       {phase === "ready" && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
-          <div className="bg-[#0a0a0a]/80 backdrop-blur-sm p-8 md:p-12 text-center space-y-4">
-            <h2 className="font-mono text-cyan text-xl md:text-2xl tracking-widest">
+        <div className="tron-over">
+          <div className="tron-panel">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/mark.svg" alt="" width={40} height={40} />
+            <h2>
               ENTER THE GRID
             </h2>
-            <div className="text-light-300 text-sm font-mono space-y-1">
-              <p className="hidden md:block">
+            <div className="tron-copy">
+              <p className="wide">
                 Arrow keys or WASD to steer
               </p>
-              <p className="md:hidden">Swipe or tap to steer</p>
-              <p className="text-light-400 text-xs mt-2">
+              <p className="narrow">Swipe or tap to steer</p>
+              <p className="small">
                 Outlast both opponents to unlock access
               </p>
             </div>
             <button
               onClick={startGame}
-              className="mt-4 font-mono text-sm tracking-widest text-black bg-cyan px-6 py-2 hover:bg-cyan/90 transition-colors"
+              className="tron-cta"
             >
               START
             </button>
@@ -871,8 +863,8 @@ export default function TronGame() {
 
       {/* Playing HUD */}
       {phase === "playing" && (
-        <div className="absolute top-2 left-0 right-0 z-10 flex justify-center gap-6 font-mono text-xs tracking-wider">
-          <span className="text-cyan/70">YOU</span>
+        <div className="tron-hud">
+          <span className="you">You</span>
           {gameRef.current?.enemies.map((e, i) => (
             <span
               key={i}
@@ -887,28 +879,30 @@ export default function TronGame() {
 
       {/* Won overlay */}
       {phase === "won" && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
-          <div className="bg-[#0a0a0a]/85 backdrop-blur-sm p-8 md:p-12 text-center space-y-6">
-            <div className="font-mono text-cyan text-2xl md:text-3xl tracking-widest animate-pulse">
+        <div className="tron-over">
+          <div className="tron-panel">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/mark.svg" alt="" width={40} height={40} />
+            <div className="tron-title">
               ACCESS GRANTED
             </div>
-            <div className="font-mono text-light-300 text-sm space-y-1">
+            <div className="tron-copy">
               <p>Decryption complete.</p>
-              <p className="text-light-400 text-xs">
+              <p className="small">
                 All opponents derezzed.
               </p>
             </div>
-            <div className="flex flex-col gap-3 items-center">
+            <div className="tron-actions">
               <a
                 href="/Omar Kamel CV2026.pdf"
                 download
-                className="font-mono text-sm tracking-widest text-black bg-cyan px-8 py-3 hover:bg-cyan/90 transition-colors inline-block"
+                className="tron-cta"
               >
                 DOWNLOAD CV
               </a>
               <button
                 onClick={startGame}
-                className="font-mono text-xs tracking-widest text-cyan/60 hover:text-cyan transition-colors"
+                className="more"
               >
                 PLAY AGAIN
               </button>
@@ -919,21 +913,23 @@ export default function TronGame() {
 
       {/* Lost overlay */}
       {phase === "lost" && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">
-          <div className="bg-[#0a0a0a]/85 backdrop-blur-sm p-8 md:p-12 text-center space-y-6">
-            <div className="font-mono text-red-500 text-2xl md:text-3xl tracking-widest">
+        <div className="tron-over">
+          <div className="tron-panel">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/mark.svg" alt="" width={40} height={40} />
+            <div className="tron-title lost">
               DEREZZED
             </div>
-            <div className="font-mono text-light-300 text-sm">
+            <div className="tron-copy">
               <p>Your light cycle has been terminated.</p>
             </div>
             <button
               onClick={startGame}
-              className="font-mono text-sm tracking-widest text-black bg-cyan px-8 py-3 hover:bg-cyan/90 transition-colors"
+              className="tron-cta"
             >
               RETRY
             </button>
-            <p className="font-mono text-light-400 text-xs">
+            <p className="small">
               Press Space or tap to retry
             </p>
           </div>
@@ -942,8 +938,8 @@ export default function TronGame() {
 
       {/* Mobile touch hint */}
       {phase === "playing" && (
-        <div className="md:hidden absolute bottom-4 left-0 right-0 z-10 text-center">
-          <span className="font-mono text-light-400 text-xs">
+        <div className="tron-touch">
+          <span>
             swipe or tap sides to turn
           </span>
         </div>

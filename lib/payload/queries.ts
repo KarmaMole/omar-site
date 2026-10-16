@@ -163,7 +163,44 @@ export const getWorkSitemapEntries: () => Promise<{ slug: string; updatedAt: str
   { tags: ["work"], revalidate: 3600 }
 );
 
+/**
+ * Every visible Work item with its full content, newest first. The Deck renders
+ * pieces on the home page, the archive and each item's Next screen from this one list.
+ */
+export const getDeckWork: () => Promise<WorkDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "work",
+      where: { hidden: { not_equals: true } },
+      sort: "-date",
+      limit: LIST_LIMIT,
+      depth: 1,
+    });
+    return result.docs as unknown as WorkDoc[];
+  },
+  ["getDeckWork"],
+  { tags: ["work"], revalidate: 3600 }
+);
+
 // ─── Projects ───────────────────────────────────────────────────
+
+/** Every visible Studio project with its full content, in curated order. */
+export const getDeckProjects: () => Promise<ProjectDoc[]> = unstable_cache(
+  async () => {
+    const payload = await getPayloadClient();
+    const result = await payload.find({
+      collection: "projects",
+      where: { hidden: { not_equals: true } },
+      sort: "-sortOrder",
+      limit: LIST_LIMIT,
+      depth: 1,
+    });
+    return result.docs as unknown as ProjectDoc[];
+  },
+  ["getDeckProjects"],
+  { tags: ["studio"], revalidate: 3600 }
+);
 
 export const getAllProjects: () => Promise<ProjectDoc[]> = unstable_cache(
   async () => {

@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
-import ShareRow from "@/components/share-row";
-import TagBadge from "@/components/tag-badge";
 import Markdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
-import MediaEmbedComponent from "@/components/media-embed";
+import DeckRoot from "@/components/deck/deck-root";
+import { More } from "@/components/deck/parts";
 import { splitBodyByEmbeds } from "@/lib/parse-embeds";
+import { toEmbedUrl } from "@/lib/embed-url";
 import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from "@/lib/payload/queries";
-import MoreItems from "@/components/more-items";
-import { formatDate, formatDateShort } from "@/lib/utils";
-import { sourceSerif } from "@/lib/fonts";
+import { formatDateShort } from "@/lib/utils";
 import { SITE_URL } from "@/lib/constants";
 import { absUrl } from "@/lib/abs-url";
 import { stripEmDashes } from "@/lib/seo-text";
@@ -128,79 +124,55 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
     ],
   };
 
+  const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(words / 230));
+  const recent = await getRecentBlogPosts(20);
+  const idx = recent.findIndex((p) => p.slug === slug);
+  const next = recent.length > 1 ? recent[(idx + 1) % recent.length] : null;
+  const nextLink = next ? dispatchHref(next) : null;
+
   return (
-    <>
+    <DeckRoot mode="doc">
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
-      <article className="pt-24 pb-16 animate-fade-in">
-      {cover?.url && (
-        <div className="relative aspect-[21/9] w-full bg-dark-200">
-          <Image
-            src={cover.sizes?.hero?.url ?? cover.url}
-            alt={cover.alt ?? post.title}
-            fill
-            sizes="(max-width: 1024px) 100vw, calc(100vw - 80px)"
-            className="object-cover"
-            preload
-            fetchPriority="high"
-          />
-        </div>
-      )}
-      <div className={`max-w-3xl mx-auto px-6 ${cover?.url ? "py-12" : "pt-20 pb-12"}`}>
-        <Link href="/dispatch" className="font-mono text-xs tracking-wider uppercase text-light-300 hover:text-cyan transition-colors inline-block mb-8">&larr; Back to Dispatch</Link>
-        {post.date && <p className="text-sm uppercase tracking-widest text-light-300 font-mono mb-4">{formatDate(post.date)}</p>}
-        <h1 className={`${sourceSerif.className} text-4xl md:text-6xl font-light text-light-100 leading-tight mb-6`}>{post.title}</h1>
-        {tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-10">
-            {tags.map((tag) => (<TagBadge key={tag} label={tag} href={`/dispatch?tag=${encodeURIComponent(tag)}`} />))}
+      <section className="slide title-slide a-title" data-title={post.title}>
+        <header className="head">
+          <span className="no">Dispatch{post.date ? ` · ${formatDateShort(post.date)}` : ""}</span>
+          <h1>{post.title}</h1>
+          {post.excerpt ? <p className="stand">{stripEmDashes(post.excerpt)}</p> : null}
+          <div className="meta">
+            <span><b>Omar Kamel</b></span>
+            <span>{minutes} min read</span>
+            {post.categories?.length ? <span>{post.categories.join(" · ")}</span> : null}
           </div>
-        )}
+        </header>
+        {cover?.url ? (
+          <figure className="a-cover" style={{ ["--r" as string]: cover.width && cover.height ? (cover.width / cover.height).toFixed(4) : "1.7778" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={cover.sizes?.hero?.url ?? cover.url} alt={cover.alt ?? ""} fetchPriority="high" />
+          </figure>
+        ) : null}
+      </section>
+      <div className="wrap">
         {post.body ? (
-          <div className={`${sourceSerif.className} text-light-200`}>
+          <article className="prose-long">
             {splitBodyByEmbeds(body).map((seg, i) =>
               seg.kind === "text" ? (
-                <div key={i} className="prose prose-lg prose-invert max-w-none leading-relaxed font-light">
-                  <Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{seg.content}</Markdown>
-                </div>
+                <Markdown key={i} remarkPlugins={[remarkGfm]} components={markdownComponents}>{seg.content}</Markdown>
               ) : (
-                <div key={i} className="my-8">
-                  <MediaEmbedComponent embed={seg.embed} title={post.title} />
+                <div key={i} className={`embed${seg.embed.type === "spotify" || seg.embed.type === "soundcloud" ? " audio" : ""}`}>
+                  <iframe src={toEmbedUrl(seg.embed.type, seg.embed.url)} title={post.title} loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" allowFullScreen />
                 </div>
               ),
             )}
-          </div>
+          </article>
         ) : null}
-        <ShareRow title={post.title} url={`${SITE_URL}/dispatch/${slug}`} />
-        <MoreDispatch currentSlug={slug} />
+        {tags.length > 0 ? <p className="a-tags">{tags.join(" · ")}</p> : null}
+        <div className="a-end">
+          <More href="/dispatch">All dispatches</More>
+          {next && nextLink ? <More href={nextLink.href} external={nextLink.external}>Next: {next.title}</More> : null}
+        </div>
       </div>
-    </article>
-    </>
-  );
-}
-
-async function MoreDispatch({ currentSlug }: { currentSlug: string }) {
-  const recent = await getRecentBlogPosts(20);
-  const idx = recent.findIndex((p) => p.slug === currentSlug);
-  const rotated =
-    idx >= 0 ? [...recent.slice(idx + 1), ...recent.slice(0, idx)] : recent;
-  const others = rotated.slice(0, 3);
-  return (
-    <MoreItems
-      variant="text"
-      items={others.map((p) => {
-        const { href, external } = dispatchHref(p);
-        return {
-          slug: p.slug,
-          title: p.title,
-          href,
-          external,
-          subtitle: p.date ? formatDateShort(p.date) : undefined,
-          excerpt: p.excerpt ?? null,
-        };
-      })}
-      label="More Dispatch"
-      viewAllHref="/dispatch"
-      viewAllLabel="All Dispatch"
-    />
+    </DeckRoot>
   );
 }
