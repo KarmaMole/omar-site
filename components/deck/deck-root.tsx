@@ -176,13 +176,18 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       const slides = $$<HTMLElement>(".slide");
       const total = slides.length;
       let current = 0;
-      /* Numbers run per section: a section's dividers and the cover aren't counted, its pieces read 01 / NN. */
+      /* Section / piece: sections are numbered in order (the cover isn't one), a section's divider reads
+         "01 / Selected Work" and its pieces "01 / 01", "01 / 02"; the next section's first piece is "02 / 01". */
+      const sections = [...new Set(slides.map((s) => s.dataset.chapter || "").filter(Boolean))];
       const counted = (s: HTMLElement) => !s.matches(".divider, .cover-slide");
       const place = slides.map((s) => {
-        const mates = slides.filter((t) => t.dataset.chapter === s.dataset.chapter && counted(t));
-        return { k: mates.indexOf(s) + 1, n: mates.length };
+        const c = s.dataset.chapter || "";
+        const mates = slides.filter((t) => t.dataset.chapter === c && counted(t));
+        return { s: c ? sections.indexOf(c) + 1 : 0, k: mates.indexOf(s) + 1, name: s.dataset.chapterName || "" };
       });
-      slides.forEach((s, i) => { const no = s.querySelector("[data-no]"); if (no) no.textContent = place[i].k ? pad(place[i].k) : ""; });
+      const label = ({ s, k, name }: (typeof place)[number], html: boolean) =>
+        !s ? "" : html ? `${pad(s)} <span>/ ${k ? pad(k) : name}</span>` : k ? `${pad(s)} / ${pad(k)}` : pad(s);
+      slides.forEach((s, i) => { const no = s.querySelector("[data-no]"); if (no) no.textContent = label(place[i], false); });
       const counter = document.querySelector<HTMLButtonElement>(".counter");
       const prog = document.querySelector<HTMLElement>(".prog");
       prog?.querySelector("ol")?.remove();
@@ -207,10 +212,7 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       }
       const set = (i: number) => {
         current = i;
-        if (counter) {
-          const { k, n } = place[i];
-          counter.innerHTML = `${k ? `${pad(k)} ` : ""}${n ? `<span>/ ${pad(n)}</span>` : ""}<em>Overview</em>`;
-        }
+        if (counter) counter.innerHTML = `${label(place[i], true)}<em>Overview</em>`;
         const ci = chapters.findIndex((c) => i >= c.from && i < c.from + c.n);
         chapters.forEach((c, k) => {
           const b = c.li?.querySelector("b") as HTMLElement | null;
