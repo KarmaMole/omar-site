@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
@@ -37,15 +38,18 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
     title,
     description,
     alternates: {
+      types: FEED,
       canonical: `/work/${slug}`,
     },
     openGraph: {
+      ...OG_BASE,
       type: "article",
       title,
       description,
       url: `/work/${slug}`,
     },
     twitter: {
+      ...TWITTER_BASE,
       card: "summary_large_image",
       title,
       description,

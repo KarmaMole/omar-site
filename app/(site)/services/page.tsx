@@ -1,6 +1,7 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import DeckRoot from "@/components/deck/deck-root";
 import { EndSlide, Fig, Head, More, Piece, TextSlide } from "@/components/deck/parts";
 import { PieceFig } from "@/components/deck/work-piece";
@@ -13,15 +14,18 @@ export const metadata: Metadata = {
     "AI production, creative direction, websites and apps, and more from Omar Kamel.",
   robots: { index: true, follow: true },
   alternates: {
+    types: FEED,
     canonical: "/services",
   },
   openGraph: {
+    ...OG_BASE,
     title: "Services: Omar Kamel",
     description: "AI production, creative direction, websites and apps, and more from Omar Kamel.",
     url: "/services",
     type: "website",
   },
   twitter: {
+    ...TWITTER_BASE,
     card: "summary_large_image",
     title: "Services: Omar Kamel",
     description: "AI production, creative direction, websites and apps, and more from Omar Kamel.",

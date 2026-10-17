@@ -1,6 +1,7 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
 import { ClientsSlide, EndSlide, Fig, Head, More, Piece, TextSlide } from "@/components/deck/parts";
@@ -14,9 +15,11 @@ export const metadata: Metadata = {
   description:
     "Omar Kamel: AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
   alternates: {
+    types: FEED,
     canonical: "/about",
   },
   openGraph: {
+    ...OG_BASE,
     title: "About: Omar Kamel",
     description:
       "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Currently at Optix.",
@@ -24,6 +27,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
+    ...TWITTER_BASE,
     card: "summary_large_image",
     title: "About: Omar Kamel",
     description:

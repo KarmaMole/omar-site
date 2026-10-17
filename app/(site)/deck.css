@@ -150,6 +150,8 @@ html:not(:has([data-mode="deck"])) .foot-bar { display: none; }
 }
 .fig .watch::before { content: ""; width: 0; height: 0; border-left: 8px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
 .fig .watch:hover { background: var(--accent-ink); }
+/* .fig clips its overflow, so the ring sits inside the button and the cover */
+.fig .watch:focus-visible, .fig a.cover-link:focus-visible { outline: 2px solid #fff; outline-offset: -5px; }
 .fig.small .watch { padding: 10px 11px 9px 10px; gap: 0; }
 .fig.small .watch span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .fig.full .watch, .fig.embedded .watch { display: none; }
@@ -375,7 +377,7 @@ form.done > :not(.sent) { display: none; }
 .ct-side .facts li { grid-template-columns: 7em 1fr; padding: 8px 0; border-bottom: 1px solid var(--border); }
 
 /* ---------------------------------------------------------------- menu sheet (phones) */
-.sheet { position: fixed; inset: 0; z-index: 19; background: var(--bg); padding: 76px 20px 28px; overflow: auto; display: grid; align-content: start; gap: 28px; }
+.sheet { position: fixed; inset: 0; z-index: 19; background: var(--bg); padding: 76px 20px 28px; overflow: auto; overscroll-behavior: contain; display: grid; align-content: start; gap: 28px; }
 .sheet[hidden] { display: none; }
 .sheet nav a { display: block; font: 600 30px/1.1 var(--display); text-transform: uppercase; text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--border); }
 .sheet nav a[aria-current="page"] { color: var(--accent-ink); }
@@ -442,7 +444,7 @@ form.done > :not(.sent) { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
-  .card .im img { transition: none; }
+  .card .im img, .dgrid .im img { transition: none; }
 }
 
 /* ---------------------------------------------------------------- app additions */

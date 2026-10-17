@@ -39,9 +39,14 @@ export default function DeckChrome() {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     if (!open) return;
+    document.querySelector<HTMLElement>("#sheet a")?.focus();
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    /* the Menu button disappears at 900px and up, so a sheet left open on a rotated tablet closes itself */
+    const wide = matchMedia("(min-width: 900px)");
+    const onWide = () => { if (wide.matches) setOpen(false); };
     addEventListener("keydown", onKey);
-    return () => removeEventListener("keydown", onKey);
+    wide.addEventListener("change", onWide);
+    return () => { removeEventListener("keydown", onKey); wide.removeEventListener("change", onWide); };
   }, [open]);
 
   return (
@@ -68,7 +73,7 @@ export default function DeckChrome() {
         </button>
       </header>
       <div className="sheet" id="sheet" hidden={!open}>
-        <nav aria-label="Site">
+        <nav aria-label="Menu">
           {NAV.map((n) => (
             <Link key={n.href} href={n.href} prefetch={false} aria-current={isCurrent(path, n.href) ? "page" : undefined} onClick={() => setOpen(false)}>
               {n.label}
@@ -96,7 +101,7 @@ export default function DeckChrome() {
       </div>
       <div className="foot-bar">
         <div className="prog"><span className="chap">&nbsp;</span></div>
-        <button type="button" className="counter" aria-label="Show all screens" />
+        <button type="button" className="counter" aria-label="Show all screens" aria-haspopup="dialog" />
       </div>
     </>
   );

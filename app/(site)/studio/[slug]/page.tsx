@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import { notFound } from "next/navigation";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
@@ -30,15 +31,18 @@ export async function generateMetadata({ params }: StudioDetailPageProps): Promi
     title: project.title,
     description,
     alternates: {
+      types: FEED,
       canonical: `/studio/${slug}`,
     },
     openGraph: {
+      ...OG_BASE,
       type: "article",
       title: project.title,
       description,
       url: `/studio/${slug}`,
     },
     twitter: {
+      ...TWITTER_BASE,
       card: "summary_large_image",
       title: project.title,
       description,

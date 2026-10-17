@@ -1,6 +1,7 @@
 export const revalidate = 300;
 
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
 import { TitleSlide } from "@/components/deck/parts";
@@ -21,17 +22,18 @@ export const metadata: Metadata = {
   description:
     "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",
   alternates: {
+    types: FEED,
     canonical: "/dispatch",
-    // A child `alternates` replaces the layout's, so re-declare the feed link here.
-    types: { "application/rss+xml": "/feed.xml" },
   },
   openGraph: {
+    ...OG_BASE,
     title: "Dispatch: Omar Kamel",
     description: "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",
     url: "/dispatch",
     type: "website",
   },
   twitter: {
+    ...TWITTER_BASE,
     card: "summary_large_image",
     title: "Dispatch: Omar Kamel",
     description: "Articles on AI production, creative workflows, and industry insights by Omar Kamel.",

@@ -401,6 +401,8 @@ export const getBlogSitemapEntries: () => Promise<{ slug: string; updatedAt: str
       collection: "blog-posts",
       limit: LIST_LIMIT,
       depth: 0,
+      // External dispatches live on their publication, so they have no page of their own to index
+      where: { isExternal: { not_equals: true } },
       select: { slug: true, updatedAt: true },
     });
     return (result.docs as unknown as { slug: string; updatedAt: string }[]).map((d) => ({

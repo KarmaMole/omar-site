@@ -1,6 +1,7 @@
 export const revalidate = 300;
 
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
 import { TitleSlide } from "@/components/deck/parts";
@@ -15,9 +16,9 @@ const DESCRIPTION = "Selected highlights from 20+ years of AI production, video,
 export const metadata: Metadata = {
   title: "Work",
   description: DESCRIPTION,
-  alternates: { canonical: "/work" },
-  openGraph: { title: "Work: Omar Kamel", description: DESCRIPTION, url: "/work", type: "website" },
-  twitter: { card: "summary_large_image", title: "Work: Omar Kamel", description: DESCRIPTION },
+  alternates: { types: FEED, canonical: "/work" },
+  openGraph: { ...OG_BASE, title: "Work: Omar Kamel", description: DESCRIPTION, url: "/work", type: "website" },
+  twitter: { ...TWITTER_BASE, card: "summary_large_image", title: "Work: Omar Kamel", description: DESCRIPTION },
 };
 
 export default async function WorkPage() {

@@ -1,6 +1,7 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import ObfuscatedEmail from "@/components/obfuscated-email";
 import DeckRoot from "@/components/deck/deck-root";
 import DeckContactForm from "@/components/deck/contact-form";
@@ -14,15 +15,18 @@ export const metadata: Metadata = {
   description:
     "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",
   alternates: {
+    types: FEED,
     canonical: "/contact",
   },
   openGraph: {
+    ...OG_BASE,
     title: "Contact: Omar Kamel",
     description: "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",
     url: "/contact",
     type: "website",
   },
   twitter: {
+    ...TWITTER_BASE,
     card: "summary_large_image",
     title: "Contact: Omar Kamel",
     description: "Get in touch with Omar Kamel for production enquiries, collaborations, or anything in between.",

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
+import { notFound, permanentRedirect } from "next/navigation";
 import JsonLd from "@/components/json-ld";
 import Markdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -39,9 +40,11 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
     title,
     description,
     alternates: {
+      types: FEED,
       canonical: `/dispatch/${slug}`,
     },
     openGraph: {
+      ...OG_BASE,
       type: "article",
       title: ogTitle,
       description,
@@ -49,6 +52,7 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
       publishedTime: post.date ?? undefined,
     },
     twitter: {
+      ...TWITTER_BASE,
       card: "summary_large_image",
       title: ogTitle,
       description,
@@ -76,6 +80,8 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
   const { slug } = await params;
   const post = await getBlogPostBySlug(slug);
   if (!post) notFound();
+  // Dispatches published elsewhere have no body here; send readers (and crawlers) to the publication
+  if (post.isExternal && post.publicationUrl) permanentRedirect(post.publicationUrl);
 
   const cover = typeof post.coverImage === "object" && post.coverImage ? post.coverImage : null;
   const tags = post.tags?.split(",").map((t) => t.trim()).filter(Boolean) ?? [];
@@ -94,8 +100,8 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: post.title,
-    ...(post.excerpt ? { description: post.excerpt } : {}),
+    headline: stripEmDashes(post.title),
+    ...(post.excerpt ? { description: stripEmDashes(post.excerpt) } : {}),
     ...(post.date ? { datePublished: post.date } : {}),
     ...(post.updatedAt ? { dateModified: post.updatedAt } : {}),
     ...(cover?.url ? { image: absUrl(cover.url) } : {}),

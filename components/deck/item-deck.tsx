@@ -59,7 +59,7 @@ export function ItemDeck({ doc, seq, kind }: { doc: Doc; seq: Doc[]; kind: "work
       {gallery.length > 0 && (
         <Piece chapter="gallery" chapterName="Gallery" title="Gallery"
           head={<Head client={client} project="Gallery" desc={`${gallery.length} ${gallery.length === 1 ? "image" : "images"}`} />}
-          figs={gallery.slice(0, 12).map((g) => <Fig key={g.id} ratio={ratioOf(g)} src={srcOf(g)} alt={g.alt || doc.title} />)}>
+          figs={gallery.slice(0, 12).map((g, n) => <Fig key={g.id} ratio={ratioOf(g)} src={srcOf(g)} alt={g.alt || `${doc.title}, image ${n + 1}`} />)}>
           {gallery.length > 12 ? <p>And {gallery.length - 12} more.</p> : null}
         </Piece>
       )}
@@ -67,7 +67,7 @@ export function ItemDeck({ doc, seq, kind }: { doc: Doc; seq: Doc[]; kind: "work
       {extra.length > 0 && (
         <Piece chapter="films" chapterName="More films" title="More films"
           head={<Head client={client} project={extra.length === 1 ? "One More" : "More Films"} desc={`${extra.length + 1} in all`} />}
-          figs={extra.map(({ src, m }) => <Fig key={m.url} ratio={16 / 9} frame={src} alt={doc.title} />)} />
+          figs={extra.map(({ src, m }, n) => <Fig key={m.url} ratio={16 / 9} frame={src} alt={`${doc.title}, film ${n + 2} of ${extra.length + 1}`} />)} />
       )}
 
       {next && nextHead && next.slug !== doc.slug && (

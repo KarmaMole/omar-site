@@ -1,6 +1,7 @@
 export const revalidate = 300;
 
 import type { Metadata } from "next";
+import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
 import { TitleSlide } from "@/components/deck/parts";
@@ -15,9 +16,9 @@ const DESCRIPTION = "Self-directed projects, music, photography, and experiments
 export const metadata: Metadata = {
   title: "Studio",
   description: DESCRIPTION,
-  alternates: { canonical: "/studio" },
-  openGraph: { title: "Studio: Omar Kamel", description: DESCRIPTION, url: "/studio", type: "website" },
-  twitter: { card: "summary_large_image", title: "Studio: Omar Kamel", description: DESCRIPTION },
+  alternates: { types: FEED, canonical: "/studio" },
+  openGraph: { ...OG_BASE, title: "Studio: Omar Kamel", description: DESCRIPTION, url: "/studio", type: "website" },
+  twitter: { ...TWITTER_BASE, card: "summary_large_image", title: "Studio: Omar Kamel", description: DESCRIPTION },
 };
 
 /** Lowercase subtitles for each studio chapter. */

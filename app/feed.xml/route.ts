@@ -1,6 +1,7 @@
 import { getAllBlogPosts } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
 import { absUrl } from "@/lib/abs-url";
+import { stripEmDashes } from "@/lib/seo-text";
 
 const baseUrl = SITE_URL;
 
@@ -12,10 +13,10 @@ export async function GET() {
   const posts = await getAllBlogPosts();
   const items = posts
     .map((post) => {
-      const link = `${baseUrl}/dispatch/${post.slug}`;
+      const link = post.isExternal && post.publicationUrl ? post.publicationUrl : `${baseUrl}/dispatch/${post.slug}`;
       const pubDate = post.date ? new Date(post.date).toUTCString() : "";
-      const description = post.excerpt ? escapeXml(post.excerpt) : "";
-      const title = escapeXml(post.title);
+      const description = post.excerpt ? escapeXml(stripEmDashes(post.excerpt)) : "";
+      const title = escapeXml(stripEmDashes(post.title));
       const cover =
         typeof post.coverImage === "object" && post.coverImage
           ? (post.coverImage as typeof post.coverImage & { mimeType?: string; filesize?: number })
@@ -23,8 +24,8 @@ export async function GET() {
       return `
     <item>
       <title>${title}</title>
-      <link>${link}</link>
-      <guid isPermaLink="true">${link}</guid>
+      <link>${escapeXml(link)}</link>
+      <guid isPermaLink="true">${escapeXml(link)}</guid>
       <description>${description}</description>
       <author>omar@omarkamel.com (Omar Kamel)</author>
       ${pubDate ? `<pubDate>${pubDate}</pubDate>` : ""}
@@ -52,7 +53,7 @@ export async function GET() {
 
   return new Response(xml, {
     headers: {
-      "Content-Type": "application/xml",
+      "Content-Type": "application/rss+xml; charset=utf-8",
       "Cache-Control": "s-maxage=3600, stale-while-revalidate",
     },
   });

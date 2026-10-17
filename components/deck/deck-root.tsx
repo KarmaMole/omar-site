@@ -25,6 +25,7 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
     const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const small = () => innerWidth < 900 || innerHeight < 560;
     const pad = (n: number) => String(n).padStart(2, "0");
+    const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
     /* ---------- fit figures ---------- */
     type It = { el: HTMLElement; r: number };
@@ -99,7 +100,13 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
     const justifyAll = () => sorters.forEach(justify);
     justifyAll();
     let rt: ReturnType<typeof setTimeout> | undefined;
-    on("resize", () => { clearTimeout(rt); rt = setTimeout(() => { fitAll(); justifyAll(); }, 80); });
+    let lastW = innerWidth;
+    /* phone toolbars collapsing fire a height-only resize; refitting then would make the work jump mid-scroll */
+    on("resize", () => {
+      if (innerWidth === lastW && small()) return;
+      lastW = innerWidth;
+      clearTimeout(rt); rt = setTimeout(() => { fitAll(); justifyAll(); }, 80);
+    });
 
     /* ---------- players ---------- */
     const clicks = (e: MouseEvent) => {
@@ -114,6 +121,7 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       f.title = fig.querySelector("img, video")?.getAttribute("alt") || fig.querySelector("video")?.getAttribute("aria-label") || "Player";
       fig.querySelector("img, video")?.remove();
       fig.append(f); fig.classList.add("embedded");
+      f.focus(); // the Watch button is gone now; keep keyboard focus on the player
     };
     document.addEventListener("click", clicks); off.push(() => document.removeEventListener("click", clicks));
 
@@ -204,7 +212,7 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
         chapters.forEach((c) => {
           const li = document.createElement("li");
           li.style.flex = `${c.n} 1 0`;
-          li.innerHTML = `<i><b></b></i><button type="button"><span class="sr">${c.name || "Opening"}</span></button>`;
+          li.innerHTML = `<i><b></b></i><button type="button"><span class="sr">${esc(c.name || "Opening")}</span></button>`;
           li.querySelector("button")!.addEventListener("click", () => go(c.from));
           ol.append(li); c.li = li;
         });
@@ -212,22 +220,25 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       }
       const set = (i: number) => {
         current = i;
-        if (counter) counter.innerHTML = `${label(place[i], true)}<em>Overview</em>`;
+        if (counter) {
+          counter.innerHTML = `${label({ ...place[i], name: esc(place[i].name) }, true)}<em>Overview</em>`;
+          counter.setAttribute("aria-label", `Screen ${i + 1} of ${total}. Show all screens`);
+        }
         const ci = chapters.findIndex((c) => i >= c.from && i < c.from + c.n);
         chapters.forEach((c, k) => {
           const b = c.li?.querySelector("b") as HTMLElement | null;
           if (b) b.style.width = k < ci ? "100%" : k > ci ? "0" : `${((i - c.from + 1) / c.n) * 100}%`;
         });
         const chap = prog?.querySelector(".chap");
-        if (chap) { const c = chapters[ci]; chap.innerHTML = c && c.name ? `<b>${c.name}</b>` : "&nbsp;"; }
+        if (chap) { const c = chapters[ci]; chap.innerHTML = c && c.name ? `<b>${esc(c.name)}</b>` : "&nbsp;"; }
       };
       set(0);
       sio = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) set(slides.indexOf(e.target as HTMLElement)); }), { threshold: 0.55 });
       slides.forEach((s) => sio!.observe(s));
 
       ov = document.createElement("div");
-      ov.className = "overview"; ov.hidden = true; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-label", "All screens");
-      ov.innerHTML = `<header><h2>${host?.dataset.deckName || "Omar Kamel"} <span class="no" style="margin-left:10px">${pad(total)}</span></h2><button type="button" data-close>Close <kbd>Esc</kbd></button></header><ol></ol>`;
+      ov.className = "overview"; ov.hidden = true; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); ov.setAttribute("aria-label", "All screens");
+      ov.innerHTML = `<header><h2>${esc(host?.dataset.deckName || "Omar Kamel")} <span class="no" style="margin-left:10px">${pad(total)}</span></h2><button type="button" data-close>Close <kbd>Esc</kbd></button></header><ol></ol>`;
       const list = ov.querySelector("ol")!;
       let lastChap: string | undefined;
       slides.forEach((s, i) => {
@@ -246,14 +257,16 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       });
       document.body.append(ov);
       let opener: Element | null = null;
+      const behind = () => $$<HTMLElement>("main, .top, .foot-bar");
       const open = () => {
         opener = document.activeElement;
         const cards = $$<HTMLLIElement>("li:not(.chap-h)", list);
         cards.forEach((l) => l.classList.remove("now")); cards[current]?.classList.add("now");
         ov!.hidden = false; root.style.overflow = "hidden";
+        behind().forEach((el) => { el.inert = true; });
         (cards[current] || cards[0])?.querySelector("button")?.focus();
       };
-      const close = () => { ov!.hidden = true; root.style.overflow = ""; (opener as HTMLElement | null)?.focus?.(); };
+      const close = () => { ov!.hidden = true; root.style.overflow = ""; behind().forEach((el) => { el.inert = false; }); (opener as HTMLElement | null)?.focus?.(); };
       ov.querySelector("[data-close]")!.addEventListener("click", close);
       counter?.addEventListener("click", open); off.push(() => counter?.removeEventListener("click", open));
 
@@ -265,6 +278,13 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
         if (!document.querySelector<HTMLElement>(".sheet")?.hidden) return;
         if (e.key === "g" || e.key === "G") { e.preventDefault(); open(); return; }
         if (small()) return;
+        const fwd = ["ArrowDown", "ArrowRight", "PageDown"].includes(e.key) || (e.key === " " && !e.shiftKey && t !== "BUTTON" && t !== "A");
+        const back = ["ArrowUp", "ArrowLeft", "PageUp"].includes(e.key) || (e.key === " " && e.shiftKey);
+        const body = slides[current].querySelector<HTMLElement>(":scope.textslide > .body");
+        if (body && body.scrollHeight > body.clientHeight + 2 && (fwd || back) && !e.key.startsWith("ArrowL") && !e.key.startsWith("ArrowR")) {
+          const room = fwd ? body.scrollHeight - body.clientHeight - body.scrollTop : body.scrollTop;
+          if (room > 2) { e.preventDefault(); body.scrollBy({ top: (fwd ? 1 : -1) * body.clientHeight * 0.8, behavior: calm ? "auto" : "smooth" }); return; }
+        }
         if (["ArrowDown", "ArrowRight", "PageDown"].includes(e.key) || (e.key === " " && !e.shiftKey && t !== "BUTTON" && t !== "A")) { e.preventDefault(); go(current + 1); }
         else if (["ArrowUp", "ArrowLeft", "PageUp"].includes(e.key) || (e.key === " " && e.shiftKey)) { e.preventDefault(); go(current - 1); }
         else if (e.key === "Home") { e.preventDefault(); go(0); }
@@ -277,6 +297,7 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       off.forEach((f) => f());
       vio?.disconnect(); sio?.disconnect();
       ov?.remove(); root.style.overflow = "";
+      document.querySelectorAll<HTMLElement>("main, .top, .foot-bar").forEach((el) => { el.inert = false; });
       clearTimeout(rt);
       root.classList.remove("deck", "doc", "at-cover", "scrolled");
       document.querySelector(".prog ol")?.remove();
