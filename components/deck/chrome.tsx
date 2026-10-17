@@ -50,7 +50,7 @@ export default function DeckChrome() {
         <Link className="brand" href="/" prefetch={false}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/mark.svg" alt="" width={22} height={22} />
-          Omar Kamel
+          <span>Omar Kamel</span>
         </Link>
         <nav aria-label="Site">
           <ul className="site">
