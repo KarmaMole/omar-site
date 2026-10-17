@@ -30,6 +30,6 @@ export default async function WorkOg({ params }: { params: Promise<{ slug: strin
     label: "WORK",
     title: work.title,
     subtitle: work.client || work.roleCredits || work.categories?.join(" · ") || null,
-    coverUrl: cover?.url ?? null,
+    coverUrl: cover?.sizes?.hero?.url ?? cover?.sizes?.card?.url ?? cover?.url ?? null,
   });
 }

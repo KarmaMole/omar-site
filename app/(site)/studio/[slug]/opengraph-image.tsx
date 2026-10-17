@@ -35,6 +35,6 @@ export default async function StudioOg({ params }: { params: Promise<{ slug: str
       project.categories?.join(" · ") ||
       project.tags?.split(",")[0]?.trim() ||
       null,
-    coverUrl: cover?.url ?? null,
+    coverUrl: cover?.sizes?.hero?.url ?? cover?.sizes?.card?.url ?? cover?.url ?? null,
   });
 }

@@ -78,7 +78,8 @@ function lineCount(title: string, size: number) {
  */
 export async function renderOgCard({ label, title, subtitle, coverUrl }: OgCardOptions) {
   const { metropolis, inter, mark } = await loadAssets();
-  const cover = absoluteUrl(coverUrl);
+  // Satori reads PNG / JPEG / GIF only; a WebP original would render as an empty frame.
+  const cover = coverUrl && !/\.webp(\?|$)/i.test(coverUrl) ? absoluteUrl(coverUrl) : null;
   const size = titleSize(title);
   const lines = lineCount(title, size);
   const typeBlock = 24 * 1.2 + 14 + lines * size * 1.05 + (!cover && subtitle ? 24 + 28 * 1.3 : 0);

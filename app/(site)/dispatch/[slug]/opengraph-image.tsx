@@ -1,3 +1,4 @@
+import { stripEmDashes } from "@/lib/seo-text";
 import { getBlogPostBySlug } from "@/lib/payload/queries";
 import { renderOgCard, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og-card";
 
@@ -23,15 +24,12 @@ export default async function DispatchOg({ params }: { params: Promise<{ slug: s
     });
   }
 
-  const cover =
-    typeof post.coverImage === "object" && post.coverImage
-      ? post.coverImage
-      : null;
-
+  // Dispatch covers are white-ground ink drawings, which a stone wash turns grey, so dispatches use
+  // the brand kit's no-image card (og-dispatch.png): title plus a short standfirst.
+  const first = (post.excerpt ?? "").split(/(?<=[.!?])\s/)[0]?.trim() ?? "";
   return renderOgCard({
     label: "DISPATCH",
     title: post.title,
-    subtitle: post.categories?.[0] ?? null,
-    coverUrl: cover?.url ?? null,
+    subtitle: first && first.length <= 90 ? stripEmDashes(first) : post.categories?.join(" · ") ?? null,
   });
 }
