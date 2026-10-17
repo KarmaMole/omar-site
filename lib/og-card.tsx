@@ -31,6 +31,11 @@ const COLUMN = 1200 - BLOCK - PAD * 2; // 726
 function absoluteUrl(url: string | null | undefined): string | null {
   if (!url) return null;
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  // Media is served from Vercel Blob; read it there rather than back through the site
+  // (a request to our own domain can meet Vercel's bot challenge and come back empty).
+  const store = process.env.BLOB_READ_WRITE_TOKEN?.match(/^vercel_blob_rw_([a-z\d]+)_/i)?.[1];
+  const file = url.match(/^\/api\/media\/file\/(.+)$/)?.[1];
+  if (store && file) return `https://${store.toLowerCase()}.public.blob.vercel-storage.com/${file}`;
   return `${SITE_URL}${url.startsWith("/") ? url : `/${url}`}`;
 }
 
