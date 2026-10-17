@@ -121,7 +121,6 @@ export default async function HomePage() {
           <p>
             films, AI production, builds and writing
           </p>
-          <p className="meta">currently at Optix (Publicis Groupe)</p>
         </div>
         <div className="illus">
           {/* eslint-disable-next-line @next/next/no-img-element */}
