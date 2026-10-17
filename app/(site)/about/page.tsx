@@ -96,7 +96,7 @@ export default async function AboutPage() {
           <div><span className="no">Italy</span><h3>A.R.T. TV</h3><p className="kind">broadcast, where it started</p><p>Broadcast television in Italy.</p></div>
           <div><span className="no">Cairo</span><h3>KAYAN</h3><p className="kind">production house, co-founded</p><p>Spots for Coca&#8209;Cola, Mansour Group, Metro Markets, Cartier, Swarovski and Christie&apos;s.</p></div>
           <div><span className="no">Dubai</span><h3>SAWA Media</h3><p className="kind">cloud workflows</p><p>Cloud-based workflows for international TV networks.</p></div>
-          <div><span className="no">Now</span><h3>Optix</h3><p className="kind">publicis groupe</p><p>AI Creative &amp; Production Lead, for e&amp;, GMC and Saudia Airlines.</p></div>
+          <div><span className="no">Now</span><h3>Optix</h3><p className="kind">publicis groupe</p><p>An AI production and creative lead, for e&amp;, GMC and Saudia Airlines.</p></div>
         </div>
       </TextSlide>
       {paras.length > 2 && (
