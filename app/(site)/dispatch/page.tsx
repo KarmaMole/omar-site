@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
 import { TitleSlide } from "@/components/deck/parts";
+import { Filter } from "@/components/deck/archive";
+import { sourceSerif as serif } from "@/lib/fonts";
 import { getAllBlogPosts } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
 import { DISPATCH_CATEGORIES } from "@/lib/categories";
@@ -63,45 +65,46 @@ export default async function DispatchPage() {
 
   const years = [...new Set(posts.map((p) => (p.date ?? "").slice(0, 4)).filter(Boolean))].sort().reverse();
   const first = years[years.length - 1];
+  const order = new Map(posts.map((p, i) => [p.id, i]));
 
   return (
     <DeckRoot mode="doc">
       <JsonLd data={collectionJsonLd} />
-      <TitleSlide kicker="Writing" light="The" bold="Dispatches" sub="notes from inside production" count={`${posts.length} dispatches${first ? ` since ${first}` : ""}`} />
+      <TitleSlide short kicker="Writing" light="The" bold="Dispatches" sub="notes from inside production" count={`${posts.length} dispatches${first ? ` since ${first}` : ""}`} />
       <div className="wrap">
-        <div className="filter" data-filter role="group" aria-label="Filter">
-          <span className="lbl">Filter<span><span data-shown>{pad(posts.length)}</span> / {pad(posts.length)}</span></span>
-          <button type="button" data-val="all" aria-pressed="true">All<sup>{pad(posts.length)}</sup></button>
-          {years.map((y) => (
-            <button key={y} type="button" data-val={y} aria-pressed="false">{y}<sup>{pad(posts.filter((p) => p.date?.startsWith(y)).length)}</sup></button>
-          ))}
-          <span className="brk" />
-          <span className="lbl" style={{ visibility: "hidden" }} aria-hidden="true">Filter</span>
-          {DISPATCH_CATEGORIES.map((c) => {
-            const count = posts.filter((p) => p.categories?.includes(c)).length;
-            return count ? <button key={c} type="button" data-val={c} aria-pressed="false">{c}<sup>{pad(count)}</sup></button> : null;
-          })}
-        </div>
-        <ol className="dlist">
-          {posts.map((p) => {
-            const { href, external } = dispatchHref(p);
-            const cover = typeof p.coverImage === "object" && p.coverImage ? p.coverImage : null;
-            return (
-              <li key={p.id} data-cats={[...(p.categories ?? []), (p.date ?? "").slice(0, 4)].join("|")}>
-                <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
-                  <span className="d">{p.date ? fmt(p.date) : ""}</span>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <span className="im">{cover ? <img src={srcOf(cover, "card")} alt="" loading="lazy" /> : null}</span>
-                  <span>
-                    <h3>{p.title}</h3>
-                    {p.excerpt ? <p>{stripEmDashes(p.excerpt)}</p> : null}
-                    <span className="k">{[p.publicationName, ...(p.categories ?? [])].filter(Boolean).join(" · ")}</span>
-                  </span>
-                </a>
-              </li>
-            );
-          })}
-        </ol>
+        <Filter total={posts.length} options={DISPATCH_CATEGORIES.map((c) => ({ value: c, count: posts.filter((p) => p.categories?.includes(c)).length }))} />
+        {years.map((y) => {
+          const inYear = posts.filter((p) => p.date?.startsWith(y));
+          return (
+            <section key={y} className="yr" data-group>
+              <header>
+                <h2>{y}</h2>
+                <span className="count">{pad(inYear.length)} {inYear.length === 1 ? "dispatch" : "dispatches"}</span>
+              </header>
+              <ol className="dgrid">
+                {inYear.map((p) => {
+                  const { href, external } = dispatchHref(p);
+                  const cover = typeof p.coverImage === "object" && p.coverImage ? p.coverImage : null;
+                  const i = order.get(p.id) ?? 0;
+                  return (
+                    <li key={p.id} data-cats={(p.categories ?? []).join("|")}>
+                      <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <span className="im">{cover ? <img src={srcOf(cover, "card")} alt="" loading={i < 6 ? "eager" : "lazy"} /> : null}</span>
+                        <span className="k">
+                          <span className="no">{p.date ? fmt(p.date) : ""}</span>
+                          {external && p.publicationName ? <span>on {p.publicationName} &#8599;</span> : p.categories?.[0] ? <span>{p.categories[0]}</span> : null}
+                        </span>
+                        <h3>{p.title}</h3>
+                        {p.excerpt ? <p className={serif.className}>{stripEmDashes(p.excerpt)}</p> : null}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ol>
+            </section>
+          );
+        })}
       </div>
     </DeckRoot>
   );

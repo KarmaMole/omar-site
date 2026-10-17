@@ -13,6 +13,7 @@ import { SITE_URL } from "@/lib/constants";
 import { absUrl } from "@/lib/abs-url";
 import { stripEmDashes } from "@/lib/seo-text";
 import { dispatchHref } from "@/lib/dispatch-link";
+import { sourceSerif } from "@/lib/fonts";
 
 interface DispatchPostPageProps {
   params: Promise<{ slug: string }>;
@@ -139,7 +140,7 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
         <header className="head">
           <span className="no">Dispatch{post.date ? ` · ${formatDateShort(post.date)}` : ""}</span>
           <h1>{post.title}</h1>
-          {post.excerpt ? <p className="stand">{stripEmDashes(post.excerpt)}</p> : null}
+          {post.excerpt ? <p className={`stand ${sourceSerif.className}`}>{stripEmDashes(post.excerpt)}</p> : null}
           <div className="meta">
             <span><b>Omar Kamel</b></span>
             <span>{minutes} min read</span>
@@ -155,7 +156,7 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
       </section>
       <div className="wrap">
         {post.body ? (
-          <article className="prose-long">
+          <article className={`prose-long serif ${sourceSerif.className}`}>
             {splitBodyByEmbeds(body).map((seg, i) =>
               seg.kind === "text" ? (
                 <Markdown key={i} remarkPlugins={[remarkGfm]} components={markdownComponents}>{seg.content}</Markdown>

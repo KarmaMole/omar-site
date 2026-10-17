@@ -78,7 +78,7 @@ export function ItemDeck({ doc, seq, kind }: { doc: Doc; seq: Doc[]; kind: "work
           {plainText(next.description) ? <p>{sentences(plainText(next.description))[0]}</p> : null}
           <div className="links"><More href={`${base}/${next.slug}`}>Next piece</More></div>
           <p className="credit"><a className="more" href={`${base}/${prev.slug}`}><span aria-hidden="true">&larr;</span> {prev.title}</a></p>
-          <div className="links"><More href={base}>{kind === "work" ? "All work" : "The whole studio"}</More><More href="/">The deck</More></div>
+          <div className="links"><More href={base}>{kind === "work" ? "All work" : "The whole studio"}</More><More href="/">Home</More></div>
         </Piece>
       )}
     </>

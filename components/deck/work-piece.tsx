@@ -1,7 +1,7 @@
 import type { ProjectDoc, WorkDoc } from "@/lib/payload/types";
 import { Credit, Fig, Head, More, Piece } from "./parts";
 import {
-  coverOf, credit, embedSiteName, headOf, loopFor, plainText, primaryEmbed, ratioOf, sentences, srcOf, subtitleOf,
+  coverOf, credit, embedSiteName, headOf, plainText, primaryEmbed, ratioOf, sentences, srcOf, subtitleOf,
 } from "@/lib/deck";
 
 type Doc = WorkDoc | ProjectDoc;
@@ -10,13 +10,11 @@ type Doc = WorkDoc | ProjectDoc;
 export function PieceFig({ doc, eager, href }: { doc: Doc; eager?: boolean; href?: string }) {
   const cover = coverOf(doc);
   const embed = primaryEmbed(doc.media);
-  const loop = loopFor(doc.slug);
   return (
     <Fig
-      ratio={loop ? 16 / 9 : ratioOf(cover)}
+      ratio={ratioOf(cover)}
       src={srcOf(cover)}
       alt={cover?.alt || doc.title}
-      loop={loop}
       embed={href ? null : embed}
       href={href}
       eager={eager}

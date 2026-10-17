@@ -5,24 +5,16 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Omar Kamel: AI Creative & Production Lead",
     short_name: "Omar Kamel",
     description:
-      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.",
+      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Films, AI production, builds and writing.",
     start_url: "/",
     display: "standalone",
-    background_color: "#0a0a0a",
-    theme_color: "#0a0a0a",
+    background_color: "#E7E2D6",
+    theme_color: "#E7E2D6",
     icons: [
-      {
-        src: "/icon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
-        purpose: "any",
-      },
-      {
-        src: "/apple-icon",
-        sizes: "180x180",
-        type: "image/png",
-        purpose: "any",
-      },
+      { src: "/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any" },
+      { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+      { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+      { src: "/icons/icon-maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
   };
 }

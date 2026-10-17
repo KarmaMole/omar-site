@@ -19,7 +19,7 @@ export default async function DispatchOg({ params }: { params: Promise<{ slug: s
     return renderOgCard({
       label: "DISPATCH",
       title: "Omar Kamel",
-      subtitle: "Field Notes",
+      subtitle: "Notes from inside production",
     });
   }
 

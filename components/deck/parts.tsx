@@ -133,7 +133,7 @@ export function More({ href, children, external }: { href: string; children: Rea
   );
 }
 
-export function EndSlide({ light = "Thank", bold = "You", chapter = "contact" }: { light?: string; bold?: string; chapter?: string }) {
+export function EndSlide({ light = "Let's", bold = "Talk", chapter = "contact" }: { light?: string; bold?: string; chapter?: string }) {
   return (
     <section className="slide end" id="contact" data-chapter={chapter} data-chapter-name="Contact" data-title={`${light} ${bold}`}>
       <span />

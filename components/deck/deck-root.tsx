@@ -57,6 +57,18 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
         row.forEach((f) => { f.el.style.width = Math.floor(h * f.r) + "px"; f.el.classList.toggle("small", h * f.r < 300); wrap.append(f.el); });
         stage.append(wrap);
       });
+      sink(stage);
+    }
+    /* the words beside the work end on the work's bottom edge, not the stage's */
+    function sink(stage: HTMLElement) {
+      const aside = stage.parentElement?.querySelector<HTMLElement>(":scope > .aside");
+      const last = stage.lastElementChild as HTMLElement | null;
+      if (!aside || !last) return;
+      aside.style.marginBottom = "";
+      if (small()) return;
+      const st = stage.getBoundingClientRect(), as = aside.getBoundingClientRect();
+      if (as.top >= st.bottom - 1) return; // words sit under the work (narrow screens)
+      aside.style.marginBottom = `${Math.round(st.bottom - last.getBoundingClientRect().bottom)}px`;
     }
     const stages = $$<HTMLElement>(".stage");
     const fitAll = () => stages.forEach(fitStage);
@@ -144,6 +156,14 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
     $$<HTMLElement>(".slide[id][data-chapter-name]").forEach((s) => { if (!chaps.some((c) => c.name === s.dataset.chapterName)) chaps.push({ id: s.id, name: s.dataset.chapterName! }); });
     dispatchEvent(new CustomEvent("deck:chapters", { detail: chaps }));
 
+    /* the top bar's name shows once the cover's own lockup has scrolled under it (one name on screen at a time) */
+    const lock = document.querySelector<HTMLElement>(".cover-slide .lock");
+    if (lock) {
+      const bar = document.querySelector<HTMLElement>(".top");
+      const ac = () => root.classList.toggle("at-cover", lock.getBoundingClientRect().bottom > (bar?.offsetHeight ?? 56));
+      ac(); on("scroll", ac, { passive: true });
+    }
+
     if (mode === "doc") {
       const sc = () => root.classList.toggle("scrolled", scrollY > 8);
       sc(); on("scroll", sc, { passive: true });
@@ -182,7 +202,6 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       const set = (i: number) => {
         current = i;
         if (counter) counter.innerHTML = `${pad(i + 1)} <span>/ ${pad(total)}</span><em>Overview</em>`;
-        root.classList.toggle("at-cover", slides[i].classList.contains("cover-slide"));
         const ci = chapters.findIndex((c) => i >= c.from && i < c.from + c.n);
         chapters.forEach((c, k) => {
           const b = c.li?.querySelector("b") as HTMLElement | null;

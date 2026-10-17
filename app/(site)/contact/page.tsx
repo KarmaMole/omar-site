@@ -35,7 +35,7 @@ export default async function ContactPage() {
 
   return (
     <DeckRoot mode="doc">
-      <TitleSlide short kicker="Contact" light="We" bold="Talk" sub="usually one call. a few lines about the project is enough. i read every message and reply myself." />
+      <TitleSlide short kicker="Contact" light="Let's" bold="Talk" sub="usually one call. a few lines about the project is enough. i read every message and reply myself." />
       <div className="wrap">
         <div className="ct">
           <DeckContactForm />

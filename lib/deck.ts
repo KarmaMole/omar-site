@@ -6,19 +6,6 @@ import type { MediaEmbed, MediaUpload, ProjectDoc, WorkDoc } from "@/lib/payload
 import { lexicalToPlainText, stripEmDashes } from "@/lib/seo-text";
 import { toEmbedUrl } from "@/lib/embed-url";
 
-/** Silent loops cut from the films themselves (public/deck/<name>.mp4 + .jpg poster). */
-const LOOPS: Record<string, string> = {
-  "storm-ai-short": "storm",
-  "serene-music-video": "serene",
-  "more-fool-you-revelators": "more-fool-you",
-  "human-crafted": "human-crafted",
-};
-
-export function loopFor(slug: string): { src: string; poster: string } | null {
-  const n = LOOPS[slug];
-  return n ? { src: `/deck/${n}.mp4`, poster: `/deck/${n}.jpg` } : null;
-}
-
 /** Short client name for heads and labels; the full name stays in the credits. */
 export function clientLabel(client: string | null | undefined): string {
   const c = (client ?? "").trim();

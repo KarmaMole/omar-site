@@ -5,7 +5,7 @@ import DeckRoot from "@/components/deck/deck-root";
 import { EndSlide, Fig, Head, More, Piece, TextSlide } from "@/components/deck/parts";
 import { PieceFig } from "@/components/deck/work-piece";
 import { getDeckWork } from "@/lib/payload/queries";
-import { pad } from "@/lib/deck";
+import { coverOf, pad, ratioOf, sentences, srcOf } from "@/lib/deck";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -113,13 +113,20 @@ const steps = [
   },
 ];
 
-/** The picture beside each service: a cover from the CMS (or a loop) of work that shows it. */
+/** The picture beside each service: a cover from the CMS of work that shows it. */
 const VISUALS: Record<string, string> = {
   "AI Video & Motion": "storm-ai-short",
-  "Digital Builds": "savage-impulse-promo",
   "Production & Film": "ilo-working-mothers",
   "Branding & Design": "sawabusinesscards",
 };
+
+/** Digital Builds shows the Savage Impulse apps themselves (screens from savageimpulse.com). */
+const APPS = [
+  { name: "Plekto", src: "/deck/apps/plekto.jpg", w: 1600, h: 993 },
+  { name: "Trova", src: "/deck/apps/trova.jpg", w: 1440, h: 900 },
+  { name: "Rekolla", src: "/deck/apps/rekolla.jpg", w: 1200, h: 820 },
+  { name: "Vid QuikTools", src: "/deck/apps/vid-quiktools.jpg", w: 600, h: 704 },
+];
 
 const WORKSHOP = [
   ["AI Today: Where We Actually Are", "1.5 hours"],
@@ -139,7 +146,12 @@ export default async function ServicesPage() {
     <DeckRoot mode="deck" name="Services">
       <Piece chapter="intro" chapterName="Services" title="Independent projects"
         head={<Head as="h1" client="Services" project="Independent Projects" desc="five things i do, one person, no handoffs" />}
-        figs={<Fig ratio={16 / 9} alt="Services reel" loop={{ src: "/deck/services-reel.mp4", poster: "/deck/services-reel.jpg" }} />}>
+        figs={[...Object.entries(VISUALS).flatMap(([label, slug]) => {
+            const d = bySlug.get(slug);
+            const c = d ? coverOf(d) : null;
+            return c ? [<Fig key={slug} ratio={ratioOf(c)} src={srcOf(c)} alt={label} href={`#${id(label)}`} tag={label} eager />] : [];
+          }),
+          <Fig key="apps" ratio={APPS[0].w / APPS[0].h} src={APPS[0].src} alt="Digital Builds" href="#digital-builds" tag="Digital Builds" eager />]}>
         <p className="lead">Alongside my role leading AI production at Optix (Publicis Groupe), I take on a small number of independent projects.</p>
         <ol className="facts">
           {services.map((sv, i) => (
@@ -148,9 +160,7 @@ export default async function ServicesPage() {
         </ol>
       </Piece>
       {services.map((sv, i) => {
-        const [light, ...restWords] = sv.label.split(" & ");
-        const bold = restWords.join(" & ");
-        const head = <Head client={`${pad(i + 1)} · ${light}`} project={bold} desc={sv.references.map((r) => r.label.toLowerCase()).join(", ")} />;
+        const head = <Head client={sv.label} desc={`${pad(i + 1)} of ${pad(services.length)}: ${sv.references.map((r) => r.label.toLowerCase()).join(", ")}`} />;
         if (sv.label.startsWith("AI Consultation")) {
           return (
             <TextSlide key={sv.label} id={id(sv.label)} chapter={id(sv.label)} chapterName={sv.label} title={sv.label} width={980} head={head}>
@@ -168,11 +178,13 @@ export default async function ServicesPage() {
           );
         }
         const doc = bySlug.get(VISUALS[sv.label] ?? "");
+        const figs = sv.label === "Digital Builds"
+          ? APPS.map((a) => <Fig key={a.name} ratio={a.w / a.h} src={a.src} alt={`${a.name}, a Savage Impulse app`} tag={a.name} />)
+          : doc ? <PieceFig doc={doc} /> : null;
         return (
-          <Piece key={sv.label} id={id(sv.label)} chapter={id(sv.label)} chapterName={sv.label} title={sv.label} head={head}
-            figs={doc ? <PieceFig doc={doc} /> : null}>
-            <p className="lead">{sv.description}</p>
-            <p>{sv.benefit}</p>
+          <Piece key={sv.label} id={id(sv.label)} chapter={id(sv.label)} chapterName={sv.label} title={sv.label} head={head} figs={figs}>
+            <p className="lead">{sentences(sv.description)[0]}</p>
+            <p>{sentences(sv.description).slice(1).join(" ")} {sv.benefit}</p>
             <div className="links">
               {sv.references.map((r) => <More key={r.href} href={r.href}>{r.label}</More>)}
             </div>

@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 
 const TRANSMISSIONS = [
   { name: "6DOF Reviews", kind: "vr and immersive tech", url: "https://6dofreviews.com", domain: "6dofreviews.com", text: "VR hardware reviews, game deep-dives and immersive tech analysis, focused on the Meta Quest ecosystem and beyond. Over 2 million views." },
-  { name: "Human Impact", kind: "news, ranked differently", url: "https://humanimpact.news", domain: "humanimpact.news", text: "An AI-powered news aggregator that ranks global stories by their actual human impact rather than clicks or engagement." },
+  { name: "Human Impact", kind: "news, ranked differently", url: "https://humanimpact.news", domain: "humanimpact.news", text: "An AI-powered news aggregator that ranks the day's global stories by their actual human impact, rather than by clicks or engagement." },
   { name: "Savage Impulse", kind: "desktop tools", url: "https://savageimpulse.com", domain: "savageimpulse.com", text: "Local-first desktop tools for people who work with content, from a voice-over studio to semantic footage search, built from twenty years in production." },
 ];
 
@@ -56,7 +56,7 @@ const fmt = (d: string) =>
   new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "Asia/Dubai" });
 
 /**
- * The home page is a deck in the form of Omar's portfolio presentation, filled from the CMS:
+ * The home page is a deck in the form of Omar's presentation deck, filled from the CMS:
  * Selected Work follows the homepage curation (featured + recent slots), then the newest
  * AI productions, client work, the studio picks, builds, dispatches, about, clients.
  */
@@ -116,10 +116,10 @@ export default async function HomePage() {
         <div className="lock">
           <h1>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/omar-kamel-horizontal.svg" alt="Omar Kamel" width={300} height={48} />
+            <img src="/brand/omar-kamel-horizontal-tight.svg" alt="Omar Kamel" width={1358} height={200} />
           </h1>
           <p>
-            portfolio of AI work<span className="bar">|</span>2026
+            films, AI production, builds and writing
           </p>
           <p className="meta">currently at Optix (Publicis Groupe)</p>
         </div>

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { SOCIAL } from "@/lib/deck";
 
 const NAV = [
-  { href: "/", label: "Deck" },
+  { href: "/", label: "Home" },
   { href: "/work", label: "Work" },
   { href: "/studio", label: "Studio" },
   { href: "/dispatch", label: "Dispatches" },
