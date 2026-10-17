@@ -57,11 +57,11 @@ const services = [
     description:
       "I design and build websites, web platforms, desktop apps and internal tools, with Claude Code and modern frameworks. Company and portfolio sites come with a proper CMS behind them, so you can update them yourself without calling me. Not wireframes and Figma decks that sit in a drawer: working products that ship fast and hold up under actual use.",
     benefit:
-      "This site is one of them, designed and built from scratch with its own CMS. Other live builds include Human Impact, an AI-powered news aggregator, and Savage Impulse, a suite of local-first desktop tools for people who work with content. Full-stack delivery from design to database to deployment, no handoffs to a dev team. You get the product, not a pitch deck.",
+      "The latest is the new corporate site for Mansour Manufacturing & Distribution: one home for eleven businesses, a new look, hero films cut from the group's own footage, and every page checked on phone, tablet and desktop. Other live builds include Human Impact, an AI-powered news aggregator, and Savage Impulse, a suite of local-first desktop tools for people who work with content. Full-stack delivery from design to database to deployment, no handoffs to a dev team. You get the product, not a pitch deck.",
     references: [
+      { label: "MMD Website Redesign", href: "/work/mansour-site-redesign" },
       { label: "Human Impact", href: "https://humanimpact.news" },
       { label: "Savage Impulse", href: "https://savageimpulse.com" },
-      { label: "Mansour Site Redesign", href: "/work/mansour-site-redesign" },
     ],
   },
   {
@@ -119,14 +119,13 @@ const VISUALS: Record<string, string> = {
   "AI Video & Motion": "storm-ai-short",
   "Production & Film": "ilo-working-mothers",
   "Branding & Design": "sawabusinesscards",
+  "Websites & Apps": "mansour-site-redesign",
 };
 
-/** Websites & Apps shows this site, then the Savage Impulse apps themselves (screens from savageimpulse.com). */
+/** Websites & Apps shows the MMD site (its walkthrough film), then the Savage Impulse apps themselves (screens from savageimpulse.com). */
 const APPS = [
-  { name: "omarkamel.com", src: "/deck/apps/omarkamel.jpg", w: 1600, h: 1000 },
   { name: "Plekto", src: "/deck/apps/plekto.jpg", w: 1600, h: 993 },
   { name: "Trova", src: "/deck/apps/trova.jpg", w: 1440, h: 900 },
-  { name: "Rekolla", src: "/deck/apps/rekolla.jpg", w: 1200, h: 820 },
   { name: "Vid QuikTools", src: "/deck/apps/vid-quiktools.jpg", w: 600, h: 704 },
 ];
 
@@ -152,8 +151,7 @@ export default async function ServicesPage() {
             const d = bySlug.get(slug);
             const c = d ? coverOf(d) : null;
             return c ? [<Fig key={slug} ratio={ratioOf(c)} src={srcOf(c)} alt={label} href={`#${id(label)}`} tag={label} eager />] : [];
-          }),
-          <Fig key="apps" ratio={APPS[0].w / APPS[0].h} src={APPS[0].src} alt="Websites & Apps" href="#websites-apps" tag="Websites & Apps" eager />]}>
+          })]}>
         <p className="lead">Alongside my work as an AI production and creative lead at Optix (Publicis Groupe), I take on a small number of independent projects.</p>
         <ol className="facts">
           {services.map((sv, i) => (
@@ -181,7 +179,8 @@ export default async function ServicesPage() {
         }
         const doc = bySlug.get(VISUALS[sv.label] ?? "");
         const figs = sv.label === "Websites & Apps"
-          ? APPS.map((a, k) => <Fig key={a.name} ratio={a.w / a.h} src={a.src} alt={k ? `${a.name}, a Savage Impulse app` : "This site, omarkamel.com"} tag={a.name} />)
+          ? [doc ? <PieceFig key="mmd" doc={doc} /> : null,
+             ...APPS.map((a) => <Fig key={a.name} ratio={a.w / a.h} src={a.src} alt={`${a.name}, a Savage Impulse app`} tag={a.name} />)]
           : doc ? <PieceFig doc={doc} /> : null;
         return (
           <Piece key={sv.label} id={id(sv.label)} chapter={id(sv.label)} chapterName={sv.label} title={sv.label} head={head} figs={figs}>
