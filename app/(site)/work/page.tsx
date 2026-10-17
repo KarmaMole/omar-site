@@ -11,7 +11,7 @@ import { WORK_CATEGORIES } from "@/lib/categories";
 import { clientLabel, coverOf, displayTitle, yearOf } from "@/lib/deck";
 import { SITE_URL } from "@/lib/constants";
 
-const DESCRIPTION = "Selected highlights from 20+ years of AI production, video, music, and comics by Omar Kamel.";
+const DESCRIPTION = "The full archive: twenty years of AI production, brand films, documentaries and web builds by Omar Kamel, for clients across Cairo, Italy and the Gulf.";
 
 export const metadata: Metadata = {
   title: "Work",

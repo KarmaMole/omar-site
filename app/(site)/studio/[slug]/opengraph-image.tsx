@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getProjectBySlug } from "@/lib/payload/queries";
 import { renderOgCard, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og-card";
 
@@ -15,13 +16,8 @@ export async function generateAlt({ params }: { params: Promise<{ slug: string }
 export default async function StudioOg({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  if (!project) {
-    return renderOgCard({
-      label: "STUDIO",
-      title: "Omar Kamel",
-      subtitle: "Studio Projects",
-    });
-  }
+  // Hidden or missing pieces get no card (a real 404), not a generic one
+  if (!project) notFound();
 
   const cover =
     typeof project.coverImage === "object" && project.coverImage

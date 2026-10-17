@@ -5,14 +5,17 @@ import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import DeckRoot from "@/components/deck/deck-root";
 import { EndSlide, Fig, Head, More, Piece, TextSlide } from "@/components/deck/parts";
 import { PieceFig } from "@/components/deck/work-piece";
-import { getDeckWork } from "@/lib/payload/queries";
+import JsonLd from "@/components/json-ld";
+import { getDeckProjects, getDeckWork } from "@/lib/payload/queries";
+import { crumbs } from "@/lib/person";
 import { coverOf, pad, ratioOf, sentences, srcOf } from "@/lib/deck";
+
+const SERVICES_DESC =
+  "AI video and motion, AI training for marketing teams, websites and apps, film production, and branding and design. Independent projects from Omar Kamel in Dubai.";
 
 export const metadata: Metadata = {
   title: "Services",
-  description:
-    "AI production, creative direction, websites and apps, and more from Omar Kamel.",
-  robots: { index: true, follow: true },
+  description: SERVICES_DESC,
   alternates: {
     types: FEED,
     canonical: "/services",
@@ -20,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     ...OG_BASE,
     title: "Services: Omar Kamel",
-    description: "AI production, creative direction, websites and apps, and more from Omar Kamel.",
+    description: SERVICES_DESC,
     url: "/services",
     type: "website",
   },
@@ -28,7 +31,7 @@ export const metadata: Metadata = {
     ...TWITTER_BASE,
     card: "summary_large_image",
     title: "Services: Omar Kamel",
-    description: "AI production, creative direction, websites and apps, and more from Omar Kamel.",
+    description: SERVICES_DESC,
   },
 };
 
@@ -143,12 +146,18 @@ const WORKSHOP = [
 ];
 
 export default async function ServicesPage() {
-  const work = await getDeckWork();
+  const [work, projects] = await Promise.all([getDeckWork(), getDeckProjects()]);
   const bySlug = new Map(work.map((w) => [w.slug, w]));
+  const studioSlugs = new Set(projects.map((p) => p.slug));
+  /* references are typed in by hand; one whose piece was renamed or hidden is dropped rather than linking to a 404 */
+  const live = (href: string) =>
+    href.startsWith("/work/") ? bySlug.has(href.slice(6)) : href.startsWith("/studio/") ? studioSlugs.has(href.slice(8)) : true;
+  const refsOf = (sv: (typeof services)[number]) => sv.references.filter((r) => live(r.href));
   const id = (label: string) => label.toLowerCase().replace(/[^a-z]+/g, "-").replace(/^-|-$/g, "");
 
   return (
     <DeckRoot mode="deck" name="Services">
+      <JsonLd data={crumbs("Services", "/services")} />
       <Piece chapter="intro" chapterName="Services" title="Independent projects"
         head={<Head as="h1" client="Services" project="Independent Projects" desc="five things i do, one person, no handoffs" />}
         figs={[...Object.entries(VISUALS).flatMap(([label, slug]) => {
@@ -164,7 +173,7 @@ export default async function ServicesPage() {
         </ol>
       </Piece>
       {services.map((sv, i) => {
-        const head = <Head client={sv.label} desc={`${pad(i + 1)} of ${pad(services.length)}: ${sv.references.map((r) => r.label.toLowerCase()).join(", ")}`} />;
+        const head = <Head client={sv.label} desc={`${pad(i + 1)} of ${pad(services.length)}: ${refsOf(sv).map((r) => r.label.toLowerCase()).join(", ")}`} />;
         if (sv.label.startsWith("AI Consultation")) {
           return (
             <TextSlide key={sv.label} id={id(sv.label)} chapter={id(sv.label)} chapterName={sv.label} title={sv.label} width={980} head={head}>
@@ -191,7 +200,7 @@ export default async function ServicesPage() {
             <p className="lead">{sentences(sv.description)[0]}</p>
             <p>{sentences(sv.description).slice(1).join(" ")} {sv.benefit}</p>
             <div className="links">
-              {sv.references.map((r) => <More key={r.href} href={r.href}>{r.label}</More>)}
+              {refsOf(sv).map((r) => <More key={r.href} href={r.href}>{r.label}</More>)}
             </div>
           </Piece>
         );

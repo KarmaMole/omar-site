@@ -7,8 +7,7 @@ import DeckRoot from "@/components/deck/deck-root";
 import { ClientsSlide, EndSlide, Fig, Head, More, Piece, TextSlide } from "@/components/deck/parts";
 import { getAllClients, getSiteSettings } from "@/lib/payload/queries";
 import { plainText, ratioOf, srcOf } from "@/lib/deck";
-import { SITE_URL } from "@/lib/constants";
-import { absUrl } from "@/lib/abs-url";
+import { crumbs, personJsonLd as personNode } from "@/lib/person";
 
 export const metadata: Metadata = {
   title: "About",
@@ -47,23 +46,8 @@ export default async function AboutPage() {
   const settings = await getSiteSettings();
   const photo = typeof settings.aboutPhoto === "object" && settings.aboutPhoto ? settings.aboutPhoto : null;
 
-  const personJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Omar Kamel",
-    jobTitle: "AI Creative & Production Lead",
-    url: SITE_URL,
-    description:
-      "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai.",
-    knowsAbout: [
-      "AI Video Generation",
-      "AI Image Generation",
-      "Creative Production",
-      "Digital Content",
-    ],
-    sameAs: (settings.socialLinks ?? []).map((s: { url: string }) => s.url),
-    ...(photo?.url ? { image: absUrl(photo.url) } : {}),
-  };
+  const personJsonLd = personNode((settings.socialLinks ?? []).map((s: { url: string }) => s.url), photo);
+  const breadcrumbJsonLd = crumbs("About", "/about");
 
   const clients = await getAllClients();
   const paras = bioParagraphs(settings.aboutBio);
@@ -71,6 +55,7 @@ export default async function AboutPage() {
   return (
     <DeckRoot mode="deck" name="About">
       <JsonLd data={personJsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       <Piece chapter="who" chapterName="About" title="Different runtimes, same core logic"
         head={<Head as="h1" client="Omar Kamel" project="About" desc="online, karmamole · based in dubai, uae" />}
         figs={photo ? <Fig ratio={ratioOf(photo, 0.75)} src={srcOf(photo)} alt={photo.alt || "Omar Kamel"} eager /> : null}>

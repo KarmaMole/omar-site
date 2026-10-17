@@ -5,15 +5,18 @@ import JsonLd from "@/components/json-ld";
 import Markdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import DeckRoot from "@/components/deck/deck-root";
-import { More } from "@/components/deck/parts";
+import { EndSlide, More } from "@/components/deck/parts";
+import { Group } from "@/components/deck/archive";
+import { DispatchCard } from "@/components/deck/dispatch-card";
+import { clientLabel, coverOf, displayTitle } from "@/lib/deck";
 import { splitBodyByEmbeds } from "@/lib/parse-embeds";
 import { toEmbedUrl } from "@/lib/embed-url";
-import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts } from "@/lib/payload/queries";
+import { getBlogPostBySlug, getAllBlogSlugs, getRecentBlogPosts, getDeckWork } from "@/lib/payload/queries";
 import { formatDateShort } from "@/lib/utils";
 import { SITE_URL } from "@/lib/constants";
+import { PERSON_REF } from "@/lib/person";
 import { absUrl } from "@/lib/abs-url";
 import { stripEmDashes } from "@/lib/seo-text";
-import { dispatchHref } from "@/lib/dispatch-link";
 import { sourceSerif } from "@/lib/fonts";
 
 interface DispatchPostPageProps {
@@ -50,6 +53,9 @@ export async function generateMetadata({ params }: DispatchPostPageProps): Promi
       description,
       url: `/dispatch/${slug}`,
       publishedTime: post.date ?? undefined,
+      modifiedTime: post.updatedAt ?? undefined,
+      authors: [SITE_URL + "/about"],
+      ...(post.categories?.length ? { tags: post.categories } : {}),
     },
     twitter: {
       ...TWITTER_BASE,
@@ -97,27 +103,23 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
     });
   }
 
+  const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(words / 230));
+
   const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "BlogPosting",
     headline: stripEmDashes(post.title),
     ...(post.excerpt ? { description: stripEmDashes(post.excerpt) } : {}),
     ...(post.date ? { datePublished: post.date } : {}),
     ...(post.updatedAt ? { dateModified: post.updatedAt } : {}),
     ...(cover?.url ? { image: absUrl(cover.url) } : {}),
-    author: {
-      "@type": "Person",
-      name: "Omar Kamel",
-      url: SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Omar Kamel",
-      logo: {
-        "@type": "ImageObject",
-        url: `${SITE_URL}/icon.svg`,
-      },
-    },
+    author: PERSON_REF,
+    publisher: PERSON_REF,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/dispatch/${slug}` },
+    ...(post.categories?.length ? { articleSection: post.categories } : {}),
+    ...(tags.length ? { keywords: tags } : {}),
+    wordCount: words,
     url: `${SITE_URL}/dispatch/${slug}`,
   };
 
@@ -131,12 +133,31 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
     ],
   };
 
-  const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
-  const minutes = Math.max(1, Math.round(words / 230));
-  const recent = await getRecentBlogPosts(20);
+  const [recent, work] = await Promise.all([getRecentBlogPosts(40), getDeckWork()]);
   const idx = recent.findIndex((p) => p.slug === slug);
   const next = recent.length > 1 ? recent[(idx + 1) % recent.length] : null;
-  const nextLink = next ? dispatchHref(next) : null;
+  /* keep reading: the next dispatch, then the two sharing the most topics with this one */
+  const cats = new Set(post.categories ?? []);
+  const alike = recent
+    .filter((p) => p.slug !== slug && p.slug !== next?.slug)
+    .map((p, k) => ({ p, k, n: (p.categories ?? []).filter((c) => cats.has(c)).length }))
+    .sort((a, b) => b.n - a.n || a.k - b.k)
+    .slice(0, 2)
+    .map((x) => x.p);
+  const keep = [next, ...alike].filter((p): p is NonNullable<typeof p> => !!p);
+  /* from the work: pieces this dispatch names, then the newest AI production */
+  const text = `${post.title} ${post.body ?? ""} ${post.tags ?? ""}`.toLowerCase();
+  const esc = (t: string) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const has = (t: string) => new RegExp(`\\b${esc(t.toLowerCase())}\\b`).test(text);
+  /* a piece counts as named when its title and its client both appear (titles alone are often generic words) */
+  const named = work.filter((w) => {
+    const label = clientLabel(w.client);
+    return label ? label.length >= 3 && has(label) && has(displayTitle(w.title, label)) : w.title.length >= 8 && has(w.title);
+  });
+  const newestAi = [...work]
+    .filter((w) => w.categories?.includes("AI Production"))
+    .sort((a, b) => String(b.date ?? "").localeCompare(String(a.date ?? "")));
+  const fromWork = [...new Map([...named, ...newestAi].map((w) => [w.slug, w])).values()].slice(0, 3);
 
   return (
     <DeckRoot mode="doc">
@@ -177,9 +198,23 @@ export default async function DispatchPostPage({ params }: DispatchPostPageProps
         {tags.length > 0 ? <p className="a-tags">{tags.join(" · ")}</p> : null}
         <div className="a-end">
           <More href="/dispatch">All dispatches</More>
-          {next && nextLink ? <More href={nextLink.href} external={nextLink.external}>Next: {next.title}</More> : null}
+          <More href="/feed.xml" external>Follow by RSS</More>
         </div>
+        {keep.length > 0 ? (
+          <section className="yr keep">
+            <header><h2>Keep Reading</h2><span className="count">{String(keep.length).padStart(2, "0")} dispatches</span></header>
+            <ol className="dgrid">{keep.map((p) => <DispatchCard key={p.id} post={p} />)}</ol>
+          </section>
+        ) : null}
+        {fromWork.length > 0 ? (
+          <Group title="From the Work" sub={named.length ? "the pieces this dispatch is about, then the newest" : "the newest ai production"} count={fromWork.length} start={0}
+            items={fromWork.map((w) => {
+              const label = clientLabel(w.client);
+              return { key: w.slug, href: `/work/${w.slug}`, cover: coverOf(w), client: label, title: displayTitle(w.title, label), sub: (w.categories ?? []).join(", ").toLowerCase(), cats: [] };
+            })} />
+        ) : null}
       </div>
+      <EndSlide />
     </DeckRoot>
   );
 }

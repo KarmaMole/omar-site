@@ -6,6 +6,8 @@ import DeckRoot from "@/components/deck/deck-root";
 import { ItemDeck } from "@/components/deck/item-deck";
 import { getProjectBySlug, getAllProjectSlugs, getDeckProjects } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
+import { PERSON_REF } from "@/lib/person";
+import { playerJsonLd } from "@/lib/structured";
 import { absUrl } from "@/lib/abs-url";
 import { describeFromRichText } from "@/lib/seo-text";
 import type { ProjectDoc } from "@/lib/payload/types";
@@ -36,7 +38,6 @@ export async function generateMetadata({ params }: StudioDetailPageProps): Promi
     },
     openGraph: {
       ...OG_BASE,
-      type: "article",
       title: project.title,
       description,
       url: `/studio/${slug}`,
@@ -70,11 +71,10 @@ export default async function StudioDetailPage({ params }: StudioDetailPageProps
     name: project.title,
     description: projectDescription(project),
     ...(cover?.url ? { image: absUrl(cover.url) } : {}),
-    author: {
-      "@type": "Person",
-      name: "Omar Kamel",
-      url: SITE_URL,
-    },
+    author: PERSON_REF,
+    creator: PERSON_REF,
+    ...playerJsonLd(project as ProjectDoc & { createdAt?: string }, projectDescription(project), cover),
+    ...(project.categories?.length ? { keywords: project.categories } : {}),
     url: `${SITE_URL}/studio/${slug}`,
   };
 

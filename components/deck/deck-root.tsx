@@ -82,15 +82,19 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       const W = sorter.clientWidth, gap = 14;
       const target = small() ? 150 : Math.max(190, Math.min(300, innerHeight * 0.32));
       let row: { c: HTMLElement; r: number }[] = [], sum = 0;
+      /* phones: no card narrower than its caption can take; a row that would squeeze one is closed early */
+      const minW = small() ? Math.min(150, W * 0.42) : 0;
       const flush = (last: boolean) => {
         if (!row.length) return;
         let h = (W - gap * (row.length - 1)) / sum;
         if (last && h > target * 1.25) h = target;
+        if (minW) h = Math.min(h, target * 2);
         row.forEach(({ c, r }) => { c.style.width = Math.floor(h * r) + "px"; });
         row = []; sum = 0;
       };
       cards.forEach((c) => {
         const r = parseFloat(c.style.getPropertyValue("--r")) || 16 / 9;
+        if (minW && row.length && Math.min(r, ...row.map((x) => x.r)) * ((W - gap * row.length) / (sum + r)) < minW) flush(false);
         row.push({ c, r }); sum += r;
         if ((W - gap * (row.length - 1)) / sum < target) flush(false);
       });
@@ -146,8 +150,8 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
     if (filter) {
       const items = $$<HTMLElement>("[data-cats]");
       const shown = filter.querySelector("[data-shown]");
-      const fclick = (e: MouseEvent) => {
-        const b = (e.target as Element).closest<HTMLButtonElement>("button[data-val]"); if (!b) return;
+      const key = `filter:${location.pathname}`;
+      const apply = (b: HTMLButtonElement) => {
         $$<HTMLButtonElement>("button[data-val]", filter).forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
         const val = b.dataset.val!;
         let n = 0;
@@ -156,6 +160,17 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
         if (shown) shown.textContent = pad(n);
         justifyAll();
       };
+      const fclick = (e: MouseEvent) => {
+        const b = (e.target as Element).closest<HTMLButtonElement>("button[data-val]"); if (!b) return;
+        apply(b);
+        try { sessionStorage.setItem(key, b.dataset.val!); } catch {}
+      };
+      /* coming back from a piece keeps the filter it was opened from */
+      try {
+        const saved = sessionStorage.getItem(key);
+        const b = saved && saved !== "all" ? $$<HTMLButtonElement>("button[data-val]", filter).find((x) => x.dataset.val === saved) : null;
+        if (b) apply(b);
+      } catch {}
       filter.addEventListener("click", fclick); off.push(() => filter.removeEventListener("click", fclick));
     }
 
@@ -193,9 +208,12 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
         const mates = slides.filter((t) => t.dataset.chapter === c && counted(t));
         return { s: c ? sections.indexOf(c) + 1 : 0, k: mates.indexOf(s) + 1, name: s.dataset.chapterName || "" };
       });
-      const label = ({ s, k, name }: (typeof place)[number], html: boolean) =>
-        !s ? "" : html ? `${pad(s)} <span>/ ${k ? pad(k) : name}</span>` : k ? `${pad(s)} / ${pad(k)}` : pad(s);
-      slides.forEach((s, i) => { const no = s.querySelector("[data-no]"); if (no) no.textContent = label(place[i], false); });
+      /* a deck whose sections are single screens (a piece's own page) counts screens instead: "02 / 05" */
+      const flat = place.every((p) => !p.s || p.k <= 1);
+      const label = ({ s, k, name }: (typeof place)[number], html: boolean, i = 0) =>
+        flat ? (html ? `${pad(i + 1)} <span>/ ${pad(total)}</span>` : `${pad(i + 1)} / ${pad(total)}`)
+          : !s ? "" : html ? `${pad(s)} <span>/ ${k ? pad(k) : name}</span>` : k ? `${pad(s)} / ${pad(k)}` : pad(s);
+      slides.forEach((s, i) => { const no = s.querySelector("[data-no]"); if (no) no.textContent = label(place[i], false, i); });
       const counter = document.querySelector<HTMLButtonElement>(".counter");
       const prog = document.querySelector<HTMLElement>(".prog");
       prog?.querySelector("ol")?.remove();
@@ -221,7 +239,7 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       const set = (i: number) => {
         current = i;
         if (counter) {
-          counter.innerHTML = `${label({ ...place[i], name: esc(place[i].name) }, true)}<em>Overview</em>`;
+          counter.innerHTML = `${label({ ...place[i], name: esc(place[i].name) }, true, i)}<em>Overview</em>`;
           counter.setAttribute("aria-label", `Screen ${i + 1} of ${total}. Show all screens`);
         }
         const ci = chapters.findIndex((c) => i >= c.from && i < c.from + c.n);
@@ -269,6 +287,8 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       const close = () => { ov!.hidden = true; root.style.overflow = ""; behind().forEach((el) => { el.inert = false; }); (opener as HTMLElement | null)?.focus?.(); };
       ov.querySelector("[data-close]")!.addEventListener("click", close);
       counter?.addEventListener("click", open); off.push(() => counter?.removeEventListener("click", open));
+      on("deck:overview" as keyof WindowEventMap, open);
+      dispatchEvent(new CustomEvent("deck:screens", { detail: total }));
 
       const keys = (e: KeyboardEvent) => {
         if (e.altKey || e.ctrlKey || e.metaKey) return;
@@ -294,6 +314,7 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
     }
 
     return () => {
+      dispatchEvent(new CustomEvent("deck:screens", { detail: 0 }));
       off.forEach((f) => f());
       vio?.disconnect(); sio?.disconnect();
       ov?.remove(); root.style.overflow = "";

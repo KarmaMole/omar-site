@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SOCIAL } from "@/lib/deck";
 
 const NAV = [
@@ -24,6 +24,8 @@ export default function DeckChrome() {
   const path = usePathname() || "/";
   const [open, setOpen] = useState(false);
   const [chapters, setChapters] = useState<{ id: string; name: string }[]>([]);
+  const [screens, setScreens] = useState(0);
+  const mark = useRef<HTMLImageElement>(null);
 
   // Close the menu when the route changes (state adjusted during render, not in an effect).
   const [shownPath, setShownPath] = useState(path);
@@ -33,9 +35,27 @@ export default function DeckChrome() {
   }
   useEffect(() => {
     const f = (e: Event) => setChapters((e as CustomEvent<{ id: string; name: string }[]>).detail);
+    const g = (e: Event) => setScreens((e as CustomEvent<number>).detail);
     addEventListener("deck:chapters", f);
-    return () => removeEventListener("deck:chapters", f);
+    addEventListener("deck:screens", g);
+    return () => { removeEventListener("deck:chapters", f); removeEventListener("deck:screens", g); };
   }, []);
+  /* the mark makes one full turn over the length of each page, as in the Split. Slow on purpose. */
+  useEffect(() => {
+    const img = mark.current;
+    if (!img || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const turn = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      img.style.transform = `rotate(${((max > 0 ? scrollY / max : 0) * 360).toFixed(2)}deg)`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(turn); };
+    turn();
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll);
+    return () => { removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll); cancelAnimationFrame(raf); };
+  }, [path]);
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     if (!open) return;
@@ -54,7 +74,7 @@ export default function DeckChrome() {
       <header className="top">
         <Link className="brand" href="/" prefetch={false}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/mark.svg" alt="" width={22} height={22} />
+          <img ref={mark} src="/brand/mark.svg" alt="" width={22} height={22} />
           <span>Omar Kamel</span>
         </Link>
         <nav aria-label="Site">
@@ -80,6 +100,11 @@ export default function DeckChrome() {
             </Link>
           ))}
         </nav>
+        {screens > 1 ? (
+          <button type="button" className="screens-btn" onClick={() => { setOpen(false); requestAnimationFrame(() => dispatchEvent(new Event("deck:overview"))); }}>
+            All screens <span>{String(screens).padStart(2, "0")}</span>
+          </button>
+        ) : null}
         {chapters.length > 1 ? (
           <div>
             <span className="kick">On this page</span>

@@ -14,7 +14,11 @@ export default function NotFound() {
           <span className="no">404</span>
           <h1>Not <b>Found</b></h1>
           <p className="sub">the page you are looking for does not exist or has moved.</p>
-          <p style={{ marginTop: 26 }}><Link className="more" href="/">Back to the deck <span aria-hidden="true">&rarr;</span></Link></p>
+          <p className="lost-links">
+            {[["/", "Home"], ["/work", "The work"], ["/studio", "The studio"], ["/dispatch", "Dispatches"], ["/contact", "Contact"]].map(([href, label]) => (
+              <Link key={href} className="more" href={href} prefetch={false}>{label} <span aria-hidden="true">&rarr;</span></Link>
+            ))}
+          </p>
         </div>
       </section>
     </div>

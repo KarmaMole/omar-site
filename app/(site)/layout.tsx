@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import DeckChrome from "@/components/deck/chrome";
-import CookieConsent from "@/components/cookie-consent";
 import { SITE_URL } from "@/lib/constants";
 import "../globals.css";
 import "./deck.css";
@@ -58,9 +57,6 @@ export default function SiteLayout({
         <a href="#main-content" className="skip">Skip to content</a>
         <DeckChrome />
         <main id="main-content">{children}</main>
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <CookieConsent gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
         <Analytics />
       </body>
     </html>

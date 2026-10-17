@@ -1,6 +1,7 @@
 export const revalidate = 60;
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
@@ -19,6 +20,7 @@ import type { WorkDoc } from "@/lib/payload/types";
 import { dispatchHref } from "@/lib/dispatch-link";
 import { coverOf, plainText, ratioOf, srcOf } from "@/lib/deck";
 import { SITE_URL } from "@/lib/constants";
+import { PERSON_REF, personJsonLd as personNode } from "@/lib/person";
 
 const DESCRIPTION =
   "AI Creative & Production Lead with 20+ years across Cairo, Italy, and Dubai. Specializing in AI video/image generation, creative production, and digital content.";
@@ -90,20 +92,15 @@ export default async function HomePage() {
   const photo = typeof settings.aboutPhoto === "object" && settings.aboutPhoto ? settings.aboutPhoto : null;
   const bio = plainText(settings.aboutBio);
 
-  const personJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: "Omar Kamel",
-    jobTitle: "AI Creative & Production Lead",
-    url: SITE_URL,
-    sameAs: (settings.socialLinks ?? []).map((s: { url: string }) => s.url),
-  };
+  const personJsonLd = personNode((settings.socialLinks ?? []).map((s: { url: string }) => s.url), photo);
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     url: SITE_URL,
     name: "Omar Kamel",
-    publisher: { "@type": "Person", name: "Omar Kamel", url: SITE_URL },
+    description: DESCRIPTION,
+    inLanguage: "en",
+    publisher: PERSON_REF,
   };
 
   return (
@@ -115,7 +112,8 @@ export default async function HomePage() {
         <div className="lock">
           <h1>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/omar-kamel-horizontal-tight.svg" alt="Omar Kamel" width={1358} height={200} />
+            <img src="/brand/omar-kamel-horizontal-tight.svg" alt="" width={1358} height={200} />
+            <span className="sr">Omar Kamel, AI Creative &amp; Production Lead</span>
           </h1>
           <p>
             films, AI production, web and app builds, and writing
@@ -163,7 +161,7 @@ export default async function HomePage() {
               {newest.filter((w) => !used.has(String(w.id))).slice(0, 6).map((w) => (
                 <li key={w.id}>
                   <span className="d">{w.date ? new Date(w.date).getFullYear() : ""}</span>
-                  <a href={`/work/${w.slug}`}><span className="t">{w.title}</span></a>
+                  <Link href={`/work/${w.slug}`} prefetch={false}><span className="t">{w.title}</span></Link>
                   <span className="r">{(w.client ?? "").split(/ \/ | \| /)[0]}</span>
                 </li>
               ))}
@@ -220,7 +218,11 @@ export default async function HomePage() {
               return (
                 <li key={p.id}>
                   <span className="d">{p.date ? fmt(p.date) : ""}</span>
-                  <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}><span className="t">{p.title}</span></a>
+                  {external ? (
+                    <a href={href} target="_blank" rel="noopener noreferrer"><span className="t">{p.title}</span></a>
+                  ) : (
+                    <Link href={href} prefetch={false}><span className="t">{p.title}</span></Link>
+                  )}
                   <span className="r">{p.categories?.[0]?.toLowerCase()}</span>
                 </li>
               );

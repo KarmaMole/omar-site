@@ -183,7 +183,7 @@ export function ClientsSlide({ names, chapter, chapterName }: { names: string[];
 }
 
 /** Opening screen of a long page (archives, articles, contact). */
-export function TitleSlide({ kicker, light, bold, sub, count, short }: { kicker: string; light: string; bold: string; sub: string; count?: string; short?: boolean }) {
+export function TitleSlide({ kicker, light, bold, sub, count, short, children }: { kicker: string; light: string; bold: string; sub: string; count?: string; short?: boolean; children?: ReactNode }) {
   return (
     <section className={`slide title-slide${short ? " short" : ""}`} data-title={`${light} ${bold}`}>
       <div>
@@ -193,6 +193,7 @@ export function TitleSlide({ kicker, light, bold, sub, count, short }: { kicker:
         </h1>
         <p className="sub">{sub}</p>
         {count ? <span className="count">{count}</span> : null}
+        {children}
       </div>
     </section>
   );

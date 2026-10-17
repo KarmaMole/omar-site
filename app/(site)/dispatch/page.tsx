@@ -4,18 +4,13 @@ import type { Metadata } from "next";
 import { FEED, OG_BASE, TWITTER_BASE } from "@/lib/meta-base";
 import JsonLd from "@/components/json-ld";
 import DeckRoot from "@/components/deck/deck-root";
-import { TitleSlide } from "@/components/deck/parts";
+import { More, TitleSlide } from "@/components/deck/parts";
 import { Filter } from "@/components/deck/archive";
-import { sourceSerif as serif } from "@/lib/fonts";
+import { DispatchCard } from "@/components/deck/dispatch-card";
 import { getAllBlogPosts } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
 import { DISPATCH_CATEGORIES } from "@/lib/categories";
-import { dispatchHref } from "@/lib/dispatch-link";
-import { stripEmDashes } from "@/lib/seo-text";
-import { pad, srcOf } from "@/lib/deck";
-
-const fmt = (d: string) =>
-  new Date(d).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "Asia/Dubai" });
+import { pad } from "@/lib/deck";
 
 export const metadata: Metadata = {
   title: "Dispatch",
@@ -72,7 +67,9 @@ export default async function DispatchPage() {
   return (
     <DeckRoot mode="doc">
       <JsonLd data={collectionJsonLd} />
-      <TitleSlide short kicker="Writing" light="The" bold="Dispatches" sub="notes from inside production" count={`${posts.length} dispatches${first ? ` since ${first}` : ""}`} />
+      <TitleSlide short kicker="Writing" light="The" bold="Dispatches" sub="notes from inside production" count={`${posts.length} dispatches${first ? ` since ${first}` : ""}`}>
+        <p className="follow"><More href="/feed.xml" external>Follow by RSS</More></p>
+      </TitleSlide>
       <div className="wrap">
         <Filter total={posts.length} options={DISPATCH_CATEGORIES.map((c) => ({ value: c, count: posts.filter((p) => p.categories?.includes(c)).length }))} />
         {years.map((y) => {
@@ -84,25 +81,7 @@ export default async function DispatchPage() {
                 <span className="count">{pad(inYear.length)} {inYear.length === 1 ? "dispatch" : "dispatches"}</span>
               </header>
               <ol className="dgrid">
-                {inYear.map((p) => {
-                  const { href, external } = dispatchHref(p);
-                  const cover = typeof p.coverImage === "object" && p.coverImage ? p.coverImage : null;
-                  const i = order.get(p.id) ?? 0;
-                  return (
-                    <li key={p.id} data-cats={(p.categories ?? []).join("|")}>
-                      <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <span className="im">{cover ? <img src={srcOf(cover, "card")} alt="" loading={i < 6 ? "eager" : "lazy"} /> : null}</span>
-                        <span className="k">
-                          <span className="no">{p.date ? fmt(p.date) : ""}</span>
-                          {external && p.publicationName ? <span>on {p.publicationName} &#8599;</span> : p.categories?.[0] ? <span>{p.categories[0]}</span> : null}
-                        </span>
-                        <h3>{p.title}</h3>
-                        {p.excerpt ? <p className={serif.className}>{stripEmDashes(p.excerpt)}</p> : null}
-                      </a>
-                    </li>
-                  );
-                })}
+                {inYear.map((p) => <DispatchCard key={p.id} post={p} eager={(order.get(p.id) ?? 0) < 6} />)}
               </ol>
             </section>
           );

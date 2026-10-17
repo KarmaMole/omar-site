@@ -6,6 +6,8 @@ import DeckRoot from "@/components/deck/deck-root";
 import { ItemDeck } from "@/components/deck/item-deck";
 import { getWorkBySlug, getAllWorkSlugs, getDeckWork } from "@/lib/payload/queries";
 import { SITE_URL } from "@/lib/constants";
+import { PERSON_REF } from "@/lib/person";
+import { playerJsonLd } from "@/lib/structured";
 import { absUrl } from "@/lib/abs-url";
 import { describeFromRichText } from "@/lib/seo-text";
 import type { WorkDoc } from "@/lib/payload/types";
@@ -17,6 +19,15 @@ interface WorkDetailPageProps {
 /** "Title for Client", or just the title when there is no client. */
 function workTitle(work: WorkDoc): string {
   return work.client ? `${work.title} for ${work.client}` : work.title;
+}
+
+/** The <title>: the long form when it fits Google's ~60 characters with ": Omar Kamel", else the bare title. */
+function pageTitle(work: WorkDoc): Metadata["title"] {
+  const suffix = ": Omar Kamel".length;
+  const long = workTitle(work);
+  if (long.length + suffix <= 60) return long;
+  if (work.title.length + suffix <= 60) return work.title;
+  return { absolute: work.title };
 }
 
 /** CMS rich text first (trimmed at a word boundary); templated fallback otherwise. */
@@ -35,7 +46,7 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
   const title = workTitle(work);
   const description = workDescription(work);
   return {
-    title,
+    title: pageTitle(work),
     description,
     alternates: {
       types: FEED,
@@ -43,7 +54,6 @@ export async function generateMetadata({ params }: WorkDetailPageProps): Promise
     },
     openGraph: {
       ...OG_BASE,
-      type: "article",
       title,
       description,
       url: `/work/${slug}`,
@@ -78,11 +88,10 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
     description: workDescription(work),
     ...(cover?.url ? { image: absUrl(cover.url) } : {}),
     ...(work.date ? { datePublished: work.date } : {}),
-    author: {
-      "@type": "Person",
-      name: "Omar Kamel",
-      url: SITE_URL,
-    },
+    author: PERSON_REF,
+    creator: PERSON_REF,
+    ...(work.client ? { sourceOrganization: { "@type": "Organization", name: work.client } } : {}),
+    ...playerJsonLd(work, workDescription(work), cover),
     ...(work.categories?.length ? { keywords: work.categories } : {}),
     url: `${SITE_URL}/work/${slug}`,
   };

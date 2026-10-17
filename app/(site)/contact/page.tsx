@@ -9,6 +9,8 @@ import { TitleSlide } from "@/components/deck/parts";
 import { PieceFig } from "@/components/deck/work-piece";
 import { getDeckWork } from "@/lib/payload/queries";
 import { SOCIAL } from "@/lib/deck";
+import JsonLd from "@/components/json-ld";
+import { crumbs } from "@/lib/person";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -39,6 +41,7 @@ export default async function ContactPage() {
 
   return (
     <DeckRoot mode="doc">
+      <JsonLd data={crumbs("Contact", "/contact")} />
       <TitleSlide short kicker="Contact" light="Let's" bold="Talk" sub="usually one call. a few lines about the project is enough. i read every message and reply myself." />
       <div className="wrap">
         <div className="ct">

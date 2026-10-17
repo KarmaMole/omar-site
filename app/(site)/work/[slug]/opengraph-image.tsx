@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getWorkBySlug } from "@/lib/payload/queries";
 import { renderOgCard, OG_SIZE, OG_CONTENT_TYPE } from "@/lib/og-card";
 
@@ -15,13 +16,8 @@ export async function generateAlt({ params }: { params: Promise<{ slug: string }
 export default async function WorkOg({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const work = await getWorkBySlug(slug);
-  if (!work) {
-    return renderOgCard({
-      label: "WORK",
-      title: "Omar Kamel",
-      subtitle: "AI Creative & Production",
-    });
-  }
+  // Hidden or missing pieces get no card (a real 404), not a generic one
+  if (!work) notFound();
 
   const cover =
     typeof work.coverImage === "object" && work.coverImage ? work.coverImage : null;

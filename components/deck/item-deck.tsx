@@ -1,9 +1,9 @@
 import type { ProjectDoc, WorkDoc } from "@/lib/payload/types";
 import { RichText } from "@/components/rich-text";
 import { toEmbedUrl } from "@/lib/embed-url";
-import { Credit, Fig, Head, More, Piece, TextSlide } from "./parts";
+import { Credit, EndSlide, Fig, Head, More, Piece, TextSlide } from "./parts";
 import { ElsewhereLink, PieceFig } from "./work-piece";
-import { coverOf, credit, headOf, plainText, ratioOf, sentences, srcOf, subtitleOf } from "@/lib/deck";
+import { clientLabel, coverOf, credit, headOf, plainText, ratioOf, sentences, srcOf, subtitleOf } from "@/lib/deck";
 
 type Doc = WorkDoc | ProjectDoc;
 
@@ -26,6 +26,18 @@ export function ItemDeck({ doc, seq, kind }: { doc: Doc; seq: Doc[]; kind: "work
   const next = seq[(i + 1) % seq.length];
   const prev = seq[(i - 1 + seq.length) % seq.length];
   const nextHead = next ? headOf(next) : null;
+  /* more like this: pieces sharing the most categories, newest first among equals (not this one, not the next) */
+  const cats = new Set(doc.categories ?? []);
+  const related = cats.size
+    ? seq
+        .filter((d) => d.slug !== doc.slug && d.slug !== next?.slug)
+        .map((d, k) => ({ d, k, n: (d.categories ?? []).filter((c) => cats.has(c)).length }))
+        .filter((x) => x.n > 0)
+        .sort((a, b) => b.n - a.n || a.k - b.k)
+        .slice(0, 3)
+        .map((x) => x.d)
+    : [];
+  const shared = related.length ? (related[0].categories ?? []).find((c) => cats.has(c)) : null;
 
   return (
     <>
@@ -70,6 +82,15 @@ export function ItemDeck({ doc, seq, kind }: { doc: Doc; seq: Doc[]; kind: "work
           figs={extra.map(({ src, m }, n) => <Fig key={m.url} ratio={16 / 9} frame={src} alt={`${doc.title}, film ${n + 2} of ${extra.length + 1}`} />)} />
       )}
 
+      {related.length > 0 && (
+        <Piece chapter="related" chapterName="More like this" title="More like this"
+          head={<Head client="More" project="Like This" desc={shared ? `more ${shared.toLowerCase()}` : undefined} />}
+          figs={related.map((d) => <Fig key={d.slug} ratio={ratioOf(coverOf(d))} src={srcOf(coverOf(d), "card")} alt={d.title} href={`${base}/${d.slug}`} tag={"client" in d ? clientLabel(d.client) || undefined : undefined} />)}>
+          <p>{related.map((d) => d.title).join(". ")}.</p>
+          <div className="links"><More href={base}>{kind === "work" ? "All work" : "The whole studio"}</More></div>
+        </Piece>
+      )}
+
       {next && nextHead && next.slug !== doc.slug && (
         <Piece chapter="next" chapterName="Next" title={`Next: ${next.title}`}
           head={<Head client="Next" project={nextHead.project ? `${nextHead.client} | ${nextHead.project}` : nextHead.client} desc={`${kind === "work" ? "the work" : "the studio"}, ${((i + 1) % seq.length) + 1} of ${seq.length}`} />}
@@ -81,6 +102,8 @@ export function ItemDeck({ doc, seq, kind }: { doc: Doc; seq: Doc[]; kind: "work
           <div className="links"><More href={base}>{kind === "work" ? "All work" : "The whole studio"}</More><More href="/">Home</More></div>
         </Piece>
       )}
+
+      <EndSlide />
     </>
   );
 }
