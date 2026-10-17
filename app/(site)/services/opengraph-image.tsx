@@ -10,6 +10,6 @@ export default function ServicesOg() {
   return renderOgCard({
     label: "SERVICES",
     title: "Services",
-    subtitle: "AI production, direction, and digital builds",
+    subtitle: "AI production, direction, websites and apps",
   });
 }

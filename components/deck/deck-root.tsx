@@ -176,7 +176,13 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       const slides = $$<HTMLElement>(".slide");
       const total = slides.length;
       let current = 0;
-      slides.forEach((s, i) => { const no = s.querySelector("[data-no]"); if (no) no.textContent = pad(i + 1); });
+      /* Numbers run per section: a section's dividers and the cover aren't counted, its pieces read 01 / NN. */
+      const counted = (s: HTMLElement) => !s.matches(".divider, .cover-slide");
+      const place = slides.map((s) => {
+        const mates = slides.filter((t) => t.dataset.chapter === s.dataset.chapter && counted(t));
+        return { k: mates.indexOf(s) + 1, n: mates.length };
+      });
+      slides.forEach((s, i) => { const no = s.querySelector("[data-no]"); if (no) no.textContent = place[i].k ? pad(place[i].k) : ""; });
       const counter = document.querySelector<HTMLButtonElement>(".counter");
       const prog = document.querySelector<HTMLElement>(".prog");
       prog?.querySelector("ol")?.remove();
@@ -201,7 +207,10 @@ export default function DeckRoot({ mode, name, children }: { mode: "deck" | "doc
       }
       const set = (i: number) => {
         current = i;
-        if (counter) counter.innerHTML = `${pad(i + 1)} <span>/ ${pad(total)}</span><em>Overview</em>`;
+        if (counter) {
+          const { k, n } = place[i];
+          counter.innerHTML = `${k ? `${pad(k)} ` : ""}${n ? `<span>/ ${pad(n)}</span>` : ""}<em>Overview</em>`;
+        }
         const ci = chapters.findIndex((c) => i >= c.from && i < c.from + c.n);
         chapters.forEach((c, k) => {
           const b = c.li?.querySelector("b") as HTMLElement | null;

@@ -31,7 +31,7 @@ export function ItemDeck({ doc, seq, kind }: { doc: Doc; seq: Doc[]; kind: "work
     <>
       <Piece chapter="piece" chapterName={project ? `${client} | ${project}` : client}
         head={<Head as="h1" client={client} project={project} desc={work ? subtitleOf(work) : (proj?.categories ?? []).join(", ").toLowerCase()} />}
-        figs={<PieceFig doc={doc} eager />}>
+        figs={<PieceFig doc={doc} eager openAudio />}>
         {long ? <p className="lead">{sentences(text)[0]}</p> : doc.description ? <RichText data={doc.description} className="rich" embedTitle={doc.title} /> : null}
         <ul className="facts">
           {work?.client ? <li><span>Client</span>{work.client}</li> : null}

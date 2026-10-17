@@ -7,9 +7,13 @@ import {
 type Doc = WorkDoc | ProjectDoc;
 
 /** The picture (or loop) of a piece, wired to its player when it has one. */
-export function PieceFig({ doc, eager, href }: { doc: Doc; eager?: boolean; href?: string }) {
+export function PieceFig({ doc, eager, href, openAudio }: { doc: Doc; eager?: boolean; href?: string; openAudio?: boolean }) {
   const cover = coverOf(doc);
   const embed = primaryEmbed(doc.media);
+  /* On a piece's own page, an album or track opens on its player (tracklist and all), with no click to load it. */
+  if (openAudio && !href && embed && (embed.kind === "spotify" || embed.kind === "soundcloud")) {
+    return <Fig ratio={ratioOf(cover, 1)} frame={embed.src} alt={doc.title} />;
+  }
   return (
     <Fig
       ratio={ratioOf(cover)}

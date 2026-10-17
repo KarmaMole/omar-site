@@ -165,10 +165,12 @@ export function ClientsSlide({ names, chapter, chapterName }: { names: string[];
     <TextSlide chapter={chapter} chapterName={chapterName} title="Clients, worked with" width={1120}
       head={<Head client="Clients" project="Worked With" desc={`twenty years, three countries, ${names.length} of them`} />}>
       <div className="logos">
-        {names.map((n) => {
+        {names.map((n, i) => {
           const l = logoFor(n);
+          /* Marks past the last full row are dropped (5 across on desktop, 3 on phones) so the table ends square. */
+          const tail = [i >= names.length - (names.length % 5) && "tail5", i >= names.length - (names.length % 3) && "tail3"].filter(Boolean).join(" ");
           return (
-            <div key={n} className={`logo${l ? " has-img" : ""}`} data-slug={l?.slug}>
+            <div key={n} className={`logo${l ? " has-img" : ""}${tail ? ` ${tail}` : ""}`} data-slug={l?.slug}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               {l ? <img src={l.src} alt={n} loading="lazy" /> : null}
               <span className="nm">{n}</span>

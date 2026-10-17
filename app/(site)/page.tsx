@@ -119,7 +119,7 @@ export default async function HomePage() {
             <img src="/brand/omar-kamel-horizontal-tight.svg" alt="Omar Kamel" width={1358} height={200} />
           </h1>
           <p>
-            films, AI production, builds and writing
+            films, AI production, web and app builds, and writing
           </p>
         </div>
         <div className="illus">

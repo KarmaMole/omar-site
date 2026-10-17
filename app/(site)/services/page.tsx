@@ -10,21 +10,21 @@ import { coverOf, pad, ratioOf, sentences, srcOf } from "@/lib/deck";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "AI production, creative direction, digital builds, and more from Omar Kamel.",
+    "AI production, creative direction, websites and apps, and more from Omar Kamel.",
   robots: { index: true, follow: true },
   alternates: {
     canonical: "/services",
   },
   openGraph: {
     title: "Services: Omar Kamel",
-    description: "AI production, creative direction, digital builds, and more from Omar Kamel.",
+    description: "AI production, creative direction, websites and apps, and more from Omar Kamel.",
     url: "/services",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Services: Omar Kamel",
-    description: "AI production, creative direction, digital builds, and more from Omar Kamel.",
+    description: "AI production, creative direction, websites and apps, and more from Omar Kamel.",
   },
 };
 
@@ -47,20 +47,21 @@ const services = [
     description:
       "I run structured AI training programs for marketing teams. Six sessions covering content creation, social media, strategy, presentations, and automation. Live, online, practical. Participants leave with tools and workflows they can use the next day.",
     benefit:
-      "Currently leading AI creative and production at Optix (Publicis Groupe), building AI-powered pipelines for major airlines, automotive brands, and financial institutions. I use Claude, ChatGPT, MidJourney, ComfyUI, Veo, Kling, and Suno daily. I know what works and what's still hype.",
+      "Currently an AI production and creative lead at Optix (Publicis Groupe), building AI-powered pipelines for major airlines, automotive brands, and financial institutions. I use Claude, ChatGPT, MidJourney, ComfyUI, Veo, Kling, and Suno daily. I know what works and what's still hype.",
     references: [
       { label: "AI Workshop Program", href: "/contact" },
     ],
   },
   {
-    label: "Digital Builds",
+    label: "Websites & Apps",
     description:
-      "I build functional web platforms, desktop apps, dashboards, and internal tools using Replit, Claude Code, and modern frameworks. Not wireframes and Figma decks that sit in a drawer. Working products that solve real problems, ship fast, and hold up under actual use.",
+      "I design and build websites, web platforms, desktop apps and internal tools, with Claude Code and modern frameworks. Company and portfolio sites come with a proper CMS behind them, so you can update them yourself without calling me. Not wireframes and Figma decks that sit in a drawer: working products that ship fast and hold up under actual use.",
     benefit:
-      "Current live builds include an AI-powered news aggregator and Savage Impulse, a suite of local-first desktop tools for people who work with content. Full-stack delivery from database to deployment, no handoffs to a dev team. You get the product, not a pitch deck.",
+      "This site is one of them, designed and built from scratch with its own CMS. Other live builds include Human Impact, an AI-powered news aggregator, and Savage Impulse, a suite of local-first desktop tools for people who work with content. Full-stack delivery from design to database to deployment, no handoffs to a dev team. You get the product, not a pitch deck.",
     references: [
       { label: "Human Impact", href: "https://humanimpact.news" },
       { label: "Savage Impulse", href: "https://savageimpulse.com" },
+      { label: "Mansour Site Redesign", href: "/work/mansour-site-redesign" },
     ],
   },
   {
@@ -120,8 +121,9 @@ const VISUALS: Record<string, string> = {
   "Branding & Design": "sawabusinesscards",
 };
 
-/** Digital Builds shows the Savage Impulse apps themselves (screens from savageimpulse.com). */
+/** Websites & Apps shows this site, then the Savage Impulse apps themselves (screens from savageimpulse.com). */
 const APPS = [
+  { name: "omarkamel.com", src: "/deck/apps/omarkamel.jpg", w: 1600, h: 1000 },
   { name: "Plekto", src: "/deck/apps/plekto.jpg", w: 1600, h: 993 },
   { name: "Trova", src: "/deck/apps/trova.jpg", w: 1440, h: 900 },
   { name: "Rekolla", src: "/deck/apps/rekolla.jpg", w: 1200, h: 820 },
@@ -151,8 +153,8 @@ export default async function ServicesPage() {
             const c = d ? coverOf(d) : null;
             return c ? [<Fig key={slug} ratio={ratioOf(c)} src={srcOf(c)} alt={label} href={`#${id(label)}`} tag={label} eager />] : [];
           }),
-          <Fig key="apps" ratio={APPS[0].w / APPS[0].h} src={APPS[0].src} alt="Digital Builds" href="#digital-builds" tag="Digital Builds" eager />]}>
-        <p className="lead">Alongside my role leading AI production at Optix (Publicis Groupe), I take on a small number of independent projects.</p>
+          <Fig key="apps" ratio={APPS[0].w / APPS[0].h} src={APPS[0].src} alt="Websites & Apps" href="#websites-apps" tag="Websites & Apps" eager />]}>
+        <p className="lead">Alongside my work as an AI production and creative lead at Optix (Publicis Groupe), I take on a small number of independent projects.</p>
         <ol className="facts">
           {services.map((sv, i) => (
             <li key={sv.label}><span>{pad(i + 1)}</span><a href={`#${id(sv.label)}`}>{sv.label}</a></li>
@@ -178,8 +180,8 @@ export default async function ServicesPage() {
           );
         }
         const doc = bySlug.get(VISUALS[sv.label] ?? "");
-        const figs = sv.label === "Digital Builds"
-          ? APPS.map((a) => <Fig key={a.name} ratio={a.w / a.h} src={a.src} alt={`${a.name}, a Savage Impulse app`} tag={a.name} />)
+        const figs = sv.label === "Websites & Apps"
+          ? APPS.map((a, k) => <Fig key={a.name} ratio={a.w / a.h} src={a.src} alt={k ? `${a.name}, a Savage Impulse app` : "This site, omarkamel.com"} tag={a.name} />)
           : doc ? <PieceFig doc={doc} /> : null;
         return (
           <Piece key={sv.label} id={id(sv.label)} chapter={id(sv.label)} chapterName={sv.label} title={sv.label} head={head} figs={figs}>
