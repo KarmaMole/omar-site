@@ -6,7 +6,7 @@
   :root {
     --color-bg: #0a0a0a;
     --color-text: #f5f5f5;
-    --color-accent: #00d9ff;
+    --color-accent: #E63946;
   }
 
   html[data-theme="site"] {
@@ -21,7 +21,7 @@
   }
 
   html[data-theme="site"] ::selection {
-    background-color: rgba(0, 217, 255, 0.3);
+    background-color: rgba(230, 57, 70, 0.3);
     color: #ffffff;
   }
 

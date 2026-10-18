@@ -58,7 +58,7 @@ export default async function ReorderPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white px-6 py-12">
       <div className="max-w-2xl mx-auto mb-8">
-        <h1 className="font-mono text-lg tracking-widest uppercase text-cyan mb-2">
+        <h1 className="font-mono text-lg tracking-widest uppercase text-scarlet mb-2">
           Reorder Items
         </h1>
         <p className="text-sm text-light-400">

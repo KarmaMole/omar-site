@@ -32,7 +32,7 @@ export default function GlobalError({
                 fontSize: "3.75rem",
                 fontWeight: 700,
                 marginBottom: "1rem",
-                color: "#00d9ff",
+                color: "#E63946",
               }}
             >
               Fatal Error
@@ -59,9 +59,9 @@ export default function GlobalError({
               onClick={() => reset()}
               style={{
                 padding: "0.75rem 1.5rem",
-                border: "1px solid #00d9ff",
+                border: "1px solid #E63946",
                 backgroundColor: "transparent",
-                color: "#00d9ff",
+                color: "#E63946",
                 fontFamily: "monospace",
                 fontSize: "0.875rem",
                 textTransform: "uppercase",

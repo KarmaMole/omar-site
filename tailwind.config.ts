@@ -24,8 +24,8 @@ const config: Config = {
           // Readable muted text: 5.7:1 on #0a0a0a, 5.3:1 on #141414 (AA). Use instead of light-300/NN on text.
           400: '#8a8a8a',
         },
-        cyan: {
-          DEFAULT: '#00d9ff',
+        scarlet: {
+          DEFAULT: '#E63946',
         },
       },
       fontFamily: {
@@ -43,7 +43,7 @@ const config: Config = {
       },
       boxShadow: {
         'card': 'rgba(255, 255, 255, 0.04) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.3) 0px 1px 3px 0px',
-        'card-hover': 'rgba(255, 255, 255, 0.06) 0px 1px 0px 0px inset, rgba(0, 217, 255, 0.12) 0px 0px 20px 0px, rgba(0, 0, 0, 0.3) 0px 2px 8px 0px',
+        'card-hover': 'rgba(255, 255, 255, 0.06) 0px 1px 0px 0px inset, rgba(230, 57, 70, 0.12) 0px 0px 20px 0px, rgba(0, 0, 0, 0.3) 0px 2px 8px 0px',
       },
       spacing: {
         'section': '6rem',

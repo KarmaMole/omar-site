@@ -54,11 +54,11 @@ function SortableItem({ item, index }: SortableItemProps) {
       ref={setNodeRef}
       style={style}
       className={`flex items-center gap-4 p-3 border border-dark-100 bg-[#141414] ${
-        isDragging ? "opacity-80 shadow-lg shadow-cyan/20 border-cyan/50" : ""
+        isDragging ? "opacity-80 shadow-lg shadow-scarlet/20 border-scarlet/50" : ""
       }`}
     >
       <button
-        className="cursor-grab active:cursor-grabbing p-1 text-light-300/50 hover:text-cyan touch-none"
+        className="cursor-grab active:cursor-grabbing p-1 text-light-300/50 hover:text-scarlet touch-none"
         {...attributes}
         {...listeners}
       >
@@ -196,7 +196,7 @@ export default function ReorderList({
             }}
             className={`px-6 py-3 font-mono text-xs tracking-widest uppercase transition-colors ${
               activeTab === tab
-                ? "text-cyan border-b-2 border-cyan"
+                ? "text-scarlet border-b-2 border-scarlet"
                 : "text-light-300/50 hover:text-white"
             }`}
           >
@@ -231,7 +231,7 @@ export default function ReorderList({
           disabled={saving || !hasChanges}
           className={`px-6 py-2.5 font-mono text-xs tracking-widest uppercase transition-all ${
             hasChanges
-              ? "bg-cyan text-black hover:shadow-[0_0_12px_rgba(0,217,255,0.4)]"
+              ? "bg-scarlet text-black hover:shadow-[0_0_12px_rgba(230,57,70,0.4)]"
               : "bg-dark-100 text-light-300/30 cursor-not-allowed"
           }`}
         >

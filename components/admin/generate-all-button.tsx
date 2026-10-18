@@ -137,18 +137,18 @@ export default function GenerateAllButton() {
             fontSize: '0.85rem',
             fontWeight: 600,
             fontFamily: 'inherit',
-            background: 'rgba(0, 217, 255, 0.12)',
-            border: '1px solid rgba(0, 217, 255, 0.4)',
+            background: 'rgba(230, 57, 70, 0.12)',
+            border: '1px solid rgba(230, 57, 70, 0.4)',
             borderRadius: '4px',
-            color: '#00d9ff',
+            color: '#E63946',
             cursor: 'pointer',
             transition: 'all 0.2s',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(0, 217, 255, 0.22)'
+            e.currentTarget.style.background = 'rgba(230, 57, 70, 0.22)'
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(0, 217, 255, 0.12)'
+            e.currentTarget.style.background = 'rgba(230, 57, 70, 0.12)'
           }}
         >
           Generate All
@@ -162,10 +162,10 @@ export default function GenerateAllButton() {
             padding: '0.6rem 1rem',
             fontSize: '0.85rem',
             fontFamily: 'inherit',
-            background: 'rgba(0, 217, 255, 0.08)',
-            border: '1px solid rgba(0, 217, 255, 0.25)',
+            background: 'rgba(230, 57, 70, 0.08)',
+            border: '1px solid rgba(230, 57, 70, 0.25)',
             borderRadius: '4px',
-            color: '#00d9ff',
+            color: '#E63946',
             textAlign: 'center',
           }}
         >
@@ -180,10 +180,10 @@ export default function GenerateAllButton() {
             padding: '0.6rem 1rem',
             fontSize: '0.85rem',
             fontFamily: 'inherit',
-            background: 'rgba(0, 217, 255, 0.08)',
-            border: '1px solid rgba(0, 217, 255, 0.25)',
+            background: 'rgba(230, 57, 70, 0.08)',
+            border: '1px solid rgba(230, 57, 70, 0.25)',
             borderRadius: '4px',
-            color: '#00d9ff',
+            color: '#E63946',
             textAlign: 'center',
           }}
         >
@@ -217,10 +217,10 @@ export default function GenerateAllButton() {
             fontSize: '0.85rem',
             fontWeight: 600,
             fontFamily: 'inherit',
-            background: 'rgba(0, 217, 255, 0.12)',
-            border: '1px solid rgba(0, 217, 255, 0.4)',
+            background: 'rgba(230, 57, 70, 0.12)',
+            border: '1px solid rgba(230, 57, 70, 0.4)',
             borderRadius: '4px',
-            color: '#00d9ff',
+            color: '#E63946',
             cursor: 'pointer',
           }}
         >

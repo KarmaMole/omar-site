@@ -31,7 +31,7 @@ const TICK_MS = 110;
 const WALL_PAD = 2; // px padding inside arena border
 
 // Brand kit: the player rides scarlet; the programs are stone and warm grey, on a sand arena.
-const CYAN = "#E63946";
+const SCARLET = "#E63946";
 const ORANGE = "#1C1917";
 const MAGENTA = "#67635E";
 
@@ -294,7 +294,7 @@ export default function TronGame() {
       dy: -1,
       trail: [],
       alive: true,
-      color: CYAN,
+      color: SCARLET,
       glow: "rgba(230, 57, 70, 0.45)",
       name: "PLAYER",
     };

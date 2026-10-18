@@ -171,12 +171,12 @@ export default function GalleryUploadField(props: any) {
         onDragLeave={handleDragLeave}
         onClick={() => fileInputRef.current?.click()}
         style={{
-          border: `2px dashed ${dragOver ? '#00d9ff' : '#333'}`,
+          border: `2px dashed ${dragOver ? '#E63946' : '#333'}`,
           borderRadius: '4px',
           padding: '2rem',
           textAlign: 'center',
           cursor: 'pointer',
-          backgroundColor: dragOver ? 'rgba(0, 217, 255, 0.05)' : 'transparent',
+          backgroundColor: dragOver ? 'rgba(230, 57, 70, 0.05)' : 'transparent',
           transition: 'all 0.2s',
           marginBottom: '1rem',
         }}
@@ -209,7 +209,7 @@ export default function GalleryUploadField(props: any) {
                 style={{
                   height: '100%',
                   width: `${(uploadCount.done / uploadCount.total) * 100}%`,
-                  background: '#00d9ff',
+                  background: '#E63946',
                   transition: 'width 0.3s',
                 }}
               />
