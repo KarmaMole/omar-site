@@ -22,7 +22,7 @@ Composition: The entire composition is compact and self-contained in the center 
 
 Lighting: Soft, flat editorial lighting with subtle cross-hatched shadows and restrained tonal contrast. The image should feel calm, observational, and slightly austere rather than dramatic.
 
-Color accent: Include a single subtle cyan (#00d9ff) element as the only color in the image, placed deliberately to draw the eye and reinforce the central idea.
+Color accent: Include a single subtle scarlet red (#E63946) element as the only color in the image, placed deliberately to draw the eye and reinforce the central idea.
 
 Style: Minimalist pen-and-ink editorial illustration with fine cross-hatching, delicate stippling, crisp linework, and visible paper grain; quiet, intelligent, slightly ironic tone reminiscent of classic New Yorker-style conceptual illustration.
 
